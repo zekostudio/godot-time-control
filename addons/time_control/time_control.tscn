@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://du1l7drq7rv5n"]
+
+[ext_resource type="Script" path="res://addons/time_control/time_controller.gd" id="1_lpil8"]
+[ext_resource type="Script" path="res://addons/time_control/global_clock.gd" id="2_hpdgb"]
+
+[node name="TimeController" type="Node"]
+script = ExtResource("1_lpil8")
+
+[node name="WorldClock" type="Node" parent="."]
+script = ExtResource("2_hpdgb")
+key = "WORLD"
+
+[node name="PlayerClock" type="Node" parent="."]
+script = ExtResource("2_hpdgb")
+key = "PLAYER"
+parentKey = "WORLD"
+
+[node name="EnemyClock" type="Node" parent="."]
+script = ExtResource("2_hpdgb")
+key = "ENEMY"
+parentKey = "WORLD"
+
+[node name="EnvironmentClock" type="Node" parent="."]
+script = ExtResource("2_hpdgb")
+key = "ENVIRONMENT"
+parentKey = "WORLD"
