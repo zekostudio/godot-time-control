@@ -1,26 +1,30 @@
-[gd_scene load_steps=3 format=3 uid="uid://du1l7drq7rv5n"]
+[gd_scene load_steps=7 format=3 uid="uid://du1l7drq7rv5n"]
 
 [ext_resource type="Script" path="res://addons/time_control/time_controller.gd" id="1_lpil8"]
 [ext_resource type="Script" path="res://addons/time_control/global_clock.gd" id="2_hpdgb"]
+[ext_resource type="Resource" uid="uid://qmafxony84f7" path="res://resources/time/world_clock.tres" id="3_s0e8i"]
+[ext_resource type="Resource" uid="uid://dovo5yrk24mr" path="res://resources/time/player_clock.tres" id="4_exqxx"]
+[ext_resource type="Resource" uid="uid://kbvuqggcs6gj" path="res://resources/time/enemy_clock.tres" id="5_g7gae"]
+[ext_resource type="Resource" uid="uid://cum8uvnthdi6e" path="res://resources/time/environment_clock.tres" id="6_wcuru"]
 
 [node name="TimeController" type="Node"]
 script = ExtResource("1_lpil8")
 
 [node name="WorldClock" type="Node" parent="."]
 script = ExtResource("2_hpdgb")
-key = "WORLD"
+configuration = ExtResource("3_s0e8i")
 
 [node name="PlayerClock" type="Node" parent="."]
 script = ExtResource("2_hpdgb")
-key = "PLAYER"
-parentKey = "WORLD"
+configuration = ExtResource("4_exqxx")
+parent_clock_configuration = ExtResource("3_s0e8i")
 
 [node name="EnemyClock" type="Node" parent="."]
 script = ExtResource("2_hpdgb")
-key = "ENEMY"
-parentKey = "WORLD"
+configuration = ExtResource("5_g7gae")
+parent_clock_configuration = ExtResource("3_s0e8i")
 
 [node name="EnvironmentClock" type="Node" parent="."]
 script = ExtResource("2_hpdgb")
-key = "ENVIRONMENT"
-parentKey = "WORLD"
+configuration = ExtResource("6_wcuru")
+parent_clock_configuration = ExtResource("3_s0e8i")

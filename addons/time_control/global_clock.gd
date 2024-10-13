@@ -1,5 +1,6 @@
 extends "./clock.gd"
 
+
 var clocks: Array = [] 
 var timelines: Array[Timeline] = []
  
@@ -7,9 +8,9 @@ func _init():
 	clocks = [] 
 	timelines = []  
 
-@export var key: String
+@export var configuration: ClockConfiguration
 
-func register_timeline(timeline: Timeline):
+func register_timeline(timeline: Timeline): 
 	if timeline == null:
 		push_error("Timeline cannot be null") 
 		return

@@ -4,61 +4,61 @@ enum ModeEnum {Global, Local}
 
 const Clock = preload("./clock.gd")
 const Timeline = preload("./timeline.gd")
+const ClockConfiguration = preload("./clock_configuration.gd")
 
 signal register_timeline(timeline: Timeline)
-
 signal unregister_timeline(timeline: Timeline)
 
 @export var mode: ModeEnum
 @export var local_clock: Clock
-@export var globalClockKey: String 
+@export var global_clock_configuration: ClockConfiguration
 
 var clock: Clock
-var timeScale: float
-var lastTimeScale: float
-var deltaTime: float
-var physicsDeltaTime: float
+var time_scale: float
+var last_time_scale: float
+var delta_time: float
+var physics_delta_time: float
 var time: float
-var unscaledTime: float
+var unscaled_time: float
 
 func _init():
-	timeScale = 1
-	lastTimeScale = 1
+	time_scale = 1
+	last_time_scale = 1
 	
 func _ready():
 	clock = find_clock()
-	timeScale = clock.timeScale
-	lastTimeScale = clock.timeScale
+	time_scale = clock.time_scale
+	last_time_scale = clock.time_scale
 	
 func _process(_delta):
-	lastTimeScale = timeScale
-	timeScale = clock.timeScale
+	last_time_scale = time_scale
+	time_scale = clock.time_scale
 
-	var unscaledDeltaTime = TimeController.get_unscaled_delta_time();
-	time += deltaTime;
+	var unscaled_delta_time = TimeController.get_unscaled_delta_time();
+	time += delta_time;
 
 	
 func _physics_process(_delta):
-	var unscaledDeltaTime = TimeController.get_unscaled_delta_time();
-	physicsDeltaTime = get_physics_process_delta_time() * timeScale;
-	unscaledTime += unscaledDeltaTime;
+	var unscaled_delta_time = TimeController.get_unscaled_delta_time();
+	physics_delta_time = get_physics_process_delta_time() * time_scale;
+	unscaled_time += unscaled_delta_time;
 	
 func find_clock():
 	match mode:
 		ModeEnum.Global:
-			var oldGlobalClock = clock;
-			if (oldGlobalClock != null):
-				oldGlobalClock.unregister_timeline(self)
+			var previous_global_clock = clock;
+			if (previous_global_clock != null):
+				previous_global_clock.unregister_timeline(self)
 			
-			if (!TimeController.has_clock(globalClockKey)):
+			if (!TimeController.has_clock(global_clock_configuration)):
 				push_error("Missing global clock for timeline")
 			
-			var globalClock = TimeController.get_clock(globalClockKey)
-			globalClock.register_timeline(self)
+			var global_clock = TimeController.get_clock(global_clock_configuration)
+			global_clock.register_timeline(self)
  
-			clock = globalClock
+			clock = global_clock
 			
-			return globalClock
+			return global_clock
 		ModeEnum.Local: 
 			assert(local_clock != null, "Missing local clock for timeline")
 			clock = local_clock

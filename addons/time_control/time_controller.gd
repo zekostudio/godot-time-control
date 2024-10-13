@@ -1,69 +1,72 @@
 extends Node
 
 const GlobalClock := preload("./global_clock.gd")
+const ClockConfiguration := preload("./clock_configuration.gd")
 
-var lastUpdated: float = Time.get_ticks_usec()
-var unscaledDeltaTime: float
+@export var debug: bool = false
+@export var clocks: Dictionary
 
-# Declare member variables here.
-@export var _debug: bool = false
-@export var _clocks: Dictionary
+var last_updated: float = Time.get_ticks_usec()
+var unscaled_delta_time: float
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	for child in get_children():
 		if child is GlobalClock:
-			_clocks[child.key] = child
+			clocks[child.configuration.key] = child
 			
 func _process(_delta):
 	var now = Time.get_ticks_usec()
-	unscaledDeltaTime = now - lastUpdated
-	lastUpdated = now
+	unscaled_delta_time = now - last_updated
+	last_updated = now
 
-# Properties
 func set_debug(value):
-	_debug = value
+	debug = value 
 
 func get_debug():
-	return _debug
+	return debug
 
-# Clocks
-func has_clock(key: String) -> bool:
-	if key == null:
-		push_error("Key cannot be null")
+func has_clock(clock_configuration: ClockConfiguration) -> bool:
+	if clock_configuration == null:
+		push_error("Clock configuration cannot be null")
 		return false
-	return key in _clocks
+	return clock_configuration.key in clocks
 
-func get_clock(key: String) -> GlobalClock:
-	if key == null:
-		push_error("Key cannot be null")
-		return null
-	if not has_clock(key):
+func get_clock_by_key(key: String) -> GlobalClock:
+	if key not in clocks:
 		push_error("Unknown global clock '%s'" % key)
 		return null
-	return _clocks[key]
+	return clocks[key]
 
-func add_clock(key: String) -> GlobalClock:
-	if key == null:
+func get_clock(clock_configuration: ClockConfiguration) -> GlobalClock:
+	if clock_configuration == null:
 		push_error("Key cannot be null")
 		return null
-	if has_clock(key):
-		push_error("Global clock '%s' already exists" % key)
+	if not has_clock(clock_configuration):
+		push_error("Unknown global clock '%s'" % clock_configuration.key)
+		return null
+	return clocks[clock_configuration.key]
+
+func add_clock(clock_configuration: ClockConfiguration) -> GlobalClock:
+	if clock_configuration == null:
+		push_error("Key cannot be null")
+		return null
+	if has_clock(clock_configuration):
+		push_error("Global clock '%s' already exists" % clock_configuration.key)
 		return null
 	var clock = GlobalClock.new()
-	clock.key = key
+	clock.key = clock_configuration.key
 	add_child(clock)
-	_clocks[key] = clock
+	clocks[clock_configuration.key] = clock
 	return clock
 
-func remove_clock(key: String):
-	if key == null:
+func remove_clock(clock_configuration: ClockConfiguration):
+	if clock_configuration == null:
 		push_error("Key cannot be null")
 		return
-	if not has_clock(key):
-		push_error("Unknown global clock '%s'" % key)
+	if not has_clock(clock_configuration):
+		push_error("Unknown global clock '%s'" % clock_configuration.key)
 		return
-	_clocks.erase(key)
+	clocks.erase(clock_configuration.key)
 
 # Internal static methods
 static func get_time_state(time_scale: float) -> String:
@@ -79,4 +82,4 @@ static func get_time_state(time_scale: float) -> String:
 		return "Accelerated"
 
 func get_unscaled_delta_time() -> float:
-	return min(unscaledDeltaTime / 1000000, 0.02)
+	return min(unscaled_delta_time / 1000000, 0.02)
