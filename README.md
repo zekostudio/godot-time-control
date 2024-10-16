@@ -126,6 +126,7 @@ Multiply the current clock `time_scale` by the parent clock `time_scale`
 Adds the current clock `time_scale` to the parent clock `time_scale`
 
 </details>
+
 <details>
 <summary>Methods</summary>
 
@@ -183,7 +184,7 @@ Assign a global [`ClockConfiguration`](#clockconfiguration) resource. Works with
 This node keeps track of all [`GlobalClock`](#global-clock) in your project and provides methods to get / add / remove them from anywhere in your project at runtime.
 
 <details>
-<summary>Methods</summmary>
+<summary>Methods</summary>
 
 #### `has_clock(clock_configuration: ClockConfiguration) -> bool`<br>
 Returns `true` or `false` if the [`GlobalClock`](#global-clock) matching the `clock_configuration` is registered.<br>
