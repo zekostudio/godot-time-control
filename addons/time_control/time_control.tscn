@@ -1,13 +1,13 @@
 [gd_scene load_steps=7 format=3 uid="uid://du1l7drq7rv5n"]
 
-[ext_resource type="Script" path="res://addons/time_control/time_controller.gd" id="1_lpil8"]
+[ext_resource type="Script" path="res://addons/time_control/clock_controller.gd" id="1_lpil8"]
 [ext_resource type="Script" path="res://addons/time_control/global_clock.gd" id="2_hpdgb"]
-[ext_resource type="Resource" uid="uid://qmafxony84f7" path="res://resources/time/world_clock.tres" id="3_s0e8i"]
-[ext_resource type="Resource" uid="uid://dovo5yrk24mr" path="res://resources/time/player_clock.tres" id="4_exqxx"]
-[ext_resource type="Resource" uid="uid://kbvuqggcs6gj" path="res://resources/time/enemy_clock.tres" id="5_g7gae"]
-[ext_resource type="Resource" uid="uid://cum8uvnthdi6e" path="res://resources/time/environment_clock.tres" id="6_wcuru"]
+[ext_resource type="Resource" uid="uid://qmafxony84f7" path="res://addons/time_control/resources/world_clock.tres" id="3_s0e8i"]
+[ext_resource type="Resource" uid="uid://dovo5yrk24mr" path="res://addons/time_control/resources/player_clock.tres" id="4_exqxx"]
+[ext_resource type="Resource" uid="uid://kbvuqggcs6gj" path="res://addons/time_control/resources/enemy_clock.tres" id="5_g7gae"]
+[ext_resource type="Resource" uid="uid://cum8uvnthdi6e" path="res://addons/time_control/resources/environment_clock.tres" id="6_wcuru"]
 
-[node name="TimeController" type="Node"]
+[node name="ClockController" type="Node"]
 script = ExtResource("1_lpil8")
 
 [node name="WorldClock" type="Node" parent="."]

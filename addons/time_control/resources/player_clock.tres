@@ -1,0 +1,7 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dovo5yrk24mr"]
+
+[ext_resource type="Script" path="res://addons/time_control/clock_configuration.gd" id="1_8f85g"]
+
+[resource]
+script = ExtResource("1_8f85g")
+key = "PLAYER"

@@ -1,0 +1,166 @@
+[gd_scene load_steps=13 format=3 uid="uid://d1nvh6mrqvjrv"]
+
+[ext_resource type="Script" path="res://addons/time_control/demo/character.gd" id="1_8gkyk"]
+[ext_resource type="Script" path="res://addons/time_control/demo/demo.gd" id="1_f8e7l"]
+[ext_resource type="Script" path="res://addons/time_control/timeline.gd" id="2_u5334"]
+[ext_resource type="Texture2D" uid="uid://cvi6nbtp2r4hf" path="res://addons/time_control/demo/player.svg" id="4_ftd4g"]
+[ext_resource type="Resource" uid="uid://dovo5yrk24mr" path="res://addons/time_control/resources/player_clock.tres" id="4_r45sy"]
+[ext_resource type="Script" path="res://addons/time_control/demo/enemy.gd" id="6_jsae0"]
+[ext_resource type="Texture2D" uid="uid://ip20xusykjrr" path="res://addons/time_control/demo/enemy.svg" id="6_pydwm"]
+[ext_resource type="Resource" uid="uid://kbvuqggcs6gj" path="res://addons/time_control/resources/enemy_clock.tres" id="8_bes37"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hi8dl"]
+size = Vector2(64, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_76n0v"]
+size = Vector2(64, 64)
+
+[sub_resource type="Curve2D" id="Curve2D_a1ki5"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 280, 0, 0, 0, 0, 540, 280, 0, 0, 0, 0, 540, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 5
+
+[sub_resource type="Theme" id="Theme_3esah"]
+default_font_size = 8
+
+[node name="TimeControlDemo" type="Node2D" node_paths=PackedStringArray("player_00_button", "player_05_button", "player_10_button", "player_20_button", "enemy_00_button", "enemy_05_button", "enemy_10_button", "enemy_20_button", "reset_button")]
+script = ExtResource("1_f8e7l")
+player_00_button = NodePath("CanvasLayer/HBoxContainer/VBoxContainer/Player_00")
+player_05_button = NodePath("CanvasLayer/HBoxContainer/VBoxContainer/Player_05")
+player_10_button = NodePath("CanvasLayer/HBoxContainer/VBoxContainer/Player_10")
+player_20_button = NodePath("CanvasLayer/HBoxContainer/VBoxContainer/Player_20")
+enemy_00_button = NodePath("CanvasLayer/HBoxContainer/VBoxContainer2/Enemy_00")
+enemy_05_button = NodePath("CanvasLayer/HBoxContainer/VBoxContainer2/Enemy_05")
+enemy_10_button = NodePath("CanvasLayer/HBoxContainer/VBoxContainer2/Enemy_10")
+enemy_20_button = NodePath("CanvasLayer/HBoxContainer/VBoxContainer2/Enemy_20")
+reset_button = NodePath("CanvasLayer/HBoxContainer/VBoxContainer3/Reset")
+player_clock_configuration = ExtResource("4_r45sy")
+enemy_clock_configuration = ExtResource("8_bes37")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_left_margin = 0.75
+drag_top_margin = 0.75
+drag_right_margin = 0.75
+drag_bottom_margin = 0.75
+editor_draw_drag_margin = true
+
+[node name="Player" type="CharacterBody2D" parent="." node_paths=PackedStringArray("timeline")]
+position = Vector2(-213, 0)
+collision_layer = 2
+motion_mode = 1
+script = ExtResource("1_8gkyk")
+timeline = NodePath("Timeline")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_hi8dl")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_ftd4g")
+metadata/_aseprite_wizard_interface_config_ = {
+"layer_section": false
+}
+
+[node name="Timeline" type="Node" parent="Player"]
+script = ExtResource("2_u5334")
+global_clock_configuration = ExtResource("4_r45sy")
+
+[node name="Enemy" type="CharacterBody2D" parent="." node_paths=PackedStringArray("timeline", "path_follow_2d")]
+position = Vector2(-276, -140)
+collision_mask = 2
+motion_mode = 1
+script = ExtResource("6_jsae0")
+timeline = NodePath("Timeline")
+path_follow_2d = NodePath("../Path2D/PathFollow2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
+shape = SubResource("RectangleShape2D_76n0v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Enemy"]
+modulate = Color(0.98275, 6.08854e-06, 1.54018e-06, 1)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_pydwm")
+
+[node name="Timeline" type="Node" parent="Enemy"]
+script = ExtResource("2_u5334")
+global_clock_configuration = ExtResource("8_bes37")
+
+[node name="Path2D" type="Path2D" parent="."]
+position = Vector2(-276, -140)
+curve = SubResource("Curve2D_a1ki5")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+rotates = false
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D/PathFollow2D"]
+remote_path = NodePath("../../../Enemy")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_3esah")
+alignment = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Player"
+
+[node name="Player_00" type="Button" parent="CanvasLayer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Time scale = 0"
+
+[node name="Player_05" type="Button" parent="CanvasLayer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Time scale = 0.5"
+
+[node name="Player_10" type="Button" parent="CanvasLayer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Time scale = 1"
+
+[node name="Player_20" type="Button" parent="CanvasLayer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Time scale = 2"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Enemy"
+
+[node name="Enemy_00" type="Button" parent="CanvasLayer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Time scale = 0"
+
+[node name="Enemy_05" type="Button" parent="CanvasLayer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Time scale = 0.5"
+
+[node name="Enemy_10" type="Button" parent="CanvasLayer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Time scale = 1"
+
+[node name="Enemy_20" type="Button" parent="CanvasLayer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Time scale = 2"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="Reset" type="Button" parent="CanvasLayer/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+text = "Reset"

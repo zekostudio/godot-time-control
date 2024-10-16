@@ -1,14 +1,14 @@
 extends "./clock.gd"
 
 
+@export var configuration: ClockConfiguration
+
 var clocks: Array = [] 
 var timelines: Array[Timeline] = []
  
 func _init():
 	clocks = [] 
 	timelines = []  
-
-@export var configuration: ClockConfiguration
 
 func register_timeline(timeline: Timeline): 
 	if timeline == null:

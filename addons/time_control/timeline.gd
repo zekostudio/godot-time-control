@@ -27,19 +27,19 @@ func _init():
 	
 func _ready():
 	clock = find_clock()
-	time_scale = clock.time_scale
-	last_time_scale = clock.time_scale
+	time_scale = clock.get_time_scale()
+	last_time_scale = clock.get_time_scale()
 	
-func _process(_delta):
+func _process(_delta): 
 	last_time_scale = time_scale
-	time_scale = clock.time_scale
+	time_scale = clock.get_time_scale()
 
-	var unscaled_delta_time = TimeController.get_unscaled_delta_time();
+	var unscaled_delta_time = ClockController.get_unscaled_delta_time(); 
 	time += delta_time;
 
 	
 func _physics_process(_delta):
-	var unscaled_delta_time = TimeController.get_unscaled_delta_time();
+	var unscaled_delta_time = ClockController.get_unscaled_delta_time();
 	physics_delta_time = get_physics_process_delta_time() * time_scale;
 	unscaled_time += unscaled_delta_time;
 	
@@ -50,10 +50,10 @@ func find_clock():
 			if (previous_global_clock != null):
 				previous_global_clock.unregister_timeline(self)
 			
-			if (!TimeController.has_clock(global_clock_configuration)):
+			if (!ClockController.has_clock(global_clock_configuration)):
 				push_error("Missing global clock for timeline")
 			
-			var global_clock = TimeController.get_clock(global_clock_configuration)
+			var global_clock = ClockController.get_clock(global_clock_configuration)
 			global_clock.register_timeline(self)
  
 			clock = global_clock
