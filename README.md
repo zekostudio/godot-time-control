@@ -12,12 +12,12 @@ Godot 4.2+
 
 ## Installation
 
-1. Copy and paste *time_control* folder which is inside addons folder.
+1. Copy and paste `addons/time_control` folder to your project `addons` folder.
 2. From editor toolbar, go to Project > Project Settings, then in Plugins tab activate time_control plugin.
 
 ## Basic setup
 
-1. Define global clocks
+1. Setup global clocks
 
     The plugin provides a default [`ClockController`](#clockcontroller) autoload scene located in `res://addons/time_control/time_control.tscn` which gives you access to the following `GlobalClock` from anywhere in your project :
 
@@ -52,11 +52,11 @@ Godot 4.2+
 
     func _physics_process(delta: float) -> void:
         var direction = Vector2.ONE
-        velocity = direction * speed * timeline.time_scale
+        velocity = direction * SPEED * timeline.time_scale
         move_and_slide() 
     ```
 
-4. Change the *time scale* from anywhere
+4. Change the *time scale* from anywhere using `ClockController`
 
     ```gdscript
     extends Node
@@ -95,7 +95,7 @@ The clock identifier key.
 
 </details>
 
-## Nodes documentation
+## Nodes
 
 ### Clock
 
@@ -114,7 +114,7 @@ The current clock time scale. Set this property to modify the clock time scale.
 
 *Optional*
 
-Assign a [`ClockConfiguration`](#clockconfiguration) resource as a parent clock
+Assign a `ClockConfiguration` resource as a parent clock if needed.
 
 #### `parent_blend_mode`: BlendModeEnum
 
@@ -135,16 +135,15 @@ Adds the current clock `time_scale` to the parent clock `time_scale`
 Returns the calculated time scale based on the [`local_time_scale`](#local_time_scale-float) and the parent clock *time scale*.
 </details>
 
-### Global clock
+### GlobalClock
 
 Inherits [`Clock`](#clock)
 
-The [`ClockConfiguration`](#clockconfiguration) resource parameter is *required*.
-
 You can retrieve a `GlobalClock` node from anywhere with the  [`ClockController`](#clockcontroller) autoload.
 
-If you need to access the `GlobalClock` *time scale* only, we recommend adding a [`Timeline`](#timeline) node to your scene.
+The [`ClockConfiguration`](#clockconfiguration) resource parameter is *required*.
 
+If you need to access the `GlobalClock` *time scale* only, we recommend adding a [`Timeline`](#timeline) node to your scene.
 
 
 ### Timeline
@@ -170,12 +169,12 @@ Returns the target clock calculated *time scale*.
 
 #### `local_clock`: Clock
 
-Assign a [`Clock`](#clock) node. Works with `ModeEnum.Local`
+Assign a `Clock` node. Works with `ModeEnum.Local`
 
 
 #### `global_clock_configuration`: ClockConfiguration
 
-Assign a global [`ClockConfiguration`](#clockconfiguration) resource. Works with `ModeEnum.Global
+Assign a global `ClockConfiguration` resource. Works with `ModeEnum.Global
 </details>
 
 
@@ -187,20 +186,20 @@ This node keeps track of all [`GlobalClock`](#global-clock) in your project and 
 <summary>Methods</summary>
 
 #### `has_clock(clock_configuration: ClockConfiguration) -> bool`<br>
-Returns `true` or `false` if the [`GlobalClock`](#global-clock) matching the `clock_configuration` is registered.<br>
+Returns `true` or `false` if the `GlobalClock` matching the `clock_configuration` is registered.<br>
 
 #### `get_clock(clock_configuration: ClockConfiguration) -> GlobalClock`<br>
-Returns the registered  [`GlobalClock`](#global-clock) from the `clock_configuration`<br>
+Returns the registered  `GlobalClock` from the `clock_configuration`<br>
 
 #### `add_clock(clock_configuration: ClockConfiguration) -> GlobalClock`<br>
-Registers and returns the new  [`GlobalClock`](#global-clock)<br>
+Registers and returns the new  `GlobalClock`<br>
 
 #### `remove_clock(clock_configuration: ClockConfiguration) -> void`<br>
-Removes a  [`GlobalClock`](#global-clock)<br>
+Removes a  `GlobalClock`<br>
 
 </details>
 
-## Customize `ClockController` autoload
+#### Customize `ClockController` autoload
 
 1. Copy/paste the `res://addons/time_control/time_control.tscn` anywhere in your project
 2. Open the copied scene and apply changes (ie: add / remove global clocks)
