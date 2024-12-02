@@ -28,15 +28,15 @@ func _add_settings() -> void:
 	_add_setting(SETTINGS_AUTOLOAD_PATH, TYPE_STRING, "res://addons/time_control/time_control.tscn")
 
 
-func _add_setting(name: String, type: int, value) -> void:
-	if !ProjectSettings.has_setting(name):
-		ProjectSettings.set_setting(name, value)
+func _add_setting(_name: String, type: int, value) -> void:
+	if !ProjectSettings.has_setting(_name):
+		ProjectSettings.set_setting(_name, value)
 
 	ProjectSettings.add_property_info({
-		"name": name,
+		"name": _name,
 		"type": type
 	})
-	ProjectSettings.set_initial_value(name, value)
+	ProjectSettings.set_initial_value(_name, value)
 
 
 func _exit_tree() -> void:

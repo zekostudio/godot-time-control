@@ -1,7 +1,7 @@
 extends Node
 
-const GlobalClock := preload("./global_clock.gd")
-const ClockConfiguration := preload("./clock_configuration.gd")
+const GlobalClock := preload("res://addons/time_control/global_clock.gd")
+const ClockConfiguration := preload("res://addons/time_control/clock_configuration.gd")
 
 @export var debug: bool = false
 @export var clocks: Dictionary

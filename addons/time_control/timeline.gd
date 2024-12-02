@@ -2,9 +2,9 @@ extends Node
 
 enum ModeEnum {Global, Local}
 
-const Clock = preload("./clock.gd")
-const Timeline = preload("./timeline.gd")
-const ClockConfiguration = preload("./clock_configuration.gd")
+const Clock = preload("res://addons/time_control/clock.gd")
+const Timeline = preload("res://addons/time_control/timeline.gd")
+const ClockConfiguration = preload("res://addons/time_control/clock_configuration.gd")
 
 signal register_timeline(timeline: Timeline)
 signal unregister_timeline(timeline: Timeline)

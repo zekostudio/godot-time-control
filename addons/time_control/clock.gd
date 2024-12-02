@@ -2,10 +2,10 @@ extends Node
 
 enum BlendModeEnum {Additive, Multiplicative}
 
-const ClockConfiguration := preload("./clock_configuration.gd")
-const GlobalClock := preload("./global_clock.gd")
-const Clock := preload("./clock.gd")
-const Timeline := preload("./timeline.gd")
+const ClockConfiguration := preload("res://addons/time_control/clock_configuration.gd")
+const GlobalClock := preload("res://addons/time_control/global_clock.gd")
+const Clock := preload("res://addons/time_control/clock.gd")
+const Timeline := preload("res://addons/time_control/timeline.gd")
 
 @export var local_time_scale: float = 1:
 	set(value):

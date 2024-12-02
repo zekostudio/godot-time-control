@@ -1,4 +1,4 @@
-extends "./clock.gd"
+extends "res://addons/time_control/clock.gd"
 
 
 @export var configuration: ClockConfiguration
