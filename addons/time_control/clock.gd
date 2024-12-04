@@ -10,7 +10,7 @@ const Timeline := preload("res://addons/time_control/timeline.gd")
 @export var local_time_scale: float = 1:
 	set(value):
 		if ClockController.debug: 
-			print("Set clock %s time scale to %f", [self, value])
+			print("Set clock %s time scale to %f" % [self, value])
 		local_time_scale = value
 @export var paused: bool = false 
 @export var parent_clock_configuration: ClockConfiguration
@@ -29,7 +29,7 @@ func _ready():
 
 	await ClockController.ready
 
-	if (!parent_clock_configuration != null && ClockController.has_clock(parent_clock_configuration)):
+	if parent_clock_configuration != null && ClockController.has_clock(parent_clock_configuration):
 		parent = ClockController.get_clock(parent_clock_configuration);
 	calculate_time_scale() 
 
