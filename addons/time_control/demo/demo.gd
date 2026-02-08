@@ -1,6 +1,6 @@
 extends Node2D
 
-const ClockConfiguration = preload("res://addons/time_control/clock_configuration.gd")
+const ClockConfiguration = preload("res://addons/time_control/scripts/clock_configuration.gd")
 
 @export var player_00_button : Button
 @export var player_05_button : Button
@@ -13,6 +13,7 @@ const ClockConfiguration = preload("res://addons/time_control/clock_configuratio
 @export var reset_button : Button
 @export var player_clock_configuration : ClockConfiguration
 @export var enemy_clock_configuration : ClockConfiguration
+@export var environment_clock_configuration : ClockConfiguration
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -27,12 +28,14 @@ func _ready() -> void:
 	reset_button.pressed.connect(_on_reset_button_pressed)
 
 func _on_player_time_scale_change(timescale: float) -> void:
-	ClockController.get_clock(player_clock_configuration).local_time_scale = timescale
+	TimeController.get_clock(player_clock_configuration).local_time_scale = timescale
 
 
 func _on_enemy_time_scale_change(timescale: float) -> void:
-	ClockController.get_clock(enemy_clock_configuration).local_time_scale = timescale
+	TimeController.get_clock(enemy_clock_configuration).local_time_scale = timescale
+	TimeController.get_clock(environment_clock_configuration).local_time_scale = timescale * 4
 
 func _on_reset_button_pressed() -> void:
-	ClockController.get_clock(player_clock_configuration).local_time_scale = 1.0
-	ClockController.get_clock(enemy_clock_configuration).local_time_scale = 1.0
+	TimeController.get_clock(player_clock_configuration).local_time_scale = 1.0
+	TimeController.get_clock(enemy_clock_configuration).local_time_scale = 1.0
+	TimeController.get_clock(environment_clock_configuration).local_time_scale = 1.0 * 4

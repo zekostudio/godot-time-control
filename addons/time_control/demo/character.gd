@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-const Timeline = preload("res://addons/time_control/timeline.gd")
+const Timeline = preload("res://addons/time_control/scripts/timeline.gd")
 
 @export var timeline: Timeline
 

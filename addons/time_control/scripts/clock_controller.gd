@@ -1,7 +1,7 @@
 extends Node
 
-const GlobalClock := preload("res://addons/time_control/global_clock.gd")
-const ClockConfiguration := preload("res://addons/time_control/clock_configuration.gd")
+const GlobalClock := preload("res://addons/time_control/scripts/global_clock.gd")
+const ClockConfiguration := preload("res://addons/time_control/scripts/clock_configuration.gd")
 
 @export var debug: bool = false
 @export var clocks: Dictionary
@@ -25,7 +25,7 @@ func set_debug(value):
 func get_debug():
 	return debug
 
-func has_clock(clock_configuration: ClockConfiguration) -> bool:
+func has_clock(configuration: ClockConfiguration) -> bool:
 	if clock_configuration == null:
 		push_error("Clock configuration cannot be null")
 		return false
@@ -37,20 +37,20 @@ func get_clock_by_key(key: String) -> GlobalClock:
 		return null
 	return clocks[key]
 
-func get_clock(clock_configuration: ClockConfiguration) -> GlobalClock:
+func get_clock(configuration: ClockConfiguration) -> GlobalClock:
 	if clock_configuration == null:
 		push_error("Key cannot be null")
 		return null
-	if not has_clock(clock_configuration):
+	if not has_clock(configuration):
 		push_error("Unknown global clock '%s'" % clock_configuration.key)
 		return null
 	return clocks[clock_configuration.key]
 
-func add_clock(clock_configuration: ClockConfiguration) -> GlobalClock:
+func add_clock(configuration: ClockConfiguration) -> GlobalClock:
 	if clock_configuration == null:
 		push_error("Key cannot be null")
 		return null
-	if has_clock(clock_configuration):
+	if has_clock(configuration):
 		push_error("Global clock '%s' already exists" % clock_configuration.key)
 		return null
 	var clock = GlobalClock.new()
@@ -59,16 +59,15 @@ func add_clock(clock_configuration: ClockConfiguration) -> GlobalClock:
 	clocks[clock_configuration.key] = clock
 	return clock
 
-func remove_clock(clock_configuration: ClockConfiguration):
+func remove_clock(configuration: ClockConfiguration) -> void:
 	if clock_configuration == null:
 		push_error("Key cannot be null")
 		return
-	if not has_clock(clock_configuration):
+	if not has_clock(configuration):
 		push_error("Unknown global clock '%s'" % clock_configuration.key)
 		return
 	clocks.erase(clock_configuration.key)
 
-# Internal static methods
 static func get_time_state(time_scale: float) -> String:
 	if time_scale < 0:
 		return "Reversed"
@@ -77,7 +76,7 @@ static func get_time_state(time_scale: float) -> String:
 	elif time_scale < 1:
 		return "Slowed"
 	elif time_scale == 1:
-		return "Normal"
+		return "Normal" 
 	else:  # if time_scale > 1
 		return "Accelerated"
 

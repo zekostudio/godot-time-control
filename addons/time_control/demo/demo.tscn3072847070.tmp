@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d1nvh6mrqvjrv"]
 
-[ext_resource type="Script" uid="uid://bo46h11wqtm0t" path="res://addons/time_control/demo/character.gd" id="1_8gkyk"]
+[ext_resource type="Script" uid="uid://wqkafd4cg8h4" path="res://addons/time_control/demo/character.gd" id="1_8gkyk"]
 [ext_resource type="Script" uid="uid://bug3nvsxson1r" path="res://addons/time_control/demo/demo.gd" id="1_f8e7l"]
 [ext_resource type="Script" uid="uid://c21jxmko6icy7" path="res://addons/time_control/scripts/timeline.gd" id="2_u5334"]
 [ext_resource type="Script" uid="uid://c8iqnpp40f4sd" path="res://addons/time_control/demo/particles_timeline_sync.gd" id="2_z7nq0"]
@@ -27,15 +27,15 @@ size = Vector2(64, 64)
 
 [sub_resource type="Curve2D" id="Curve2D_a1ki5"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 504, 0, 0, 0, 0, 977, 502, 0, 0, 0, 0, 980, -1, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 126, 0, 0, 0, 0, 542, 127, 0, 0, 0, 0, 540, 0, 0, 0, 0, 0, 0, 0)
 }
 point_count = 5
 
 [sub_resource type="Curve2D" id="Curve2D_43gox"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -27, 59, 0, 0, 0, 0, -28, -214, 0, 0, 0, 0, 545, -209, 0, 0, 0, 0, 544, 58)
+"points": PackedVector2Array(0, 0, 0, 0, -27, 59, 0, 0, 0, 0, 128, 197, 0, 0, 0, 0, -26, 307, 0, 0, 0, 0, 130, 439, 0, 0, 0, 0, -24, 575)
 }
-point_count = 4
+point_count = 5
 
 [sub_resource type="Theme" id="Theme_3esah"]
 default_font_size = 8
@@ -97,7 +97,7 @@ drag_bottom_margin = 0.75
 editor_draw_drag_margin = true
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=1248473571 node_paths=PackedStringArray("timeline")]
-position = Vector2(-1, 0)
+position = Vector2(-213, 0)
 collision_layer = 2
 motion_mode = 1
 script = ExtResource("1_8gkyk")
@@ -118,9 +118,8 @@ script = ExtResource("2_u5334")
 clock_configuration = ExtResource("4_r45sy")
 
 [node name="Enemy" type="CharacterBody2D" parent="." unique_id=1260603408 node_paths=PackedStringArray("timeline", "path_follow_2d")]
-position = Vector2(-488, -256)
-rotation = 1.5707964
-collision_mask = 2
+position = Vector2(-288, -256)
+collision_layer = 2
 motion_mode = 1
 script = ExtResource("6_jsae0")
 timeline = NodePath("Timeline")
@@ -139,19 +138,19 @@ script = ExtResource("2_u5334")
 clock_configuration = ExtResource("8_bes37")
 
 [node name="Path2D" type="Path2D" parent="." unique_id=1513258298]
-position = Vector2(-488, -256)
+position = Vector2(-288, -256)
 curve = SubResource("Curve2D_a1ki5")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D" unique_id=535623633]
-rotation = 1.5707964
+rotates = false
 loop = false
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D/PathFollow2D" unique_id=253318310]
 remote_path = NodePath("../../../Enemy")
 
 [node name="Enemy2" type="CharacterBody2D" parent="." unique_id=1629626364 node_paths=PackedStringArray("timeline", "path_follow_2d")]
-position = Vector2(-292, 127)
-collision_mask = 2
+position = Vector2(383, -257)
+collision_layer = 2
 motion_mode = 1
 script = ExtResource("6_jsae0")
 timeline = NodePath("Timeline")
@@ -170,7 +169,7 @@ script = ExtResource("2_u5334")
 clock_configuration = ExtResource("8_bes37")
 
 [node name="Path2D2" type="Path2D" parent="." unique_id=1784624733]
-position = Vector2(-265, 68)
+position = Vector2(410, -316)
 curve = SubResource("Curve2D_43gox")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D2" unique_id=1219219881]

@@ -55,7 +55,7 @@ Godot 4.2+
     ```gdscript
     extends CharacterBody2D
 
-    const Timeline = preload("res://addons/time_control/timeline.gd")
+    const Timeline = preload("res://addons/time_control/scripts/timeline.gd")
     const SPEED = 300
 
     @export var timeline: Timeline
@@ -71,12 +71,12 @@ Godot 4.2+
     ```gdscript
     extends Node
 
-    const ClockConfiguration = preload("res://addons/time_control/clock_configuration.gd")
+    const ClockConfiguration = preload("res://addons/time_control/scripts/clock_configuration.gd")
 
     @export var clock_configuration: ClockConfiguration
 
     func _process(delta: float) -> void:
-        ClockController.get_clock(clock_configuration).local_time_scale = 0.5
+        ClockController.get_clock(configuration).local_time_scale = 0.5
     ```
 
     or
@@ -120,7 +120,7 @@ If the clock has a parent, the parent *time scale* is blended with the `local_ti
 
 The current clock time scale. Set this property to modify the clock time scale.
 
-#### `parent_clock_configuration`: ClockConfiguration
+#### `parent_configuration`: ClockConfiguration
 
 *Optional*
 
@@ -195,16 +195,16 @@ This node keeps track of all [`GlobalClock`](#global-clock) in your project and 
 <details>
 <summary>Methods</summary>
 
-#### `has_clock(clock_configuration: ClockConfiguration) -> bool`<br>
+#### `has_clock(configuration: ClockConfiguration) -> bool`<br>
 Returns `true` or `false` if the `GlobalClock` matching the `clock_configuration` is registered.<br>
 
-#### `get_clock(clock_configuration: ClockConfiguration) -> GlobalClock`<br>
+#### `get_clock(configuration: ClockConfiguration) -> GlobalClock`<br>
 Returns the registered  `GlobalClock` from the `clock_configuration`<br>
 
-#### `add_clock(clock_configuration: ClockConfiguration) -> GlobalClock`<br>
+#### `add_clock(configuration: ClockConfiguration) -> GlobalClock`<br>
 Registers and returns the new  `GlobalClock`<br>
 
-#### `remove_clock(clock_configuration: ClockConfiguration) -> void`<br>
+#### `remove_clock(configuration: ClockConfiguration) -> void`<br>
 Removes a  `GlobalClock`<br>
 
 </details>
