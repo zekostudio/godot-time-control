@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://du1l7drq7rv5n"]
+
+[ext_resource type="Script" path="res://addons/timeflow/scripts/core/timeflow.gd" id="1_lpil8"]
+[ext_resource type="Script" path="res://addons/timeflow/scripts/clock/timeflow_clock.gd" id="2_crcor"]
+[ext_resource type="Resource" path="res://addons/timeflow/resources/world_clock.tres" id="3_s0e8i"]
+[ext_resource type="Resource" path="res://addons/timeflow/resources/player_clock.tres" id="4_exqxx"]
+[ext_resource type="Resource" path="res://addons/timeflow/resources/enemy_clock.tres" id="5_g7gae"]
+[ext_resource type="Resource" path="res://addons/timeflow/resources/environment_clock.tres" id="6_wcuru"]
+
+[node name="Timeflow" type="Node" unique_id=635752572]
+script = ExtResource("1_lpil8")
+
+[node name="WorldClock" type="Node" parent="." unique_id=1140379747]
+script = ExtResource("2_crcor")
+configuration = ExtResource("3_s0e8i")
+
+[node name="PlayerClock" type="Node" parent="." unique_id=1344391758]
+script = ExtResource("2_crcor")
+configuration = ExtResource("4_exqxx")
+
+[node name="EnemyClock" type="Node" parent="." unique_id=301638004]
+script = ExtResource("2_crcor")
+configuration = ExtResource("5_g7gae")
+
+[node name="EnvironmentClock" type="Node" parent="." unique_id=619288932]
+script = ExtResource("2_crcor")
+configuration = ExtResource("6_wcuru")

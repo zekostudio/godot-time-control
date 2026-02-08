@@ -4,9 +4,6 @@ Lightweight, scene-friendly time scaling for Godot 4.5+. Define clocks, route th
 
 ![Godot Timeflow](./addons/timeflow/assets/icons/logo.png)
 
-## Demo
-[Try the demo](https://zekostudio.github.io/godot-timeflow/)
-
 ## Contents
 - Features
 - Compatibility
@@ -15,6 +12,7 @@ Lightweight, scene-friendly time scaling for Godot 4.5+. Define clocks, route th
 - Core Concepts
 - Tween Integration
 - Customization
+- Demo
 
 ## Features
 - Multiple named clocks with parent blending (world, player, enemy, environment by default).
@@ -31,14 +29,15 @@ Godot 4.2+.
 3) In the editor: **Project > Project Settings > Plugins** and enable **Timeflow**.
 
 ## Quick Start
-- The plugin registers `res://addons/timeflow/timeflow.tscn` as an autoload named `Timeflow`.
-- It contains four clocks: `WORLD` (root), `PLAYER`, `ENEMY`, `ENVIRONMENT` (children of `WORLD`).
+1) **Use the provided autoload**
+   - The plugin registers `res://addons/timeflow/timeflow.tscn` as an autoload named `Timeflow`.
+   - It contains four clocks: `WORLD` (root), `PLAYER`, `ENEMY`, `ENVIRONMENT` (children of `WORLD`).
 
-1) **Add a TimeflowTimeline to a scene**
+2) **Add a TimeflowTimeline to a scene**
    - Add a `TimeflowTimeline` node.
    - Assign a `TimeflowClockConfig` resource to `clock_configuration` (for example `player_clock.tres` for the player).
 
-2) **Consume the time scale in code**
+3) **Consume the time scale in code**
    ```gdscript
    extends CharacterBody2D
 
@@ -56,7 +55,7 @@ Godot 4.2+.
        move_and_slide()
    ```
 
-3) **Change time from anywhere**
+4) **Change time from anywhere**
    ```gdscript
    const TimeflowClockConfig = preload("res://addons/timeflow/scripts/clock/timeflow_clock_config.gd")
    @export var clock_configuration: TimeflowClockConfig
@@ -92,14 +91,32 @@ Properties:
 Method:
 - `get_time_scale() -> float` — Returns the blended time scale.
 
+Signals:
+- `local_time_scale_changed(previous_local_time_scale: float, local_time_scale: float)`
+- `paused_changed(paused: bool)`
+- `parent_blend_mode_changed(previous_parent_blend_mode: int, parent_blend_mode: int)`
+- `time_scale_changed(previous_time_scale: float, time_scale: float)`
+- `rewind_started(time_scale: float)` — emitted when scale crosses from `>= 0` to `< 0`.
+- `rewind_stopped(time_scale: float)` — emitted when scale crosses from `< 0` to `>= 0`.
+
 ### TimeflowTimeline (Node)
 Bridge node that exposes the effective time scale of a chosen clock.
 
 Properties:
+- `mode: TimeflowTimelineMode` — `GLOBAL` (default) uses `clock_configuration`; `LOCAL` uses `local_clock`.
 - `time_scale: float` — The resolved time scale of the targeted clock.
-- `mode: TimeflowTimelineMode` — `GLOBAL` (default); `LOCAL`.
-- `clock_configuration: TimeflowClockConfig` — Used when mode is `GLOBAL`.
 - `local_clock: TimeflowClock` — Used when mode is `LOCAL`.
+- `clock_configuration: TimeflowClockConfig` — Used when mode is `GLOBAL`.
+
+Method:
+- `is_rewinding() -> bool` — helper for `time_scale < 0`.
+
+Signals:
+- `clock_bound(clock: TimeflowClock)`
+- `clock_unbound(clock: TimeflowClock)`
+- `time_scale_changed(previous_time_scale: float, time_scale: float)`
+- `rewind_started(time_scale: float)` — emitted when scale crosses from `>= 0` to `< 0`.
+- `rewind_stopped(time_scale: float)` — emitted when scale crosses from `< 0` to `>= 0`.
 
 ### Timeflow (Singleton / Autoload)
 Registry for all clocks; available globally.
@@ -111,12 +128,36 @@ Methods:
 - `add_clock(configuration: TimeflowClockConfig) -> TimeflowClock`
 - `remove_clock(configuration: TimeflowClockConfig) -> void`
 
-## Helper nodes
+Signals:
+- `clock_registered(clock: TimeflowClock)`
+- `clock_unregistered(clock: TimeflowClock)`
+- `clock_time_scale_changed(clock: TimeflowClock, previous_time_scale: float, time_scale: float)`
+- `clock_rewind_started(clock: TimeflowClock, time_scale: float)`
+- `clock_rewind_stopped(clock: TimeflowClock, time_scale: float)`
+
+Event hook example:
+```gdscript
+func _ready() -> void:
+	timeline.time_scale_changed.connect(_on_timeline_scale_changed)
+	timeline.rewind_started.connect(_on_timeline_rewind_started)
+	timeline.rewind_stopped.connect(_on_timeline_rewind_stopped)
+
+func _on_timeline_scale_changed(previous_scale: float, next_scale: float) -> void:
+	print("Scale changed: ", previous_scale, " -> ", next_scale)
+
+func _on_timeline_rewind_started(_time_scale: float) -> void:
+	print("Rewind started")
+
+func _on_timeline_rewind_stopped(_time_scale: float) -> void:
+	print("Rewind stopped")
+```
+
+## TimeflowTimeline-aware helper nodes
 Drop these glue scripts next to existing nodes to keep their playback in sync with a `TimeflowTimeline` without rewriting their logic.
 
 - `scripts/adapters/sync/timeflow_animation_player_sync.gd` — Drives `AnimationPlayer.speed_scale` from a bound `TimeflowTimeline`.
 - `scripts/adapters/sync/timeflow_gpu_particles_2d_sync.gd` / `timeflow_gpu_particles_3d_sync.gd` — Drive particle `speed_scale` in 2D or 3D.
-- `scripts/adapters/areas/timeflow_area_2d.gd` / `timeflow_area_3d.gd` — Applies `timescale_multiplier` to bodies entering an `Area2D` or `Area3D`.
+- `scripts/adapters/areas/timeflow_area_2d.gd` / `timeflow_area_3d.gd` — Apply `timescale_multiplier` to bodies entering an `Area2D` or `Area3D`.
 
 Area timeline integration fallback order (first match wins):
 1) Method: `set_area_timescale_multiplier(multiplier: float)`
@@ -131,10 +172,11 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 ```
 
-Usage (example for 2D particles):
+Usage pattern (example for 2D particles):
 1) Add a plain `Node` as a sibling or parent, attach `timeflow_gpu_particles_2d_sync.gd`.
 2) Assign `gpu_particles_2d` to your particles node and `timeline` to the relevant `TimeflowTimeline` (e.g., player or enemy).
 3) Press play — particle playback automatically speeds up / slows down with the clock.
+4) For rewind setups, keep `use_absolute_time_scale = true` (default) so particles simulate forward while rewind helpers invert emission direction.
 
 ## Rewind
 This plugin includes a rewind recorder based on timeline direction:
@@ -143,6 +185,7 @@ This plugin includes a rewind recorder based on timeline direction:
 - `scripts/rewind/timeflow_rewindable.gd` (`TimeflowRewindable`) — base rewind contract for all rewindable adapters.
 - `scripts/rewind/timeflow_rewindable_2d.gd` (`TimeflowRewindable2D`) — captures/restores a `Node2D` transform.
 - `scripts/rewind/timeflow_rewindable_path_follow_2d.gd` (`TimeflowRewindablePathFollow2D`) — captures/restores `PathFollow2D.progress`.
+- `scripts/rewind/timeflow_rewindable_gpu_particles_2d.gd` / `timeflow_rewindable_gpu_particles_3d.gd` — invert GPU particle initial velocity while rewinding.
 
 Quick setup:
 1) Add a rewindable adapter node (`TimeflowRewindable2D` or `TimeflowRewindablePathFollow2D`) and assign its target.
@@ -157,11 +200,12 @@ Recorder tuning:
 - `recording_interval` controls snapshot frequency (higher frequency = smoother rewind, more memory).
 - `record_when_paused` controls whether snapshots are captured while `time_scale == 0`.
 - `TimeflowRewindable2D.disable_target_processing_while_rewinding` prevents gameplay scripts on that node from fighting restored rewind states.
+- `TimeflowRewindableGPUParticles2D` / `TimeflowRewindableGPUParticles3D` require a `ParticleProcessMaterial` and can optionally duplicate it per-node before rewinding.
 - When rewind stops (or reaches the recorded history limit), `TimeflowRecorder` clears history and starts recording from the current state again.
 - `TimeflowRewindablePathFollow2D.snap_on_discontinuity` and `discontinuity_ratio` reduce jitter from large progress jumps (for example loop/reset boundaries).
 
 ## Tween Integration
-Set the `speed_scale` property to keep a `Tween` synchronized with a `TimeflowTimeline`.
+Use this pattern to keep a Godot `Tween` synchronized with a `TimeflowTimeline`.
 
 ```gdscript
 extends Node2D
@@ -170,13 +214,15 @@ const TimeflowTimeline = preload("res://addons/timeflow/scripts/clock/timeflow_t
 
 @export var timeline: TimeflowTimeline
 @export var mover: Node2D
-@export var duration: float = 3.0
+@export var duration: float = 1.5
 
 var _tween: Tween
 
 func _ready() -> void:
     _tween = get_tree().create_tween()
+    _tween.set_loops()
     _tween.tween_property(mover, "position:x", 500.0, duration)
+    _tween.tween_property(mover, "position:x", 100.0, duration)
 
 func _process(_delta: float) -> void:
     if _tween != null:
@@ -190,5 +236,7 @@ func _process(_delta: float) -> void:
 3) In **Project > Project Settings > Addons > Timeflow**, set `autoload_path` to your scene (e.g., `res://scenes/timeflow.tscn`).  
 4) Disable and re-enable the plugin (or restart the editor) to reload.
 
-
-Open the demo scene `res://addons/timeflow/demo/demo.tscn` for a runnable example.
+## Demo
+Open `res://addons/timeflow/demo/demo.tscn` for a runnable example showing multiple clocks.
+The scene includes an automatic showcase loop that demonstrates slow motion, acceleration, and rewind on different timelines.
+It also includes preset buttons in the HUD to trigger each demo mode on demand.
