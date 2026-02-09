@@ -26,10 +26,10 @@ func get_debug():
 	return debug
 
 func has_clock(configuration: ClockConfiguration) -> bool:
-	if clock_configuration == null:
+	if configuration == null:
 		push_error("Clock configuration cannot be null")
 		return false
-	return clock_configuration.key in clocks
+	return configuration.key in clocks
 
 func get_clock_by_key(key: String) -> GlobalClock:
 	if key not in clocks:
@@ -38,35 +38,35 @@ func get_clock_by_key(key: String) -> GlobalClock:
 	return clocks[key]
 
 func get_clock(configuration: ClockConfiguration) -> GlobalClock:
-	if clock_configuration == null:
+	if configuration == null:
 		push_error("Key cannot be null")
 		return null
 	if not has_clock(configuration):
-		push_error("Unknown global clock '%s'" % clock_configuration.key)
+		push_error("Unknown global clock '%s'" % configuration.key)
 		return null
-	return clocks[clock_configuration.key]
+	return clocks[configuration.key]
 
 func add_clock(configuration: ClockConfiguration) -> GlobalClock:
-	if clock_configuration == null:
+	if configuration == null:
 		push_error("Key cannot be null")
 		return null
 	if has_clock(configuration):
-		push_error("Global clock '%s' already exists" % clock_configuration.key)
+		push_error("Global clock '%s' already exists" % configuration.key)
 		return null
 	var clock = GlobalClock.new()
-	clock.key = clock_configuration.key
+	clock.key = configuration.key
 	add_child(clock)
-	clocks[clock_configuration.key] = clock
+	clocks[configuration.key] = clock
 	return clock
 
 func remove_clock(configuration: ClockConfiguration) -> void:
-	if clock_configuration == null:
+	if configuration == null:
 		push_error("Key cannot be null")
 		return
 	if not has_clock(configuration):
-		push_error("Unknown global clock '%s'" % clock_configuration.key)
+		push_error("Unknown global clock '%s'" % configuration.key)
 		return
-	clocks.erase(clock_configuration.key)
+	clocks.erase(configuration.key)
 
 static func get_time_state(time_scale: float) -> String:
 	if time_scale < 0:

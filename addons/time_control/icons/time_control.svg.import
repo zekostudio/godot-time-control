@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://4831s5s5qiw6"
-path="res://.godot/imported/time_control.svg-1c6b7952ec9c66ed147659396d05d367.ctex"
+path="res://.godot/imported/time_control.svg-5ad0838cbccbf078ceadaf79e1ce5864.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/time_control/time_control.svg"
-dest_files=["res://.godot/imported/time_control.svg-1c6b7952ec9c66ed147659396d05d367.ctex"]
+source_file="res://addons/time_control/icons/time_control.svg"
+dest_files=["res://.godot/imported/time_control.svg-5ad0838cbccbf078ceadaf79e1ce5864.ctex"]
 
 [params]
 
