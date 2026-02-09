@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Nouveau projet de jeu"
+config/name="Godot Time Control"
 run/main_scene="uid://d1nvh6mrqvjrv"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
@@ -18,6 +18,11 @@ config/icon="res://icon.svg"
 [autoload]
 
 TimeController="*uid://du1l7drq7rv5n"
+
+[display]
+
+window/size/resizable=false
+window/stretch/mode="canvas_items"
 
 [editor_plugins]
 
