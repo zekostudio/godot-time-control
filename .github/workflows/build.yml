@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  GODOT_VERSION: 4.6.0
+  GODOT_VERSION: 4.6
   EXPORT_NAME: Godot Time Control Demo
 
 jobs:
@@ -14,7 +14,7 @@ jobs:
     name: Windows Export
     runs-on: ubuntu-latest
     container:
-      image: docker://barichello/godot-ci:4.6.0
+      image: docker://barichello/godot-ci:4.6
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -34,7 +34,7 @@ jobs:
     name: Linux Export
     runs-on: ubuntu-latest
     container:
-      image: docker://barichello/godot-ci:4.6.0
+      image: docker://barichello/godot-ci:4.6
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -54,7 +54,7 @@ jobs:
     name: Web Export
     runs-on: ubuntu-latest
     container:
-      image: docker://barichello/godot-ci:4.6.0
+      image: docker://barichello/godot-ci:4.6
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -74,7 +74,7 @@ jobs:
     name: Mac Export
     runs-on: ubuntu-latest
     container:
-      image: docker://barichello/godot-ci:4.6.0
+      image: docker://barichello/godot-ci:4.6
     steps:
       - name: Checkout
         uses: actions/checkout@v1
