@@ -23,6 +23,11 @@ TimeController="*uid://du1l7drq7rv5n"
 
 enabled=PackedStringArray("res://addons/time_control/plugin.cfg")
 
+[layer_names]
+
+2d_physics/layer_1="Player"
+2d_physics/layer_2="Enemy"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

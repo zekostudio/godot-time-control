@@ -1,0 +1,5 @@
+[gd_resource type="Theme" format=3 uid="uid://dljvspeef0gro"]
+
+[resource]
+Button/colors/font_focus_color = Color(0.44333336, 0, 0.95, 1)
+Button/colors/font_hover_color = Color(0.9024998, 0, 0.95, 1)

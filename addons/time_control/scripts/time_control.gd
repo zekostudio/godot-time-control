@@ -25,6 +25,7 @@ func _enter_tree() -> void:
 	add_custom_type("GPUParticles2DTimeline", "Node", preload("res://addons/time_control/scripts/timeline_aware_node/gpu_particles_2d_timeline.gd"), preload("res://addons/time_control/icons/time_control.svg"))
 	add_custom_type("GPUParticles3DTimeline", "Node", preload("res://addons/time_control/scripts/timeline_aware_node/gpu_particles_3d_timeline.gd"), preload("res://addons/time_control/icons/time_control.svg"))
 	add_custom_type("AnimationPlayerTimeline", "Node", preload("res://addons/time_control/scripts/timeline_aware_node/animation_player_timeline.gd"), preload("res://addons/time_control/icons/time_control.svg"))
+	add_custom_type("Area2DTimeline", "Node", preload("res://addons/time_control/scripts/timeline_aware_node/area2D_timeline.gd"), preload("res://addons/time_control/icons/time_control.svg"))
  
 func _add_settings() -> void:
 	_add_setting(SETTINGS_AUTOLOAD_PATH, TYPE_STRING, "res://addons/time_control/scenes/time_control.tscn")
@@ -51,4 +52,5 @@ func _exit_tree() -> void:
 	remove_custom_type("GPUParticles2DTimeline")
 	remove_custom_type("GPUParticles3DTimeline")
 	remove_custom_type("AnimationPlayerTimeline")
+	remove_custom_type("Area2DTimeline")
 	ProjectSettings.set(SETTINGS_AUTOLOAD_PATH, null)
