@@ -16,8 +16,13 @@ func _ready() -> void:
 	zone_multiplier_changed.connect(_on_zone_multiplier_changed)
 
 func _process(delta: float) -> void:
-	direction.x = Input.get_axis("ui_left", "ui_right")
-	direction.y = Input.get_axis("ui_up", "ui_down")
+	direction.x = Input.get_axis("move_left", "move_right")
+	if direction.x == 0:
+		direction.x = Input.get_axis("ui_left", "ui_right")
+	direction.y = Input.get_axis("move_up", "move_down")
+	if direction.y == 0:
+		direction.y = Input.get_axis("ui_up", "ui_down")
+	direction = direction.normalized()
 
 func _physics_process(delta: float) -> void:
 	velocity = Vector2(direction.x, direction.y) * speed * timeline.time_scale * _zone_time_multiplier

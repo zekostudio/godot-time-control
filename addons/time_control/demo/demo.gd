@@ -15,14 +15,22 @@ const Clock = preload("res://addons/time_control/scripts/clock.gd")
 
 
 func _ready() -> void:
+	world_input.focus_mode = Control.FOCUS_CLICK
 	world_input.focus_exited.connect(_on_input_blurred.bind(world_input, TimeController.get_clock(world_clock_configuration)))
 	world_input.gui_input.connect(_on_input_enter.bind(world_input))
+	world_input.text_submitted.connect(_on_input_submitted.bind(world_input))
+	player_input.focus_mode = Control.FOCUS_CLICK
 	player_input.focus_exited.connect(_on_input_blurred.bind(player_input, TimeController.get_clock(player_clock_configuration)))
 	player_input.gui_input.connect(_on_input_enter.bind(player_input))
+	player_input.text_submitted.connect(_on_input_submitted.bind(player_input))
+	enemy_input.focus_mode = Control.FOCUS_CLICK
 	enemy_input.focus_exited.connect(_on_input_blurred.bind(enemy_input, TimeController.get_clock(enemy_clock_configuration)))
 	enemy_input.gui_input.connect(_on_input_enter.bind(enemy_input))
+	enemy_input.text_submitted.connect(_on_input_submitted.bind(enemy_input))
+	environment_input.focus_mode = Control.FOCUS_CLICK
 	environment_input.focus_exited.connect(_on_input_blurred.bind(environment_input, TimeController.get_clock(environment_clock_configuration)))
 	environment_input.gui_input.connect(_on_input_enter.bind(environment_input))
+	environment_input.text_submitted.connect(_on_input_submitted.bind(environment_input))
 	reset_button.pressed.connect(_on_reset_button_pressed)
 
 
@@ -59,4 +67,8 @@ func _on_input_blurred(input: LineEdit, clock: Clock) -> void:
 
 func _on_input_enter(event: InputEvent, input: LineEdit) -> void:
 	if event is InputEventKey and event.pressed and (event.keycode == Key.KEY_ENTER or event.keycode == Key.KEY_KP_ENTER):
-		input.release_focus()
+		input.call_deferred("release_focus")
+
+
+func _on_input_submitted(_text: String, input: LineEdit) -> void:
+	input.call_deferred("release_focus")

@@ -11,6 +11,7 @@
 [ext_resource type="Resource" uid="uid://cum8uvnthdi6e" path="res://addons/time_control/resources/environment_clock.tres" id="9_ulxo8"]
 [ext_resource type="Script" uid="uid://c1mbwusbhrsb8" path="res://addons/time_control/scripts/timeline_aware_node/gpu_particles_2d_timeline.gd" id="10_43gox"]
 [ext_resource type="Theme" uid="uid://dljvspeef0gro" path="res://addons/time_control/demo/resource/theme.tres" id="10_f4ix3"]
+[ext_resource type="FontFile" uid="uid://bkqhvvq5necwo" path="res://addons/time_control/demo/font/UnitySans-Basic.ttf" id="10_ujg3o"]
 [ext_resource type="Script" uid="uid://dgc6tyax7xbjn" path="res://addons/time_control/scripts/timeline_aware_node/area2D_timeline.gd" id="11_5rtqb"]
 
 [sub_resource type="Gradient" id="Gradient_qtq74"]
@@ -21,29 +22,45 @@ colors = PackedColorArray(0.030334815, 0.043138005, 0.07010319, 1)
 gradient = SubResource("Gradient_qtq74")
 width = 1280
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_slow"]
-radius = 62.1289
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f4ix3"]
+size = Vector2(180, 5)
 
-[sub_resource type="Gradient" id="Gradient_5rtqb"]
-offsets = PackedFloat32Array(0.9735294, 1)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+[sub_resource type="Gradient" id="Gradient_t8xqc"]
+offsets = PackedFloat32Array(0, 0.06764706, 0.92058825, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_f4ix3"]
-gradient = SubResource("Gradient_5rtqb")
-width = 310
-height = 310
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(1, 0.5)
+gradient = SubResource("Gradient_t8xqc")
+width = 10
+height = 5
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ujg3o"]
-radius = 55.03635
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t8xqc"]
+size = Vector2(178, 4)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ujg3o"]
+size = Vector2(67, 82.2146)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qk2ka"]
+size = Vector2(53, 82.2146)
+
+[sub_resource type="Gradient" id="Gradient_ujg3o"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_n2ig2"]
+gradient = SubResource("Gradient_ujg3o")
+width = 15
+height = 2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5rtqb"]
-radius = 23.086792
+radius = 12.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_f4ix3"]
-radius = 23.36
+radius = 6.7247915
+
+[sub_resource type="Gradient" id="Gradient_5rtqb"]
+offsets = PackedFloat32Array(0.9911765, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_ujg3o"]
 gradient = SubResource("Gradient_5rtqb")
@@ -52,6 +69,54 @@ height = 100
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_qk2ka"]
+offsets = PackedFloat32Array(0.9911765, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_newt1"]
+gradient = SubResource("Gradient_qk2ka")
+width = 50
+height = 50
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Curve2D" id="Curve2D_a1ki5"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 354.63654, 132, 0, 0, 0, 0, 185.63654, 133, 0, 0, 0, 0, 364.63654, 392, 0, 0, 0, 0, 183.63654, 389, 0, 0, 0, 0, 353.63654, 133)
+}
+point_count = 5
+
+[sub_resource type="Curve2D" id="Curve2D_ujg3o"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 152.63654, 257, 0, 0, 0, 0, 930.63654, 259)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_letter_g"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_letter_o"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_letter_t"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_letter_d"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 80, 80)
+}
+point_count = 2
 
 [sub_resource type="Gradient" id="Gradient_ulxo8"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
@@ -90,11 +155,12 @@ scale_curve = SubResource("CurveTexture_ujg3o")
 color = Color(0.9999998, 0.9156418, 0.6962537, 0.7019608)
 color_ramp = SubResource("GradientTexture1D_5rtqb")
 
-[sub_resource type="Curve2D" id="Curve2D_a1ki5"]
-_data = {
-"points": PackedVector2Array(4.3923, -158.12282, -4.3923, 158.12282, 73.636536, 253.98146, -45.684685, 1.4641004, 45.684685, -1.4641004, 275.63654, 475.98145, 3.7496748, 199.11761, -3.7496748, -199.11761, 477.63654, 257, 0, 0, 0, 0, 273.63654, 48, 14.641003, -190.33302, -14.641003, 190.33302, 74.636536, 251.98146)
-}
-point_count = 5
+[sub_resource type="FontVariation" id="FontVariation_f4ix3"]
+base_font = ExtResource("10_ujg3o")
+spacing_glyph = -5
+
+[sub_resource type="FontVariation" id="FontVariation_ujg3o"]
+base_font = ExtResource("10_ujg3o")
 
 [node name="TimeControlDemo" type="Node2D" unique_id=1359216521 node_paths=PackedStringArray("world_input", "player_input", "enemy_input", "environment_input", "reset_button")]
 script = ExtResource("1_f8e7l")
@@ -121,37 +187,61 @@ drag_right_margin = 0.75
 drag_bottom_margin = 0.75
 editor_draw_drag_margin = true
 
-[node name="TimelineArea2D" type="Area2D" parent="." unique_id=1900000001]
-position = Vector2(1, -193)
+[node name="TimelineArea2D2" type="Area2D" parent="." unique_id=1241594139]
+position = Vector2(-313, 183)
 collision_layer = 0
 collision_mask = 3
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TimelineArea2D" unique_id=1900000002]
-shape = SubResource("CircleShape2D_slow")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TimelineArea2D2" unique_id=1725572879]
+position = Vector2(-3.5, -339.71466)
+shape = SubResource("RectangleShape2D_f4ix3")
 
-[node name="Sprite2D2" type="Sprite2D" parent="TimelineArea2D" unique_id=286811703]
-modulate = Color(0.111994974, 0.3378716, 0.053596035, 1)
+[node name="Sprite2D2" type="Sprite2D" parent="TimelineArea2D2" unique_id=1297118348]
+modulate = Color(0.78, 0.429, 0, 1)
 z_index = 1
-scale = Vector2(0.41290322, 0.41290316)
+position = Vector2(-3.999979, -340.71466)
+scale = Vector2(20, 0.5141389)
 texture = SubResource("GradientTexture2D_f4ix3")
 
-[node name="TimelineArea2D3" type="Area2D" parent="." unique_id=1241594139]
-position = Vector2(-3, 215)
-collision_layer = 0
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TimelineArea2D3" unique_id=1725572879]
-shape = SubResource("CircleShape2D_ujg3o")
-
-[node name="Sprite2D2" type="Sprite2D" parent="TimelineArea2D3" unique_id=1297118348]
-modulate = Color(0.36, 0, 0, 1)
+[node name="Sprite2D3" type="Sprite2D" parent="TimelineArea2D2" unique_id=312487263]
+modulate = Color(0.78, 0.429, 0, 1)
 z_index = 1
-position = Vector2(0, -1)
-scale = Vector2(0.38064513, 0.38064513)
+position = Vector2(-1.499979, -81.71465)
+scale = Vector2(20, 0.5141389)
 texture = SubResource("GradientTexture2D_f4ix3")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="TimelineArea2D2" unique_id=1370273943]
+position = Vector2(0, -81)
+shape = SubResource("RectangleShape2D_t8xqc")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="TimelineArea2D2" unique_id=18294478]
+position = Vector2(285, -212)
+shape = SubResource("RectangleShape2D_ujg3o")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="TimelineArea2D2" unique_id=707239189]
+position = Vector2(449, -212)
+shape = SubResource("RectangleShape2D_ujg3o")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="TimelineArea2D2" unique_id=99718449]
+position = Vector2(599.5, -212)
+shape = SubResource("RectangleShape2D_qk2ka")
+
+[node name="Sprite2D4" type="Sprite2D" parent="TimelineArea2D2" unique_id=1470713633]
+z_index = 1
+position = Vector2(-7.6293945e-06, -210.65846)
+rotation = 0.9604496
+scale = Vector2(20, 0.5988024)
+texture = SubResource("GradientTexture2D_n2ig2")
+
+[node name="Sprite2D5" type="Sprite2D" parent="TimelineArea2D2" unique_id=272980885]
+z_index = 1
+position = Vector2(-8.000014, -208.65848)
+rotation = 2.155534
+scale = Vector2(20, 0.5988024)
+texture = SubResource("GradientTexture2D_n2ig2")
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=1248473571 node_paths=PackedStringArray("timeline")]
-position = Vector2(-1, 0)
+position = Vector2(1, -229)
 collision_mask = 0
 motion_mode = 1
 safe_margin = 0.1
@@ -175,9 +265,9 @@ metadata/_aseprite_wizard_interface_config_ = {
 script = ExtResource("2_u5334")
 clock_configuration = ExtResource("4_r45sy")
 
-[node name="Enemy" type="CharacterBody2D" parent="." unique_id=1260603408 node_paths=PackedStringArray("timeline", "path_follow_2d")]
-position = Vector2(-203, -2.0185394)
-rotation = 1.598567
+[node name="Dot" type="CharacterBody2D" parent="." unique_id=1260603408 node_paths=PackedStringArray("timeline", "path_follow_2d")]
+position = Vector2(-232, -158)
+rotation = 3.1356757
 scale = Vector2(0.99999994, 0.99999994)
 collision_layer = 2
 collision_mask = 0
@@ -186,19 +276,253 @@ safe_margin = 0.1
 script = ExtResource("6_jsae0")
 timeline = NodePath("Timeline")
 path_follow_2d = NodePath("../Path2D/PathFollow2D")
+tween_duration = 1.5
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy" unique_id=1862610305]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Dot" unique_id=1862610305]
 z_index = 2
 shape = SubResource("CircleShape2D_f4ix3")
 
-[node name="Sprite2D" type="Sprite2D" parent="Enemy" unique_id=400828478]
+[node name="Sprite2D" type="Sprite2D" parent="Dot" unique_id=400828478]
 z_index = 1
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.23058991, 0.23058991)
 texture = SubResource("GradientTexture2D_ujg3o")
 
-[node name="Timeline" type="Node" parent="Enemy" unique_id=280519675]
+[node name="Timeline" type="Node" parent="Dot" unique_id=280519675]
 script = ExtResource("2_u5334")
 clock_configuration = ExtResource("8_bes37")
+
+[node name="Dot2" type="CharacterBody2D" parent="." unique_id=1725069509 node_paths=PackedStringArray("timeline", "path_follow_2d")]
+position = Vector2(-434, -29)
+rotation = 0.0025706885
+collision_layer = 2
+collision_mask = 0
+motion_mode = 1
+safe_margin = 0.1
+script = ExtResource("6_jsae0")
+timeline = NodePath("Timeline")
+path_follow_2d = NodePath("../Path2D2/PathFollow2D")
+tween_duration = 1.0
+tween_loop = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Dot2" unique_id=645970146]
+z_index = 2
+shape = SubResource("CircleShape2D_f4ix3")
+
+[node name="Sprite2D" type="Sprite2D" parent="Dot2" unique_id=1532941805]
+z_index = 1
+scale = Vector2(0.5, 0.5)
+texture = SubResource("GradientTexture2D_newt1")
+
+[node name="Timeline" type="Node" parent="Dot2" unique_id=1486177656]
+script = ExtResource("2_u5334")
+clock_configuration = ExtResource("8_bes37")
+
+[node name="Path2D" type="Path2D" parent="." unique_id=1513258298]
+position = Vector2(-586.63654, -290)
+curve = SubResource("Curve2D_a1ki5")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D" unique_id=535623633]
+position = Vector2(354.63654, 132)
+rotation = 3.1356757
+loop = false
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D/PathFollow2D" unique_id=253318310]
+remote_path = NodePath("../../../Dot")
+
+[node name="Path2D2" type="Path2D" parent="." unique_id=1513695580]
+position = Vector2(-586.63654, -286)
+curve = SubResource("Curve2D_ujg3o")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D2" unique_id=1046443040]
+position = Vector2(152.63654, 257)
+rotation = 0.0025706885
+loop = false
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D2/PathFollow2D" unique_id=455177160]
+remote_path = NodePath("../../../Dot2")
+
+[node name="GODOT" type="Node2D" parent="." unique_id=1925417607]
+visible = false
+position = Vector2(105, -48.279526)
+
+[node name="Enemy2" type="CharacterBody2D" parent="GODOT" unique_id=189747279 node_paths=PackedStringArray("timeline", "path_follow_2d")]
+position = Vector2(-104.416725, -1.7124367)
+rotation = 0.17453295
+scale = Vector2(0.8, 0.8)
+collision_layer = 2
+collision_mask = 0
+motion_mode = 1
+safe_margin = 0.1
+script = ExtResource("6_jsae0")
+timeline = NodePath("Timeline")
+path_follow_2d = NodePath("../Path2D_G/PathFollow2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GODOT/Enemy2" unique_id=1239712818]
+z_index = 2
+shape = SubResource("CircleShape2D_f4ix3")
+
+[node name="Sprite2D" type="Sprite2D" parent="GODOT/Enemy2" unique_id=1609152701]
+z_index = 1
+scale = Vector2(0.13527614, 0.13527614)
+texture = SubResource("GradientTexture2D_ujg3o")
+
+[node name="Timeline" type="Node" parent="GODOT/Enemy2" unique_id=609883715]
+script = ExtResource("2_u5334")
+clock_configuration = ExtResource("8_bes37")
+
+[node name="Enemy3" type="CharacterBody2D" parent="GODOT" unique_id=2075723026 node_paths=PackedStringArray("timeline", "path_follow_2d")]
+position = Vector2(-81, -3.7204742)
+scale = Vector2(0.8, 0.8)
+collision_layer = 2
+collision_mask = 0
+motion_mode = 1
+safe_margin = 0.1
+script = ExtResource("6_jsae0")
+timeline = NodePath("Timeline")
+path_follow_2d = NodePath("../Path2D_O/PathFollow2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GODOT/Enemy3" unique_id=1868056279]
+z_index = 2
+shape = SubResource("CircleShape2D_f4ix3")
+
+[node name="Sprite2D" type="Sprite2D" parent="GODOT/Enemy3" unique_id=755184865]
+z_index = 1
+scale = Vector2(0.13527614, 0.13527614)
+texture = SubResource("GradientTexture2D_ujg3o")
+
+[node name="Timeline" type="Node" parent="GODOT/Enemy3" unique_id=1417759206]
+script = ExtResource("2_u5334")
+clock_configuration = ExtResource("8_bes37")
+
+[node name="Enemy4" type="CharacterBody2D" parent="GODOT" unique_id=2105999155 node_paths=PackedStringArray("timeline", "path_follow_2d")]
+position = Vector2(5, -2.7204742)
+rotation = 0.052359886
+scale = Vector2(0.8, 0.8)
+collision_layer = 2
+collision_mask = 0
+motion_mode = 1
+safe_margin = 0.1
+script = ExtResource("6_jsae0")
+timeline = NodePath("Timeline")
+path_follow_2d = NodePath("../Path2D_T/PathFollow2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GODOT/Enemy4" unique_id=751178692]
+z_index = 2
+shape = SubResource("CircleShape2D_f4ix3")
+
+[node name="Sprite2D" type="Sprite2D" parent="GODOT/Enemy4" unique_id=1555114075]
+z_index = 1
+scale = Vector2(0.13527614, 0.13527614)
+texture = SubResource("GradientTexture2D_ujg3o")
+
+[node name="Timeline" type="Node" parent="GODOT/Enemy4" unique_id=546589235]
+script = ExtResource("2_u5334")
+clock_configuration = ExtResource("8_bes37")
+
+[node name="Enemy5" type="CharacterBody2D" parent="GODOT" unique_id=690094017 node_paths=PackedStringArray("timeline", "path_follow_2d")]
+position = Vector2(86, -1.7204742)
+scale = Vector2(0.8, 0.8)
+collision_layer = 2
+collision_mask = 0
+motion_mode = 1
+safe_margin = 0.1
+script = ExtResource("6_jsae0")
+timeline = NodePath("Timeline")
+path_follow_2d = NodePath("../Path2D_O2/PathFollow2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GODOT/Enemy5" unique_id=463233113]
+z_index = 2
+shape = SubResource("CircleShape2D_f4ix3")
+
+[node name="Sprite2D" type="Sprite2D" parent="GODOT/Enemy5" unique_id=1975449616]
+z_index = 1
+scale = Vector2(0.13527614, 0.13527614)
+texture = SubResource("GradientTexture2D_ujg3o")
+
+[node name="Timeline" type="Node" parent="GODOT/Enemy5" unique_id=263376935]
+script = ExtResource("2_u5334")
+clock_configuration = ExtResource("8_bes37")
+
+[node name="Enemy6" type="CharacterBody2D" parent="GODOT" unique_id=813831710 node_paths=PackedStringArray("timeline", "path_follow_2d")]
+position = Vector2(180.72556, 76.387)
+rotation = -1.5574831
+scale = Vector2(0.8, 0.8)
+collision_layer = 2
+collision_mask = 0
+motion_mode = 1
+safe_margin = 0.1
+script = ExtResource("6_jsae0")
+timeline = NodePath("Timeline")
+path_follow_2d = NodePath("../Path2D_D/PathFollow2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GODOT/Enemy6" unique_id=441075950]
+z_index = 2
+shape = SubResource("CircleShape2D_f4ix3")
+
+[node name="Sprite2D" type="Sprite2D" parent="GODOT/Enemy6" unique_id=930989805]
+z_index = 1
+scale = Vector2(0.13527614, 0.13527614)
+texture = SubResource("GradientTexture2D_ujg3o")
+
+[node name="Timeline" type="Node" parent="GODOT/Enemy6" unique_id=1004000131]
+script = ExtResource("2_u5334")
+clock_configuration = ExtResource("8_bes37")
+
+[node name="Path2D_G" type="Path2D" parent="GODOT" unique_id=1670000001]
+position = Vector2(-104.5184, -1.7204782)
+rotation = 0.17453294
+scale = Vector2(0.8, 0.8)
+curve = SubResource("Curve2D_letter_g")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="GODOT/Path2D_G" unique_id=1114287562]
+position = Vector2(0.126915, -0.012171959)
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="GODOT/Path2D_G/PathFollow2D" unique_id=536207149]
+remote_path = NodePath("../../../Enemy2")
+
+[node name="Path2D_O" type="Path2D" parent="GODOT" unique_id=1670000002]
+position = Vector2(-81, -3.7204742)
+scale = Vector2(0.8, 0.8)
+curve = SubResource("Curve2D_letter_o")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="GODOT/Path2D_O" unique_id=224152762]
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="GODOT/Path2D_O/PathFollow2D" unique_id=1138448297]
+remote_path = NodePath("../../../Enemy3")
+
+[node name="Path2D_T" type="Path2D" parent="GODOT" unique_id=1670000005]
+position = Vector2(4.999996, -2.7204742)
+rotation = 0.052359886
+scale = Vector2(0.8, 0.8)
+curve = SubResource("Curve2D_letter_t")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="GODOT/Path2D_T" unique_id=478122745]
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="GODOT/Path2D_T/PathFollow2D" unique_id=1191906491]
+remote_path = NodePath("../../../Enemy4")
+
+[node name="Path2D_O2" type="Path2D" parent="GODOT" unique_id=1875941803]
+position = Vector2(85.99999, -1.7204745)
+scale = Vector2(0.8, 0.8)
+curve = SubResource("Curve2D_letter_o")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="GODOT/Path2D_O2" unique_id=1540623456]
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="GODOT/Path2D_O2/PathFollow2D" unique_id=707175169]
+remote_path = NodePath("../../../Enemy5")
+
+[node name="Path2D_D" type="Path2D" parent="GODOT" unique_id=1670000003]
+position = Vector2(182.72551, 105.27953)
+rotation = -0.08726645
+scale = Vector2(0.8, 0.8)
+curve = SubResource("Curve2D_letter_d")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="GODOT/Path2D_D" unique_id=914497080]
+position = Vector2(0.65722656, -36.19612)
+rotation = -1.4702166
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="GODOT/Path2D_D/PathFollow2D" unique_id=1975968965]
+remote_path = NodePath("../../../Enemy6")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=869557369]
 position = Vector2(0, 79)
@@ -209,17 +533,130 @@ lifetime = 2.0
 preprocess = 1.22
 process_material = SubResource("ParticleProcessMaterial_5rtqb")
 
-[node name="Path2D" type="Path2D" parent="." unique_id=1513258298]
-position = Vector2(-276.63654, -256)
-curve = SubResource("Curve2D_a1ki5")
+[node name="Control2" type="Control" parent="." unique_id=1054282312]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -566.0
+offset_top = -329.0
+offset_right = 566.0
+offset_bottom = 299.0
+mouse_filter = 2
 
-[node name="PathFollow2D" type="PathFollow2D" parent="Path2D" unique_id=535623633]
-position = Vector2(73.636536, 253.98146)
-rotation = 1.598567
-loop = false
+[node name="G" type="Label" parent="Control2" unique_id=119224582]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -625.0
+offset_top = -55.0
+offset_right = -161.0
+offset_bottom = 110.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0.78, 0.429, 0, 1)
+theme_override_fonts/font = SubResource("FontVariation_f4ix3")
+theme_override_font_sizes/font_size = 80
+text = "G"
 
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D/PathFollow2D" unique_id=253318310]
-remote_path = NodePath("../../../Enemy")
+[node name="O" type="Label" parent="Control2" unique_id=396019654]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -549.0
+offset_top = -55.0
+offset_right = -85.0
+offset_bottom = 110.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_fonts/font = SubResource("FontVariation_f4ix3")
+theme_override_font_sizes/font_size = 80
+text = "O"
+
+[node name="D" type="Label" parent="Control2" unique_id=791700451]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -460.0
+offset_top = -55.0
+offset_right = 4.0
+offset_bottom = 110.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0.78039217, 0.42745098, 0, 1)
+theme_override_fonts/font = SubResource("FontVariation_f4ix3")
+theme_override_font_sizes/font_size = 80
+text = "D"
+
+[node name="O2" type="Label" parent="Control2" unique_id=1983560599]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -385.0
+offset_top = -53.0
+offset_right = 79.0
+offset_bottom = 112.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_fonts/font = SubResource("FontVariation_f4ix3")
+theme_override_font_sizes/font_size = 80
+text = "O"
+
+[node name="T" type="Label" parent="Control2" unique_id=1636771749]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -304.0
+offset_top = -53.0
+offset_right = 160.0
+offset_bottom = 112.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0.78039217, 0.42745098, 0, 1)
+theme_override_fonts/font = SubResource("FontVariation_f4ix3")
+theme_override_font_sizes/font_size = 80
+text = "T"
+
+[node name="Control2" type="Control" parent="Control2" unique_id=1438581411]
+anchors_preset = 0
+offset_left = 577.0
+offset_top = 321.0
+offset_right = 1709.0
+offset_bottom = 949.0
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Control2/Control2" unique_id=759451891]
+layout_mode = 0
+offset_left = 81.0
+offset_top = 27.0
+offset_right = 271.0
+offset_bottom = 65.0
+theme_override_fonts/font = SubResource("FontVariation_ujg3o")
+theme_override_font_sizes/font_size = 32
+text = "Time Control"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1805186065]
 
@@ -250,6 +687,8 @@ theme_override_constants/margin_bottom = 10
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/MarginContainer" unique_id=1626807075]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
 theme = ExtResource("10_f4ix3")
 theme_override_constants/separation = 15
 
@@ -311,11 +750,16 @@ mouse_filter = 2
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Control" unique_id=1341330225]
 custom_minimum_size = Vector2(70, 0)
-layout_mode = 0
-offset_left = -1.0
-offset_top = 45.0
-offset_right = 50.0
-offset_bottom = 103.0
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -70.0
+offset_top = -58.0
+grow_horizontal = 0
+grow_vertical = 0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
@@ -325,6 +769,12 @@ layout_mode = 2
 [node name="Reset" type="Button" parent="CanvasLayer/Control/MarginContainer/Control/VBoxContainer3" unique_id=424882203]
 layout_mode = 2
 text = "Reset"
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer" unique_id=2043661200]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Move : Arrows / ZQSD"
 
 [node name="EnvironmentTimeline" type="Node" parent="." unique_id=1476970138]
 script = ExtResource("2_u5334")
@@ -336,14 +786,8 @@ script = ExtResource("10_43gox")
 gpu_particles_2d = NodePath("../GPUParticles2D")
 timeline = NodePath("../EnvironmentTimeline")
 
-[node name="Area2DTimeline" type="Node" parent="." unique_id=1243870042 node_paths=PackedStringArray("area2D")]
+[node name="Area2DTimeline2" type="Node" parent="." unique_id=891477792 node_paths=PackedStringArray("area2D")]
 script = ExtResource("11_5rtqb")
-area2D = NodePath("../TimelineArea2D")
-timescale_multiplier = 5.0
-metadata/_custom_type_script = "uid://dgc6tyax7xbjn"
-
-[node name="Area2DTimeline3" type="Node" parent="." unique_id=891477792 node_paths=PackedStringArray("area2D")]
-script = ExtResource("11_5rtqb")
-area2D = NodePath("../TimelineArea2D3")
+area2D = NodePath("../TimelineArea2D2")
 timescale_multiplier = 0.1
 metadata/_custom_type_script = "uid://dgc6tyax7xbjn"

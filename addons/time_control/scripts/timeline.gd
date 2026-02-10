@@ -62,6 +62,7 @@ func set_mode(value: ModeEnum) -> void:
 	if _mode == value:
 		return
 	_mode = value
+	notify_property_list_changed()
 	_bind_clock(true)
 
 func get_mode() -> ModeEnum:
@@ -83,6 +84,15 @@ func set_clock_configuration(value: ClockConfiguration) -> void:
 func get_clock_configuration() -> ClockConfiguration:
 	return _clock_configuration
 
+func _validate_property(property: Dictionary) -> void:
+	match property.name:
+		"local_clock":
+			if _mode != ModeEnum.Local:
+				property.usage = PROPERTY_USAGE_STORAGE
+		"clock_configuration":
+			if _mode != ModeEnum.Global:
+				property.usage = PROPERTY_USAGE_STORAGE
+
 func tween_time_scale(target_scale: float, duration: float) -> void:
 	if clock == null:
 		_bind_clock()
@@ -93,6 +103,8 @@ func tween_time_scale(target_scale: float, duration: float) -> void:
 	await tween.finished
 
 func _bind_clock(force: bool = false) -> void:
+	if Engine.is_editor_hint():
+		return
 	if not force and clock != null:
 		return
 

@@ -1,8 +1,10 @@
 # Godot Time Control Plugin
 
 Lightweight, scene-friendly time scaling for Godot 4.5+. Define clocks, route them to timelines, and slow / speed parts of your game independently.
+ontrol/icons/logo.png)
 
-![Godot Time Control](./addons/time_control/icons/logo.png)
+## Demo
+[Try the demo](https://zekostudio.github.io/godot-time-control/)
 
 ## Contents
 - Features
@@ -11,7 +13,6 @@ Lightweight, scene-friendly time scaling for Godot 4.5+. Define clocks, route th
 - Quick Start
 - Core Concepts
 - Customization
-- Demo
 
 ## Features
 - Multiple named clocks with parent blending (world, player, enemy, environment by default).
@@ -28,15 +29,14 @@ Godot 4.2+.
 3) In the editor: **Project > Project Settings > Plugins** and enable **TimeControl**.
 
 ## Quick Start
-1) **Use the provided autoload**
-   - The plugin registers `res://addons/time_control/time_control.tscn` as an autoload named `TimeController`.
-   - It contains four clocks: `WORLD` (root), `PLAYER`, `ENEMY`, `ENVIRONMENT` (children of `WORLD`).
+- The plugin registers `res://addons/time_control/time_control.tscn` as an autoload named `TimeController`.
+- It contains four clocks: `WORLD` (root), `PLAYER`, `ENEMY`, `ENVIRONMENT` (children of `WORLD`).
 
-2) **Add a Timeline to a scene**
+1) **Add a Timeline to a scene**
    - Add a `Timeline` node.
    - Assign a `ClockConfiguration` resource to `clock_configuration` (for example `player_clock.tres` for the player).
 
-3) **Consume the time scale in code**
+2) **Consume the time scale in code**
    ```gdscript
    extends CharacterBody2D
 
@@ -54,7 +54,7 @@ Godot 4.2+.
        move_and_slide()
    ```
 
-4) **Change time from anywhere**
+3) **Change time from anywhere**
    ```gdscript
    const ClockConfiguration = preload("res://addons/time_control/scripts/clock_configuration.gd")
    @export var clock_configuration: ClockConfiguration
@@ -88,10 +88,10 @@ Method:
 Bridge node that exposes the effective time scale of a chosen clock.
 
 Properties:
-- `mode: ModeEnum` — `Global` (default) uses `clock_configuration`; `Local` uses `local_clock`.
 - `time_scale: float` — The resolved time scale of the targeted clock.
-- `local_clock: Clock` — Used when mode is `Local`.
+- `mode: ModeEnum` — `Global` (default); `Local`.
 - `clock_configuration: ClockConfiguration` — Used when mode is `Global`.
+- `local_clock: Clock` — Used when mode is `Local`.
 
 ### TimeController (Singleton / Autoload)
 Registry for all clocks; available globally.
@@ -103,14 +103,14 @@ Methods:
 - `add_clock(configuration: ClockConfiguration) -> Clock`
 - `remove_clock(configuration: ClockConfiguration) -> void`
 
-## Timeline-aware helper nodes
+## Helper nodes
 Drop these glue scripts next to existing nodes to keep their playback in sync with a `Timeline` without rewriting their logic.
 
 - `timeline_aware_node/animation_player_timeline.gd` — Drives `AnimationPlayer.speed_scale` from a bound `Timeline`.
 - `timeline_aware_node/gpu_particles_2d_timeline.gd` / `gpu_particles_3d_timeline.gd` — Drive particle `speed_scale` in 2D or 3D.
-- `timeline_aware_node/area2D_timeline.gd` — Lets an `Area2D` broadcast a slowdown multiplier via the `zone_multiplier_changed(multiplier)` signal to any body that listens (used by the demo enemies). Bodies connect once to their own signal in `_ready()` and the area simply emits the value.
+- `timeline_aware_node/area2D_timeline.gd` / `area3D_timeline.gd` — Lets an `Area2D` or `Area3D` broadcast a speed multiplier via the `zone_multiplier_changed(multiplier)` signal to any body that listens. Bodies connect once to their own signal in `_ready()` and the area simply the value.
 
-Usage pattern (example for 2D particles):
+Usage (example for 2D particles):
 1) Add a plain `Node` as a sibling or parent, attach `gpu_particles_2d_timeline.gd`.
 2) Assign `gpu_particles_2d` to your particles node and `timeline` to the relevant `Timeline` (e.g., player or enemy).
 3) Press play — particle playback automatically speeds up / slows down with the clock.
@@ -122,5 +122,5 @@ Usage pattern (example for 2D particles):
 3) In **Project > Project Settings > Addons > Time Control**, set `autoload_path` to your scene (e.g., `res://scenes/time_control.tscn`).  
 4) Disable and re-enable the plugin (or restart the editor) to reload.
 
-## Demo
-Open `res://addons/time_control/demo/demo.tscn` for a runnable example showing multiple clocks.
+
+Open the demo scene `res://addons/time_control/demo/demo.tscn` for a runnable example.
