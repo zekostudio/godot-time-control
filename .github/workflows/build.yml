@@ -67,6 +67,7 @@ jobs:
   export-web:
     name: Web Export
     runs-on: ubuntu-24.04  # Use 24.04 with godot 4
+    environment: dev
     container:
       image: barichello/godot-ci:4.6
     steps:
