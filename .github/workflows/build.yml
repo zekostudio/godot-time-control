@@ -4,6 +4,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  
 env:
   GODOT_VERSION: 4.6
   EXPORT_NAME: GodotTimeControlPluginDemo
