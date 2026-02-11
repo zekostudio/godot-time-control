@@ -89,6 +89,8 @@ jobs:
           EXPORT_DIR="$(readlink -f build)"
           cd $PROJECT_PATH
           godot --headless --verbose --export-release "Web" "$EXPORT_DIR/web/index.html"
+      - name: Sync README (workspace only)
+        run: cp README.md addons/time_control/README.md
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:

@@ -7,13 +7,8 @@ const Timeline = preload("res://addons/time_control/scripts/timeline.gd")
 
 const JUMP_VELOCITY = -400.0
 
-signal zone_multiplier_changed(multiplier: float)
-
 var direction: Vector2
-var _zone_time_multiplier: float = 1.0
-
-func _ready() -> void:
-	zone_multiplier_changed.connect(_on_zone_multiplier_changed)
+var area_timescale_multiplier: float = 1.0
 
 func _process(delta: float) -> void:
 	direction.x = Input.get_axis("move_left", "move_right")
@@ -25,8 +20,5 @@ func _process(delta: float) -> void:
 	direction = direction.normalized()
 
 func _physics_process(delta: float) -> void:
-	velocity = Vector2(direction.x, direction.y) * speed * timeline.time_scale * _zone_time_multiplier
+	velocity = Vector2(direction.x, direction.y) * speed * timeline.time_scale * area_timescale_multiplier
 	move_and_slide()
-
-func _on_zone_multiplier_changed(multiplier: float) -> void:
-	_zone_time_multiplier = multiplier

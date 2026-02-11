@@ -7,21 +7,18 @@ const Timeline = preload("res://addons/time_control/scripts/timeline.gd")
 @export var tween_duration: float = 3.0
 @export var tween_loop: bool = false
 
-signal zone_multiplier_changed(multiplier: float)
-
 var _tween: Tween
-var _zone_time_multiplier: float = 1.0
+var area_timescale_multiplier: float = 1.0
 
 
 func _ready() -> void:
 	add_to_group("enemies")
-	zone_multiplier_changed.connect(_on_zone_multiplier_changed)
 	path_follow_2d.progress_ratio = 0.0
 	_start()
 
 func _process(_delta: float) -> void:
 	if _tween:
-		_tween.set_speed_scale(timeline.time_scale * _zone_time_multiplier)
+		_tween.set_speed_scale(timeline.time_scale * area_timescale_multiplier)
 
 func _start() -> void:
 	_tween = get_tree().create_tween();
@@ -45,6 +42,3 @@ func _on_forward_finished() -> void:
 func _on_backward_finished() -> void:
 	await get_tree().create_timer(1.0).timeout
 	_start()
-
-func _on_zone_multiplier_changed(multiplier: float) -> void:
-	_zone_time_multiplier = multiplier

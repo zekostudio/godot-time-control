@@ -346,7 +346,7 @@ visible = false
 position = Vector2(105, -48.279526)
 
 [node name="Enemy2" type="CharacterBody2D" parent="GODOT" unique_id=189747279 node_paths=PackedStringArray("timeline", "path_follow_2d")]
-position = Vector2(-104.416725, -1.7124367)
+position = Vector2(-104.5184, -1.720478)
 rotation = 0.17453295
 scale = Vector2(0.8, 0.8)
 collision_layer = 2
@@ -372,6 +372,7 @@ clock_configuration = ExtResource("8_bes37")
 
 [node name="Enemy3" type="CharacterBody2D" parent="GODOT" unique_id=2075723026 node_paths=PackedStringArray("timeline", "path_follow_2d")]
 position = Vector2(-81, -3.7204742)
+rotation = 1.5707964
 scale = Vector2(0.8, 0.8)
 collision_layer = 2
 collision_mask = 0
@@ -421,6 +422,7 @@ clock_configuration = ExtResource("8_bes37")
 
 [node name="Enemy5" type="CharacterBody2D" parent="GODOT" unique_id=690094017 node_paths=PackedStringArray("timeline", "path_follow_2d")]
 position = Vector2(86, -1.7204742)
+rotation = 1.5707964
 scale = Vector2(0.8, 0.8)
 collision_layer = 2
 collision_mask = 0
@@ -444,8 +446,8 @@ script = ExtResource("2_u5334")
 clock_configuration = ExtResource("8_bes37")
 
 [node name="Enemy6" type="CharacterBody2D" parent="GODOT" unique_id=813831710 node_paths=PackedStringArray("timeline", "path_follow_2d")]
-position = Vector2(180.72556, 76.387)
-rotation = -1.5574831
+position = Vector2(182.72552, 105.27953)
+rotation = 0.69813174
 scale = Vector2(0.8, 0.8)
 collision_layer = 2
 collision_mask = 0
@@ -475,7 +477,6 @@ scale = Vector2(0.8, 0.8)
 curve = SubResource("Curve2D_letter_g")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="GODOT/Path2D_G" unique_id=1114287562]
-position = Vector2(0.126915, -0.012171959)
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="GODOT/Path2D_G/PathFollow2D" unique_id=536207149]
 remote_path = NodePath("../../../Enemy2")
@@ -486,6 +487,7 @@ scale = Vector2(0.8, 0.8)
 curve = SubResource("Curve2D_letter_o")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="GODOT/Path2D_O" unique_id=224152762]
+rotation = 1.5707964
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="GODOT/Path2D_O/PathFollow2D" unique_id=1138448297]
 remote_path = NodePath("../../../Enemy3")
@@ -507,6 +509,7 @@ scale = Vector2(0.8, 0.8)
 curve = SubResource("Curve2D_letter_o")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="GODOT/Path2D_O2" unique_id=1540623456]
+rotation = 1.5707964
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="GODOT/Path2D_O2/PathFollow2D" unique_id=707175169]
 remote_path = NodePath("../../../Enemy5")
@@ -518,8 +521,7 @@ scale = Vector2(0.8, 0.8)
 curve = SubResource("Curve2D_letter_d")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="GODOT/Path2D_D" unique_id=914497080]
-position = Vector2(0.65722656, -36.19612)
-rotation = -1.4702166
+rotation = 0.7853982
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="GODOT/Path2D_D/PathFollow2D" unique_id=1975968965]
 remote_path = NodePath("../../../Enemy6")

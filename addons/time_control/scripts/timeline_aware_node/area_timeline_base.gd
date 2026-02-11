@@ -24,17 +24,40 @@ func _on_body_entered(body: Node) -> void:
 	if body in _bodies:
 		return
 	_bodies.append(body)
-	if body.has_signal("zone_multiplier_changed"):
-		body.zone_multiplier_changed.emit(timescale_multiplier)
+	_apply_multiplier_to_body(body, timescale_multiplier)
 
 func _on_body_exited(body: Node) -> void:
 	if body in _bodies:
 		_bodies.erase(body)
-		if body.has_signal("zone_multiplier_changed"):
-			body.zone_multiplier_changed.emit(1.0)
+		_apply_multiplier_to_body(body, 1.0)
 
 func _exit_tree() -> void:
 	for body in _bodies:
-		if body.has_signal("zone_multiplier_changed"):
-			body.zone_multiplier_changed.emit(1.0)
+		_apply_multiplier_to_body(body, 1.0)
 	_bodies.clear()
+
+func _apply_multiplier_to_body(body: Node, multiplier: float) -> void:
+	# Preferred order:
+	# 1) set_area_timescale_multiplier()
+	# 2) area_timescale_multiplier property
+	# Backward compatibility:
+	# - set_area_timeline_multiplier()
+	# - area_timeline_multiplier property
+	if body.has_method("set_area_timescale_multiplier"):
+		body.call("set_area_timescale_multiplier", multiplier)
+		return
+	if body.has_method("set_area_timeline_multiplier"):
+		body.call("set_area_timeline_multiplier", multiplier)
+		return
+	if _has_property(body, "area_timescale_multiplier"):
+		body.set("area_timescale_multiplier", multiplier)
+		return
+	if _has_property(body, "area_timeline_multiplier"):
+		body.set("area_timeline_multiplier", multiplier)
+		return
+
+func _has_property(target: Object, property_name: StringName) -> bool:
+	for property_info in target.get_property_list():
+		if property_info.name == property_name:
+			return true
+	return false

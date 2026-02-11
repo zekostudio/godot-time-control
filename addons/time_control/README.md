@@ -108,8 +108,20 @@ Drop these glue scripts next to existing nodes to keep their playback in sync wi
 
 - `timeline_aware_node/animation_player_timeline.gd` — Drives `AnimationPlayer.speed_scale` from a bound `Timeline`.
 - `timeline_aware_node/gpu_particles_2d_timeline.gd` / `gpu_particles_3d_timeline.gd` — Drive particle `speed_scale` in 2D or 3D.
-- `timeline_aware_node/area2D_timeline.gd` — Lets an `Area2D` broadcast a slowdown multiplier via the `zone_multiplier_changed(multiplier)` signal to any body that listens (used by the demo enemies). Bodies connect once to their own signal in `_ready()` and the area simply emits the value.
-- `timeline_aware_node/area3D_timeline.gd` — Same idea for `Area3D`, emitting slowdown multipliers to 3D bodies entering or exiting.
+- `timeline_aware_node/area2D_timeline.gd` / `area3D_timeline.gd` — Apply `timescale_multiplier` to bodies entering an `Area2D` or `Area3D`.
+
+Area timeline integration fallback order (first match wins):
+1) Method: `set_area_timescale_multiplier(multiplier: float)`
+2) Property: `area_timescale_multiplier: float`
+
+Minimal body integration (recommended):
+```gdscript
+var area_timescale_multiplier: float = 1.0
+
+func _physics_process(_delta: float) -> void:
+	velocity = input_dir * speed * timeline.time_scale * area_timescale_multiplier
+	move_and_slide()
+```
 
 Usage pattern (example for 2D particles):
 1) Add a plain `Node` as a sibling or parent, attach `gpu_particles_2d_timeline.gd`.
