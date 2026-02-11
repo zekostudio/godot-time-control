@@ -1,7 +1,0 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://qmafxony84f7"]
-
-[ext_resource type="Script" path="res://addons/time_control/scripts/clock_configuration.gd" id="1_y0kk2"]
-
-[resource]
-script = ExtResource("1_y0kk2")
-key = "WORLD"

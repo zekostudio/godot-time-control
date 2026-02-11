@@ -1,0 +1,600 @@
+[gd_scene format=3 uid="uid://d1nvh6mrqvjrv"]
+
+[ext_resource type="Script" uid="uid://bo46h11wqtm0t" path="res://addons/timeflow/demo/character.gd" id="1_8gkyk"]
+[ext_resource type="Script" uid="uid://bug3nvsxson1r" path="res://addons/timeflow/demo/demo.gd" id="1_f8e7l"]
+[ext_resource type="Script" uid="uid://c21jxmko6icy7" path="res://addons/timeflow/scripts/timeflow_timeline.gd" id="2_u5334"]
+[ext_resource type="Resource" uid="uid://qmafxony84f7" path="res://addons/timeflow/resources/world_clock.tres" id="2_ujg3o"]
+[ext_resource type="Texture2D" uid="uid://cvi6nbtp2r4hf" path="res://addons/timeflow/demo/player.svg" id="4_ftd4g"]
+[ext_resource type="Resource" uid="uid://dovo5yrk24mr" path="res://addons/timeflow/resources/player_clock.tres" id="4_r45sy"]
+[ext_resource type="Script" uid="uid://b1n0n5yg7ftah" path="res://addons/timeflow/demo/enemy.gd" id="6_jsae0"]
+[ext_resource type="Resource" uid="uid://kbvuqggcs6gj" path="res://addons/timeflow/resources/enemy_clock.tres" id="8_bes37"]
+[ext_resource type="Resource" uid="uid://cum8uvnthdi6e" path="res://addons/timeflow/resources/environment_clock.tres" id="9_ulxo8"]
+[ext_resource type="Script" uid="uid://c1mbwusbhrsb8" path="res://addons/timeflow/helpers/timeflow_gpu_particles_2d_sync.gd" id="10_43gox"]
+[ext_resource type="Theme" uid="uid://dljvspeef0gro" path="res://addons/timeflow/demo/resource/theme.tres" id="10_f4ix3"]
+[ext_resource type="FontFile" uid="uid://bkqhvvq5necwo" path="res://addons/timeflow/demo/font/UnitySans-Basic.ttf" id="10_ujg3o"]
+[ext_resource type="Script" uid="uid://dgc6tyax7xbjn" path="res://addons/timeflow/helpers/timeflow_area_2d.gd" id="11_5rtqb"]
+
+[sub_resource type="Gradient" id="Gradient_qtq74"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(0.030334815, 0.043138005, 0.07010319, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ulxo8"]
+gradient = SubResource("Gradient_qtq74")
+width = 1280
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f4ix3"]
+size = Vector2(180, 5)
+
+[sub_resource type="Gradient" id="Gradient_t8xqc"]
+offsets = PackedFloat32Array(0, 0.06764706, 0.92058825, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_f4ix3"]
+gradient = SubResource("Gradient_t8xqc")
+width = 10
+height = 5
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t8xqc"]
+size = Vector2(178, 4)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ujg3o"]
+size = Vector2(67, 82.2146)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qk2ka"]
+size = Vector2(53, 82.2146)
+
+[sub_resource type="Gradient" id="Gradient_ujg3o"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_n2ig2"]
+gradient = SubResource("Gradient_ujg3o")
+width = 15
+height = 2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5w4mo"]
+size = Vector2(260, 4)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5rtqb"]
+radius = 12.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f4ix3"]
+radius = 6.7247915
+
+[sub_resource type="Gradient" id="Gradient_5rtqb"]
+offsets = PackedFloat32Array(0.9911765, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ujg3o"]
+gradient = SubResource("Gradient_5rtqb")
+width = 100
+height = 100
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_qk2ka"]
+offsets = PackedFloat32Array(0.9911765, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_newt1"]
+gradient = SubResource("Gradient_qk2ka")
+width = 50
+height = 50
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Curve2D" id="Curve2D_a1ki5"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 354.63654, 132, 0, 0, 0, 0, 185.63654, 133, 0, 0, 0, 0, 364.63654, 392, 0, 0, 0, 0, 183.63654, 389, 0, 0, 0, 0, 353.63654, 133)
+}
+point_count = 5
+
+[sub_resource type="Gradient" id="Gradient_ulxo8"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_43gox"]
+gradient = SubResource("Gradient_ulxo8")
+width = 1
+height = 1
+
+[sub_resource type="Gradient" id="Gradient_43gox"]
+offsets = PackedFloat32Array(0, 0.26587301, 0.6230159, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5rtqb"]
+gradient = SubResource("Gradient_43gox")
+
+[sub_resource type="Curve" id="Curve_f4ix3"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ujg3o"]
+curve = SubResource("Curve_f4ix3")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5rtqb"]
+lifetime_randomness = 0.25
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(700, 40, 1)
+direction = Vector3(0, -1, 0)
+spread = 0.0
+initial_velocity_min = 10.0
+initial_velocity_max = 30.0
+gravity = Vector3(0, 0, 0)
+scale_max = 4.0
+scale_curve = SubResource("CurveTexture_ujg3o")
+color = Color(0.9999998, 0.9156418, 0.6962537, 0.7019608)
+color_ramp = SubResource("GradientTexture1D_5rtqb")
+
+[sub_resource type="FontVariation" id="FontVariation_f4ix3"]
+base_font = ExtResource("10_ujg3o")
+spacing_glyph = -5
+
+[sub_resource type="FontVariation" id="FontVariation_ujg3o"]
+base_font = ExtResource("10_ujg3o")
+
+[node name="TimeflowDemo" type="Node2D" unique_id=1359216521 node_paths=PackedStringArray("world_input", "player_input", "enemy_input", "environment_input", "reset_button")]
+script = ExtResource("1_f8e7l")
+world_input = NodePath("CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer4/World_Input")
+player_input = NodePath("CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer6/Player_Input")
+enemy_input = NodePath("CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer2/Enemy_Input")
+environment_input = NodePath("CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer5/Environment_Input")
+reset_button = NodePath("CanvasLayer/Control/MarginContainer/Control/VBoxContainer3/Reset")
+world_clock_configuration = ExtResource("2_ujg3o")
+player_clock_configuration = ExtResource("4_r45sy")
+enemy_clock_configuration = ExtResource("8_bes37")
+environment_clock_configuration = ExtResource("9_ulxo8")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=319906440]
+scale = Vector2(1, 12.1875)
+texture = SubResource("GradientTexture2D_ulxo8")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1440653571]
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_left_margin = 0.75
+drag_top_margin = 0.75
+drag_right_margin = 0.75
+drag_bottom_margin = 0.75
+editor_draw_drag_margin = true
+
+[node name="TimelineArea2D2" type="Area2D" parent="." unique_id=1241594139]
+position = Vector2(-313, 183)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TimelineArea2D2" unique_id=1725572879]
+position = Vector2(-3.5, -339.71466)
+shape = SubResource("RectangleShape2D_f4ix3")
+
+[node name="Sprite2D2" type="Sprite2D" parent="TimelineArea2D2" unique_id=1297118348]
+modulate = Color(0.78, 0.429, 0, 1)
+z_index = 1
+position = Vector2(-3.999979, -340.71466)
+scale = Vector2(20, 0.5141389)
+texture = SubResource("GradientTexture2D_f4ix3")
+
+[node name="Sprite2D3" type="Sprite2D" parent="TimelineArea2D2" unique_id=312487263]
+modulate = Color(0.78, 0.429, 0, 1)
+z_index = 1
+position = Vector2(-1.499979, -81.71465)
+scale = Vector2(20, 0.5141389)
+texture = SubResource("GradientTexture2D_f4ix3")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="TimelineArea2D2" unique_id=1370273943]
+position = Vector2(0, -81)
+shape = SubResource("RectangleShape2D_t8xqc")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="TimelineArea2D2" unique_id=18294478]
+position = Vector2(556, -453)
+shape = SubResource("RectangleShape2D_ujg3o")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="TimelineArea2D2" unique_id=707239189]
+position = Vector2(708, -453)
+shape = SubResource("RectangleShape2D_ujg3o")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="TimelineArea2D2" unique_id=99718449]
+position = Vector2(846, -453)
+shape = SubResource("RectangleShape2D_qk2ka")
+
+[node name="TimelineArea2D3" type="Area2D" parent="." unique_id=1807219876]
+position = Vector2(-313, 183)
+collision_layer = 0
+collision_mask = 4
+
+[node name="Sprite2D4" type="Sprite2D" parent="TimelineArea2D3" unique_id=1814711101]
+z_index = 1
+position = Vector2(-7.6293945e-06, -210.65846)
+rotation = 0.9604496
+scale = Vector2(20, 0.5988024)
+texture = SubResource("GradientTexture2D_n2ig2")
+
+[node name="Sprite2D5" type="Sprite2D" parent="TimelineArea2D3" unique_id=2127617937]
+z_index = 1
+position = Vector2(-8.000014, -208.65848)
+rotation = 2.155534
+scale = Vector2(20, 0.5988024)
+texture = SubResource("GradientTexture2D_n2ig2")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="TimelineArea2D3" unique_id=1632747482]
+position = Vector2(-4, -216)
+rotation = 0.95645744
+shape = SubResource("RectangleShape2D_5w4mo")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="TimelineArea2D3" unique_id=1958808294]
+position = Vector2(-4, -216)
+rotation = 2.1599853
+shape = SubResource("RectangleShape2D_5w4mo")
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=1248473571 node_paths=PackedStringArray("timeline")]
+position = Vector2(1, -229)
+collision_mask = 0
+motion_mode = 1
+safe_margin = 0.1
+script = ExtResource("1_8gkyk")
+timeline = NodePath("TimeflowTimeline")
+speed = 500.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1274705601]
+z_index = 2
+shape = SubResource("CircleShape2D_5rtqb")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player" unique_id=519459622]
+z_index = 1
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_ftd4g")
+metadata/_aseprite_wizard_interface_config_ = {
+"layer_section": false
+}
+
+[node name="TimeflowTimeline" type="Node" parent="Player" unique_id=1839820458]
+script = ExtResource("2_u5334")
+clock_configuration = ExtResource("4_r45sy")
+
+[node name="Dot" type="CharacterBody2D" parent="." unique_id=1260603408 node_paths=PackedStringArray("timeline", "path_follow_2d")]
+position = Vector2(-232, -158)
+rotation = 3.1356757
+scale = Vector2(0.99999994, 0.99999994)
+collision_layer = 2
+collision_mask = 0
+motion_mode = 1
+safe_margin = 0.1
+script = ExtResource("6_jsae0")
+timeline = NodePath("TimeflowTimeline")
+path_follow_2d = NodePath("../Path2D/PathFollow2D")
+tween_duration = 1.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Dot" unique_id=1862610305]
+z_index = 2
+shape = SubResource("CircleShape2D_f4ix3")
+
+[node name="Sprite2D" type="Sprite2D" parent="Dot" unique_id=400828478]
+modulate = Color(0.78039217, 0.42745098, 0, 1)
+z_index = 1
+scale = Vector2(0.23058991, 0.23058991)
+texture = SubResource("GradientTexture2D_ujg3o")
+
+[node name="TimeflowTimeline" type="Node" parent="Dot" unique_id=280519675]
+script = ExtResource("2_u5334")
+mode = 1
+clock_configuration = ExtResource("8_bes37")
+
+[node name="Dot2" type="CharacterBody2D" parent="." unique_id=1725069509 node_paths=PackedStringArray("timeline", "path_follow_2d")]
+position = Vector2(-232, -158)
+rotation = 3.1356757
+scale = Vector2(0.99999994, 0.99999994)
+collision_layer = 4
+collision_mask = 0
+motion_mode = 1
+safe_margin = 0.1
+script = ExtResource("6_jsae0")
+timeline = NodePath("TimeflowTimeline")
+path_follow_2d = NodePath("../Path2D/PathFollow2D2")
+tween_duration = 1.0
+tween_loop = true
+tween_start_ratio = 0.5
+tween_end_ratio = 0.0
+loop_return_mode = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Dot2" unique_id=645970146]
+z_index = 2
+shape = SubResource("CircleShape2D_f4ix3")
+
+[node name="Sprite2D" type="Sprite2D" parent="Dot2" unique_id=1532941805]
+z_index = 1
+scale = Vector2(0.5, 0.5)
+texture = SubResource("GradientTexture2D_newt1")
+
+[node name="TimeflowTimeline" type="Node" parent="Dot2" unique_id=1486177656]
+script = ExtResource("2_u5334")
+clock_configuration = ExtResource("8_bes37")
+
+[node name="Path2D" type="Path2D" parent="." unique_id=1513258298]
+position = Vector2(-586.63654, -290)
+curve = SubResource("Curve2D_a1ki5")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D" unique_id=535623633]
+position = Vector2(354.63654, 132)
+rotation = 3.1356757
+loop = false
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D/PathFollow2D" unique_id=253318310]
+remote_path = NodePath("../../../Dot")
+
+[node name="PathFollow2D2" type="PathFollow2D" parent="Path2D" unique_id=853877006]
+position = Vector2(354.63654, 132)
+rotation = 3.1356757
+loop = false
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D/PathFollow2D2" unique_id=1823186234]
+remote_path = NodePath("../../../Dot2")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=869557369]
+position = Vector2(0, 79)
+scale = Vector2(1, 12.1875)
+amount = 80
+texture = SubResource("GradientTexture2D_43gox")
+lifetime = 2.0
+preprocess = 1.22
+process_material = SubResource("ParticleProcessMaterial_5rtqb")
+
+[node name="Control2" type="Control" parent="." unique_id=1054282312]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -566.0
+offset_top = -329.0
+offset_right = 566.0
+offset_bottom = 299.0
+mouse_filter = 2
+
+[node name="Control" type="Control" parent="Control2" unique_id=1487760953]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -16.0
+offset_top = 19.0
+offset_right = 24.0
+offset_bottom = 59.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="G" type="Label" parent="Control2/Control" unique_id=119224582]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -382.0
+offset_right = -312.0
+offset_bottom = 95.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0.78, 0.429, 0, 1)
+theme_override_fonts/font = SubResource("FontVariation_f4ix3")
+theme_override_font_sizes/font_size = 80
+text = "G"
+
+[node name="O" type="Label" parent="Control2/Control" unique_id=396019654]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -305.0
+offset_right = -230.0
+offset_bottom = 95.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_fonts/font = SubResource("FontVariation_f4ix3")
+theme_override_font_sizes/font_size = 80
+text = "O"
+
+[node name="D" type="Label" parent="Control2/Control" unique_id=791700451]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -225.0
+offset_right = -162.0
+offset_bottom = 95.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0.78039217, 0.42745098, 0, 1)
+theme_override_fonts/font = SubResource("FontVariation_f4ix3")
+theme_override_font_sizes/font_size = 80
+text = "D"
+
+[node name="O2" type="Label" parent="Control2/Control" unique_id=1983560599]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -158.0
+offset_right = -83.0
+offset_bottom = 95.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_fonts/font = SubResource("FontVariation_f4ix3")
+theme_override_font_sizes/font_size = 80
+text = "O"
+
+[node name="T" type="Label" parent="Control2/Control" unique_id=1636771749]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -79.0
+offset_right = -34.0
+offset_bottom = 95.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0.78039217, 0.42745098, 0, 1)
+theme_override_fonts/font = SubResource("FontVariation_f4ix3")
+theme_override_font_sizes/font_size = 80
+text = "T"
+
+[node name="Control2" type="Control" parent="Control2/Control" unique_id=1438581411]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -168.0
+offset_top = 80.0
+offset_right = -168.0
+offset_bottom = 80.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Control2/Control/Control2" unique_id=759451891]
+layout_mode = 1
+offset_right = 190.0
+offset_bottom = 38.0
+theme_override_fonts/font = SubResource("FontVariation_ujg3o")
+theme_override_font_sizes/font_size = 32
+text = "Timeflow"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1805186065]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1050181213]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control" unique_id=1968134775]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/MarginContainer" unique_id=1626807075]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme = ExtResource("10_f4ix3")
+theme_override_constants/separation = 15
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/HBoxContainer" unique_id=2101058280]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer4" unique_id=272204494]
+layout_mode = 2
+text = "World"
+
+[node name="World_Input" type="LineEdit" parent="CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer4" unique_id=426793702]
+layout_mode = 2
+text = "1"
+alignment = 1
+
+[node name="VBoxContainer6" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/HBoxContainer" unique_id=2117604661]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer6" unique_id=1965897737]
+layout_mode = 2
+text = "Player"
+
+[node name="Player_Input" type="LineEdit" parent="CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer6" unique_id=840663343]
+layout_mode = 2
+text = "1"
+alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/HBoxContainer" unique_id=382059201]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer2" unique_id=2089292256]
+layout_mode = 2
+text = "Enemy"
+
+[node name="Enemy_Input" type="LineEdit" parent="CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer2" unique_id=1474619117]
+layout_mode = 2
+text = "1"
+alignment = 1
+
+[node name="VBoxContainer5" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/HBoxContainer" unique_id=1927427248]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer5" unique_id=1542600866]
+layout_mode = 2
+text = "Environment"
+
+[node name="Environment_Input" type="LineEdit" parent="CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer5" unique_id=1365807016]
+layout_mode = 2
+text = "1"
+alignment = 1
+
+[node name="Control" type="Control" parent="CanvasLayer/Control/MarginContainer" unique_id=226118858]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Control" unique_id=1341330225]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -70.0
+offset_top = -58.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/Control/VBoxContainer3" unique_id=2114538510]
+layout_mode = 2
+
+[node name="Reset" type="Button" parent="CanvasLayer/Control/MarginContainer/Control/VBoxContainer3" unique_id=424882203]
+layout_mode = 2
+text = "Reset"
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer" unique_id=2043661200]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Move : Arrows / ZQSD"
+
+[node name="EnvironmentTimeline" type="Node" parent="." unique_id=1476970138]
+script = ExtResource("2_u5334")
+clock_configuration = ExtResource("9_ulxo8")
+metadata/_custom_type_script = "uid://c21jxmko6icy7"
+
+[node name="GPUParticles2DTimeline" type="Node" parent="." unique_id=308498828 node_paths=PackedStringArray("gpu_particles_2d", "timeline")]
+script = ExtResource("10_43gox")
+gpu_particles_2d = NodePath("../GPUParticles2D")
+timeline = NodePath("../EnvironmentTimeline")
+
+[node name="Area2DTimeline2" type="Node" parent="." unique_id=891477792 node_paths=PackedStringArray("area2D")]
+script = ExtResource("11_5rtqb")
+area2D = NodePath("../TimelineArea2D2")
+timescale_multiplier = 0.1
+metadata/_custom_type_script = "uid://dgc6tyax7xbjn"
+
+[node name="Area2DTimeline3" type="Node" parent="." unique_id=2141467098 node_paths=PackedStringArray("area2D")]
+script = ExtResource("11_5rtqb")
+area2D = NodePath("../TimelineArea2D3")
+timescale_multiplier = 0.1
+metadata/_custom_type_script = "uid://dgc6tyax7xbjn"

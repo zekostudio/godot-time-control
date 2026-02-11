@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://kbvuqggcs6gj"]
+
+[ext_resource type="Script" path="res://addons/timeflow/scripts/timeflow_clock_config.gd" id="1_n5pyo"]
+
+[resource]
+script = ExtResource("1_n5pyo")
+key = "ENEMY"
+default_local_time_scale = 1.0
+default_paused = false
+parent_key = &"WORLD"
+parent_blend_mode = 0
+min_time_scale = -10.0
+max_time_scale = 10.0

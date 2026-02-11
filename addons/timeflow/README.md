@@ -4,9 +4,6 @@ Lightweight, scene-friendly time scaling for Godot 4.5+. Define clocks, route th
 
 ![Godot Timeflow](./addons/timeflow/icons/logo.png)
 
-## Demo
-[Try the demo](https://zekostudio.github.io/godot-timeflow/)
-
 ## Contents
 - Features
 - Compatibility
@@ -15,6 +12,7 @@ Lightweight, scene-friendly time scaling for Godot 4.5+. Define clocks, route th
 - Core Concepts
 - Tween Integration
 - Customization
+- Demo
 
 ## Features
 - Multiple named clocks with parent blending (world, player, enemy, environment by default).
@@ -31,14 +29,15 @@ Godot 4.2+.
 3) In the editor: **Project > Project Settings > Plugins** and enable **Timeflow**.
 
 ## Quick Start
-- The plugin registers `res://addons/timeflow/timeflow.tscn` as an autoload named `Timeflow`.
-- It contains four clocks: `WORLD` (root), `PLAYER`, `ENEMY`, `ENVIRONMENT` (children of `WORLD`).
+1) **Use the provided autoload**
+   - The plugin registers `res://addons/timeflow/timeflow.tscn` as an autoload named `Timeflow`.
+   - It contains four clocks: `WORLD` (root), `PLAYER`, `ENEMY`, `ENVIRONMENT` (children of `WORLD`).
 
-1) **Add a TimeflowTimeline to a scene**
+2) **Add a TimeflowTimeline to a scene**
    - Add a `TimeflowTimeline` node.
    - Assign a `TimeflowClockConfig` resource to `clock_configuration` (for example `player_clock.tres` for the player).
 
-2) **Consume the time scale in code**
+3) **Consume the time scale in code**
    ```gdscript
    extends CharacterBody2D
 
@@ -56,7 +55,7 @@ Godot 4.2+.
        move_and_slide()
    ```
 
-3) **Change time from anywhere**
+4) **Change time from anywhere**
    ```gdscript
    const TimeflowClockConfig = preload("res://addons/timeflow/scripts/timeflow_clock_config.gd")
    @export var clock_configuration: TimeflowClockConfig
@@ -96,10 +95,10 @@ Method:
 Bridge node that exposes the effective time scale of a chosen clock.
 
 Properties:
+- `mode: TimeflowTimelineMode` — `GLOBAL` (default) uses `clock_configuration`; `LOCAL` uses `local_clock`.
 - `time_scale: float` — The resolved time scale of the targeted clock.
-- `mode: TimeflowTimelineMode` — `GLOBAL` (default); `LOCAL`.
-- `clock_configuration: TimeflowClockConfig` — Used when mode is `GLOBAL`.
 - `local_clock: TimeflowClock` — Used when mode is `LOCAL`.
+- `clock_configuration: TimeflowClockConfig` — Used when mode is `GLOBAL`.
 
 ### Timeflow (Singleton / Autoload)
 Registry for all clocks; available globally.
@@ -111,12 +110,12 @@ Methods:
 - `add_clock(configuration: TimeflowClockConfig) -> TimeflowClock`
 - `remove_clock(configuration: TimeflowClockConfig) -> void`
 
-## Helper nodes
+## TimeflowTimeline-aware helper nodes
 Drop these glue scripts next to existing nodes to keep their playback in sync with a `TimeflowTimeline` without rewriting their logic.
 
 - `helpers/timeflow_animation_player_sync.gd` — Drives `AnimationPlayer.speed_scale` from a bound `TimeflowTimeline`.
 - `helpers/timeflow_gpu_particles_2d_sync.gd` / `timeflow_gpu_particles_3d_sync.gd` — Drive particle `speed_scale` in 2D or 3D.
-- `helpers/timeflow_area_2d.gd` / `timeflow_area_3d.gd` — Applies `timescale_multiplier` to bodies entering an `Area2D` or `Area3D`.
+- `helpers/timeflow_area_2d.gd` / `timeflow_area_3d.gd` — Apply `timescale_multiplier` to bodies entering an `Area2D` or `Area3D`.
 
 Area timeline integration fallback order (first match wins):
 1) Method: `set_area_timescale_multiplier(multiplier: float)`
@@ -131,13 +130,13 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 ```
 
-Usage (example for 2D particles):
+Usage pattern (example for 2D particles):
 1) Add a plain `Node` as a sibling or parent, attach `timeflow_gpu_particles_2d_sync.gd`.
 2) Assign `gpu_particles_2d` to your particles node and `timeline` to the relevant `TimeflowTimeline` (e.g., player or enemy).
 3) Press play — particle playback automatically speeds up / slows down with the clock.
 
 ## Tween Integration
-Set the `speed_scale` property to keep a `Tween` synchronized with a `TimeflowTimeline`.
+Use this pattern to keep a Godot `Tween` synchronized with a `TimeflowTimeline`.
 
 ```gdscript
 extends Node2D
@@ -146,13 +145,15 @@ const TimeflowTimeline = preload("res://addons/timeflow/scripts/timeflow_timelin
 
 @export var timeline: TimeflowTimeline
 @export var mover: Node2D
-@export var duration: float = 3.0
+@export var duration: float = 1.5
 
 var _tween: Tween
 
 func _ready() -> void:
     _tween = get_tree().create_tween()
+    _tween.set_loops()
     _tween.tween_property(mover, "position:x", 500.0, duration)
+    _tween.tween_property(mover, "position:x", 100.0, duration)
 
 func _process(_delta: float) -> void:
     if _tween != null:
@@ -166,5 +167,5 @@ func _process(_delta: float) -> void:
 3) In **Project > Project Settings > Addons > Timeflow**, set `autoload_path` to your scene (e.g., `res://scenes/timeflow.tscn`).  
 4) Disable and re-enable the plugin (or restart the editor) to reload.
 
-
-Open the demo scene `res://addons/timeflow/demo/demo.tscn` for a runnable example.
+## Demo
+Open `res://addons/timeflow/demo/demo.tscn` for a runnable example showing multiple clocks.
