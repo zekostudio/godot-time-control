@@ -1,0 +1,145 @@
+extends MarginContainer
+class_name DemoHudShowcase
+
+enum DemoPreset {
+	NORMAL_FLOW,
+	GLOBAL_SLOW_MOTION,
+	PLAYER_ACCELERATED,
+	ENEMY_REWIND,
+	ENVIRONMENT_BURST,
+	GLOBAL_ACCELERATION,
+}
+
+@export var clock_controls: DemoHudClockControls
+@export var showcase_label: Label
+@export var normal_preset_button: Button
+@export var slow_preset_button: Button
+@export var enemy_rewind_preset_button: Button
+@export var acceleration_preset_button: Button
+@export var run_showcase_on_start: bool = true
+@export var showcase_loop: bool = true
+@export var showcase_step_duration: float = 2.2
+@export var stop_showcase_on_manual_input: bool = true
+
+var _showcase_tween: Tween
+var _showcase_active: bool = false
+
+func _ready() -> void:
+	if clock_controls != null and not clock_controls.manual_override_requested.is_connected(_on_manual_override):
+		clock_controls.manual_override_requested.connect(_on_manual_override)
+	_connect_preset_buttons()
+	if showcase_label != null:
+		showcase_label.visible = run_showcase_on_start
+	if run_showcase_on_start:
+		call_deferred("_run_showcase")
+
+func _run_showcase() -> void:
+	if _showcase_active:
+		return
+	_showcase_active = true
+	var preset_order: Array[int] = [
+		DemoPreset.NORMAL_FLOW,
+		DemoPreset.GLOBAL_SLOW_MOTION,
+		DemoPreset.PLAYER_ACCELERATED,
+		DemoPreset.ENEMY_REWIND,
+		DemoPreset.ENVIRONMENT_BURST,
+		DemoPreset.GLOBAL_ACCELERATION,
+	]
+	while _showcase_active:
+		for preset in preset_order:
+			await _showcase_phase(int(preset))
+			if not _showcase_active:
+				break
+		if not showcase_loop:
+			break
+	_showcase_active = false
+
+func _showcase_phase(preset: int) -> void:
+	if not _showcase_active:
+		return
+	_apply_preset(preset)
+	await get_tree().create_timer(showcase_step_duration).timeout
+
+func _apply_preset(preset: int) -> void:
+	if clock_controls == null:
+		return
+	var preset_data: Dictionary = _get_preset_data(preset)
+	if preset_data.is_empty():
+		return
+	clock_controls.apply_scales(
+		float(preset_data["world"]),
+		float(preset_data["player"]),
+		float(preset_data["enemy"]),
+		float(preset_data["environment"])
+	)
+	_animate_showcase_label(
+		str(preset_data["title"]),
+		preset_data["color"],
+		float(preset_data["label_scale"])
+	)
+
+func _get_preset_data(preset: int) -> Dictionary:
+	match preset:
+		DemoPreset.NORMAL_FLOW:
+			return {"title": "Normal Flow", "world": 1.0, "player": 1.0, "enemy": 1.0, "environment": 1.0, "color": Color(1, 1, 1, 1), "label_scale": 1.1}
+		DemoPreset.GLOBAL_SLOW_MOTION:
+			return {"title": "Global Slow Motion", "world": 0.35, "player": 1.0, "enemy": 1.0, "environment": 0.5, "color": Color(0.65, 0.9, 1.0, 1.0), "label_scale": 1.2}
+		DemoPreset.PLAYER_ACCELERATED:
+			return {"title": "Player Accelerated", "world": 0.8, "player": 2.4, "enemy": 0.45, "environment": 1.0, "color": Color(0.65, 1.0, 0.72, 1.0), "label_scale": 1.25}
+		DemoPreset.ENEMY_REWIND:
+			return {"title": "Enemy Rewind", "world": 1.0, "player": 1.0, "enemy": -2.0, "environment": 0.8, "color": Color(0.5, 0.92, 1.0, 1.0), "label_scale": 1.3}
+		DemoPreset.ENVIRONMENT_BURST:
+			return {"title": "Environment Burst", "world": 1.0, "player": 0.8, "enemy": 1.0, "environment": 2.8, "color": Color(1.0, 0.88, 0.58, 1.0), "label_scale": 1.18}
+		DemoPreset.GLOBAL_ACCELERATION:
+			return {"title": "Global Acceleration", "world": 3.0, "player": 1.0, "enemy": 1.0, "environment": 2.0, "color": Color(1.0, 0.72, 0.58, 1.0), "label_scale": 1.2}
+		_:
+			return {}
+
+func _animate_showcase_label(text_value: String, text_color: Color, target_scale: float) -> void:
+	if showcase_label == null:
+		return
+	showcase_label.visible = true
+	showcase_label.text = "Demo: %s" % text_value
+	if _showcase_tween != null:
+		_showcase_tween.kill()
+	showcase_label.modulate = Color(1, 1, 1, 0.65)
+	showcase_label.scale = Vector2.ONE
+	_showcase_tween = create_tween()
+	_showcase_tween.parallel().tween_property(showcase_label, "modulate", text_color, 0.25)
+	_showcase_tween.parallel().tween_property(showcase_label, "scale", Vector2.ONE * target_scale, 0.25)
+	_showcase_tween.tween_property(showcase_label, "scale", Vector2.ONE, 0.35)
+	_showcase_tween.parallel().tween_property(showcase_label, "modulate", text_color.lightened(0.08), 0.35)
+
+func _connect_preset_buttons() -> void:
+	_connect_preset_button(normal_preset_button, DemoPreset.NORMAL_FLOW)
+	_connect_preset_button(slow_preset_button, DemoPreset.GLOBAL_SLOW_MOTION)
+	_connect_preset_button(enemy_rewind_preset_button, DemoPreset.ENEMY_REWIND)
+	_connect_preset_button(acceleration_preset_button, DemoPreset.GLOBAL_ACCELERATION)
+
+func _connect_preset_button(button: Button, preset: int) -> void:
+	if button == null:
+		return
+	var callback := Callable(self, "_on_preset_button_pressed").bind(preset)
+	if not button.pressed.is_connected(callback):
+		button.pressed.connect(callback)
+
+func _on_preset_button_pressed(preset: int) -> void:
+	_stop_showcase_for_manual_override()
+	_apply_preset(preset)
+
+func _on_manual_override() -> void:
+	_stop_showcase_for_manual_override()
+
+func _stop_showcase_for_manual_override() -> void:
+	if not stop_showcase_on_manual_input:
+		return
+	if not _showcase_active:
+		return
+	_showcase_active = false
+	showcase_loop = false
+	if _showcase_tween != null:
+		_showcase_tween.kill()
+	if showcase_label != null:
+		showcase_label.text = "Demo: Manual control"
+		showcase_label.modulate = Color(1, 1, 1, 1)
+		showcase_label.scale = Vector2.ONE

@@ -135,6 +135,30 @@ Usage pattern (example for 2D particles):
 2) Assign `gpu_particles_2d` to your particles node and `timeline` to the relevant `TimeflowTimeline` (e.g., player or enemy).
 3) Press play — particle playback automatically speeds up / slows down with the clock.
 
+## Rewind
+This plugin includes a rewind recorder based on timeline direction:
+
+- `scripts/timeflow_recorder.gd` (`TimeflowRecorder`) — records snapshots and applies them while time is reversed.
+- `scripts/timeflow_rewindable.gd` (`TimeflowRewindable`) — base rewind contract for all rewindable adapters.
+- `helpers/timeflow_rewindable_2d.gd` (`TimeflowRewindable2D`) — captures/restores a `Node2D` transform.
+- `helpers/timeflow_rewindable_path_follow_2d.gd` (`TimeflowRewindablePathFollow2D`) — captures/restores `PathFollow2D.progress`.
+
+Quick setup:
+1) Add a rewindable adapter node (`TimeflowRewindable2D` or `TimeflowRewindablePathFollow2D`) and assign its target.
+2) Add `TimeflowRecorder` to the same scene and assign:
+   - `timeline` to your `TimeflowTimeline`
+   - `rewindables` to one or more `TimeflowRewindable` nodes
+3) Set the clock scale negative (for example `Timeflow.get_clock_by_key("PLAYER").local_time_scale = -1.0`) to rewind.
+4) Return the clock to positive to resume forward simulation and recording.
+
+Recorder tuning:
+- `recording_duration` controls max rewind window (seconds).
+- `recording_interval` controls snapshot frequency (higher frequency = smoother rewind, more memory).
+- `record_when_paused` controls whether snapshots are captured while `time_scale == 0`.
+- `TimeflowRewindable2D.disable_target_processing_while_rewinding` prevents gameplay scripts on that node from fighting restored rewind states.
+- When rewind stops (or reaches the recorded history limit), `TimeflowRecorder` clears history and starts recording from the current state again.
+- `TimeflowRewindablePathFollow2D.snap_on_discontinuity` and `discontinuity_ratio` reduce jitter from large progress jumps (for example loop/reset boundaries).
+
 ## Tween Integration
 Use this pattern to keep a Godot `Tween` synchronized with a `TimeflowTimeline`.
 
@@ -169,3 +193,5 @@ func _process(_delta: float) -> void:
 
 ## Demo
 Open `res://addons/timeflow/demo/demo.tscn` for a runnable example showing multiple clocks.
+The scene includes an automatic showcase loop that demonstrates slow motion, acceleration, and rewind on different timelines.
+It also includes preset buttons in the HUD to trigger each demo mode on demand.

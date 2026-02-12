@@ -2,4 +2,4 @@
 
 [resource]
 Button/colors/font_focus_color = Color(0.44333336, 0, 0.95, 1)
-Button/colors/font_hover_color = Color(0.9024998, 0, 0.95, 1)
+Button/colors/font_hover_color = Color(0.44313726, 0, 0.9490196, 1)
