@@ -278,7 +278,6 @@ texture = SubResource("GradientTexture2D_ujg3o")
 
 [node name="TimeflowTimeline" type="Node" parent="Dot" unique_id=280519675]
 script = ExtResource("2_u5334")
-mode = 1
 clock_configuration = ExtResource("8_bes37")
 
 [node name="Dot2" type="CharacterBody2D" parent="." unique_id=1725069509 node_paths=PackedStringArray("timeline", "path_follow_2d")]
