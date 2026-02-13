@@ -71,6 +71,7 @@ func _step_rewind(delta: float, time_scale: float) -> void:
 		_end_rewind(true)
 		if not _emitted_exhausted:
 			_emitted_exhausted = true
+			_notify_rewind_exhausted()
 			rewind_exhausted.emit()
 		return
 	_emitted_exhausted = false
@@ -158,6 +159,13 @@ func _notify_rewind_stopped() -> void:
 		if typed_rewindable == null:
 			continue
 		typed_rewindable.on_timeflow_rewind_stopped()
+
+func _notify_rewind_exhausted() -> void:
+	for rewindable in rewindables:
+		var typed_rewindable: TimeflowRewindable = rewindable
+		if typed_rewindable == null:
+			continue
+		typed_rewindable.on_timeflow_rewind_exhausted()
 
 func _end_rewind(clear_history: bool) -> void:
 	if _is_rewinding:

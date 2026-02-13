@@ -1,5 +1,16 @@
 [gd_resource type="Theme" format=3 uid="uid://dljvspeef0gro"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1762d"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pyoh2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eebej"]
+
 [resource]
-Button/colors/font_focus_color = Color(0.44333336, 0, 0.95, 1)
-Button/colors/font_hover_color = Color(0.44313726, 0, 0.9490196, 1)
+Button/colors/font_focus_color = Color(0.78039217, 0.42745098, 0, 1)
+Button/colors/font_hover_color = Color(0.78039217, 0.42745098, 0, 1)
+Button/colors/font_pressed_color = Color(0.78039217, 0.42745098, 0, 1)
+Button/styles/focus = SubResource("StyleBoxEmpty_1762d")
+Button/styles/hover = SubResource("StyleBoxEmpty_pyoh2")
+Button/styles/normal = SubResource("StyleBoxEmpty_eebej")
+Button/styles/pressed = SubResource("StyleBoxEmpty_pyoh2")

@@ -19,3 +19,6 @@ func on_timeflow_rewind_started() -> void:
 
 func on_timeflow_rewind_stopped() -> void:
 	pass
+
+func on_timeflow_rewind_exhausted() -> void:
+	pass

@@ -134,6 +134,7 @@ Usage pattern (example for 2D particles):
 1) Add a plain `Node` as a sibling or parent, attach `timeflow_gpu_particles_2d_sync.gd`.
 2) Assign `gpu_particles_2d` to your particles node and `timeline` to the relevant `TimeflowTimeline` (e.g., player or enemy).
 3) Press play — particle playback automatically speeds up / slows down with the clock.
+4) For rewind setups, keep `use_absolute_time_scale = true` (default) so particles simulate forward while rewind helpers invert emission direction.
 
 ## Rewind
 This plugin includes a rewind recorder based on timeline direction:
@@ -142,6 +143,7 @@ This plugin includes a rewind recorder based on timeline direction:
 - `scripts/timeflow_rewindable.gd` (`TimeflowRewindable`) — base rewind contract for all rewindable adapters.
 - `helpers/timeflow_rewindable_2d.gd` (`TimeflowRewindable2D`) — captures/restores a `Node2D` transform.
 - `helpers/timeflow_rewindable_path_follow_2d.gd` (`TimeflowRewindablePathFollow2D`) — captures/restores `PathFollow2D.progress`.
+- `helpers/timeflow_rewindable_gpu_particles_2d.gd` / `timeflow_rewindable_gpu_particles_3d.gd` — invert GPU particle initial velocity while rewinding.
 
 Quick setup:
 1) Add a rewindable adapter node (`TimeflowRewindable2D` or `TimeflowRewindablePathFollow2D`) and assign its target.
@@ -156,6 +158,7 @@ Recorder tuning:
 - `recording_interval` controls snapshot frequency (higher frequency = smoother rewind, more memory).
 - `record_when_paused` controls whether snapshots are captured while `time_scale == 0`.
 - `TimeflowRewindable2D.disable_target_processing_while_rewinding` prevents gameplay scripts on that node from fighting restored rewind states.
+- `TimeflowRewindableGPUParticles2D` / `TimeflowRewindableGPUParticles3D` require a `ParticleProcessMaterial` and can optionally duplicate it per-node before rewinding.
 - When rewind stops (or reaches the recorded history limit), `TimeflowRecorder` clears history and starts recording from the current state again.
 - `TimeflowRewindablePathFollow2D.snap_on_discontinuity` and `discontinuity_ratio` reduce jitter from large progress jumps (for example loop/reset boundaries).
 

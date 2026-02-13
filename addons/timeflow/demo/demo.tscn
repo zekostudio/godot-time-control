@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://11vwmn2jrhne" path="res://addons/timeflow/demo/demo_hud_showcase.gd" id="2_n8m2u"]
 [ext_resource type="Script" uid="uid://c21jxmko6icy7" path="res://addons/timeflow/scripts/timeflow_timeline.gd" id="2_u5334"]
 [ext_resource type="Resource" uid="uid://qmafxony84f7" path="res://addons/timeflow/resources/world_clock.tres" id="2_ujg3o"]
-[ext_resource type="Texture2D" uid="uid://cvi6nbtp2r4hf" path="res://addons/timeflow/demo/player.svg" id="4_ftd4g"]
 [ext_resource type="Resource" uid="uid://dovo5yrk24mr" path="res://addons/timeflow/resources/player_clock.tres" id="4_r45sy"]
 [ext_resource type="Script" uid="uid://b1n0n5yg7ftah" path="res://addons/timeflow/demo/enemy.gd" id="6_jsae0"]
 [ext_resource type="Resource" uid="uid://kbvuqggcs6gj" path="res://addons/timeflow/resources/enemy_clock.tres" id="8_bes37"]
@@ -17,6 +16,7 @@
 [ext_resource type="Script" uid="uid://dgc6tyax7xbjn" path="res://addons/timeflow/helpers/timeflow_area_2d.gd" id="11_5rtqb"]
 [ext_resource type="Script" uid="uid://0i4sn5pjnv4c" path="res://addons/timeflow/scripts/timeflow_recorder.gd" id="15_5d3er"]
 [ext_resource type="Script" uid="uid://qxu63kb76r76" path="res://addons/timeflow/helpers/timeflow_rewindable_path_follow_2d.gd" id="16_ja4va"]
+[ext_resource type="Script" uid="uid://dp0yplbbujobk" path="res://addons/timeflow/helpers/timeflow_rewindable_gpu_particles_2d.gd" id="17_motou"]
 
 [sub_resource type="Gradient" id="Gradient_qtq74"]
 offsets = PackedFloat32Array(1)
@@ -44,14 +44,20 @@ gradient = SubResource("Gradient_ujg3o")
 width = 15
 height = 4
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_f4ix3"]
-size = Vector2(169.3179, 5)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_motou"]
-size = Vector2(149.20355, 3.0832863)
+size = Vector2(162.87828, 2.4697666)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_5rtqb"]
-radius = 12.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y45wy"]
+size = Vector2(159.62335, 2.4697666)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2h3um"]
+size = Vector2(177.22256, 0.04974079)
+
+[sub_resource type="Curve2D" id="Curve2D_mwm2l"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 180, 255, 0, 0, 0, 0, 355, 257, 0, 0, 0, 0, 263, 125, 0, 0, 0, 0, 179, 255)
+}
+point_count = 4
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_f4ix3"]
 radius = 6.7247915
@@ -62,8 +68,8 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_ujg3o"]
 gradient = SubResource("Gradient_5rtqb")
-width = 100
-height = 100
+width = 40
+height = 40
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 0.5)
@@ -74,8 +80,23 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_newt1"]
 gradient = SubResource("Gradient_qk2ka")
-width = 50
-height = 50
+width = 40
+height = 40
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5rtqb"]
+radius = 12.0
+
+[sub_resource type="Gradient" id="Gradient_mwm2l"]
+offsets = PackedFloat32Array(0.9911765, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mwm2l"]
+gradient = SubResource("Gradient_mwm2l")
+width = 80
+height = 80
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 0.5)
@@ -83,12 +104,6 @@ fill_to = Vector2(1, 0.5)
 [sub_resource type="Curve2D" id="Curve2D_a1ki5"]
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 185.63654, 133, 0, 0, 0, 0, 269.6365, 257, 0, 0, 0, 0, 353.63654, 133, 0, 0, 0, 0, 187.63654, 134.00002)
-}
-point_count = 4
-
-[sub_resource type="Curve2D" id="Curve2D_mwm2l"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 180, 255, 0, 0, 0, 0, 355, 257, 0, 0, 0, 0, 263, 125, 0, 0, 0, 0, 179, 255)
 }
 point_count = 4
 
@@ -122,11 +137,11 @@ curve = SubResource("Curve_f4ix3")
 lifetime_randomness = 0.25
 particle_flag_disable_z = true
 emission_shape = 3
-emission_box_extents = Vector3(700, 40, 1)
-direction = Vector3(0, -1, 0)
+emission_box_extents = Vector3(700, 400, 1)
+direction = Vector3(-1, 0, 0)
 spread = 0.0
-initial_velocity_min = 10.0
-initial_velocity_max = 30.0
+initial_velocity_min = 30.0
+initial_velocity_max = 200.0
 gravity = Vector3(0, 0, 0)
 scale_max = 2.0
 scale_curve = SubResource("CurveTexture_ujg3o")
@@ -159,7 +174,6 @@ editor_draw_drag_margin = true
 position = Vector2(-508, 132.19278)
 
 [node name="Sprite2D2" type="Sprite2D" parent="Triangle" unique_id=1297118348]
-modulate = Color(0.78, 0.429, 0, 1)
 z_index = 1
 position = Vector2(311.63525, -227.90744)
 scale = Vector2(20, 0.5141389)
@@ -179,23 +193,29 @@ rotation = 2.155534
 scale = Vector2(9.480136, 0.67349327)
 texture = SubResource("GradientTexture2D_n2ig2")
 
-[node name="Triangle2" type="Node2D" parent="." unique_id=996410060]
-position = Vector2(-336.36475, 331)
+[node name="Triangle2" type="Node2D" parent="." unique_id=1729831119]
+position = Vector2(-340, 175)
 
-[node name="Sprite2D2" type="Sprite2D" parent="Triangle2" unique_id=1070920656]
+[node name="Triangle2" type="Node2D" parent="Triangle2" unique_id=996410060]
+position = Vector2(-11.090179, 339.3333)
+scale = Vector2(1.8, 1.8)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Triangle2/Triangle2" unique_id=1070920656]
+modulate = Color(0.78, 0.429, 0, 1)
 z_index = 1
 position = Vector2(311.63525, -227.90744)
 scale = Vector2(20, 0.5141389)
 texture = SubResource("GradientTexture2D_f4ix3")
 
-[node name="Sprite2D4" type="Sprite2D" parent="Triangle2" unique_id=1579479407]
+[node name="Sprite2D4" type="Sprite2D" parent="Triangle2/Triangle2" unique_id=1579479407]
+modulate = Color(0.78, 0.429, 0, 1)
 z_index = 1
 position = Vector2(353.44385, -293.514)
 rotation = 0.9604495
 scale = Vector2(10.614918, -0.62287223)
 texture = SubResource("GradientTexture2D_n2ig2")
 
-[node name="Sprite2D5" type="Sprite2D" parent="Triangle2" unique_id=1272554262]
+[node name="Sprite2D5" type="Sprite2D" parent="Triangle2/Triangle2" unique_id=1272554262]
 modulate = Color(0.78, 0.429, 0, 1)
 z_index = 1
 position = Vector2(264.80142, -292.7426)
@@ -203,51 +223,44 @@ rotation = 2.155534
 scale = Vector2(10.261388, 0.67349327)
 texture = SubResource("GradientTexture2D_n2ig2")
 
-[node name="TimelineArea2D2" type="Area2D" parent="." unique_id=1241594139]
-position = Vector2(-189.36475, 183)
-collision_layer = 0
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TimelineArea2D2" unique_id=1725572879]
-position = Vector2(-6.5000305, -277.71466)
-shape = SubResource("RectangleShape2D_f4ix3")
-
-[node name="TimelineArea2D3" type="Area2D" parent="." unique_id=1807219876]
-position = Vector2(-189.36475, 183)
+[node name="Triangle3" type="Area2D" parent="Triangle2" unique_id=1807219876]
+position = Vector2(-100.454926, 68.33333)
+scale = Vector2(1.8, 1.8)
 collision_layer = 0
 collision_mask = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TimelineArea2D3" unique_id=146220187]
-position = Vector2(116.41281, -144.29459)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Triangle2/Triangle3" unique_id=146220187]
+position = Vector2(312.32767, -139.63539)
 rotation = -0.9931163
 shape = SubResource("RectangleShape2D_motou")
 
-[node name="Player" type="CharacterBody2D" parent="." unique_id=1248473571 node_paths=PackedStringArray("timeline")]
-position = Vector2(1, -229)
-collision_mask = 0
-motion_mode = 1
-safe_margin = 0.1
-script = ExtResource("1_8gkyk")
-timeline = NodePath("../PlayerTimeline")
-speed = 500.0
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Triangle2/Triangle3" unique_id=1854350747]
+position = Vector2(404.2043, -142.46323)
+rotation = -2.1771104
+shape = SubResource("RectangleShape2D_y45wy")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1274705601]
-z_index = 2
-shape = SubResource("CircleShape2D_5rtqb")
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Triangle2/Triangle3" unique_id=837718354]
+position = Vector2(361.38885, -75.45747)
+rotation = 3.1407664
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_2h3um")
 
-[node name="Sprite2D" type="Sprite2D" parent="Player" unique_id=519459622]
-z_index = 1
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("4_ftd4g")
-metadata/_aseprite_wizard_interface_config_ = {
-"layer_section": false
-}
+[node name="Triangle4" type="Path2D" parent="Triangle2" unique_id=1769113969]
+position = Vector2(71.545074, -530.6667)
+scale = Vector2(1.8, 1.8)
+curve = SubResource("Curve2D_mwm2l")
+
+[node name="PathFollow2D2" type="PathFollow2D" parent="Triangle2/Triangle4" unique_id=972438607]
+position = Vector2(180, 255)
+rotation = 0.011428075
+loop = false
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Triangle2/Triangle4/PathFollow2D2" unique_id=453735051]
+remote_path = NodePath("../../../../Dot2")
 
 [node name="Dot" type="CharacterBody2D" parent="." unique_id=1260603408 node_paths=PackedStringArray("timeline", "path_follow_2d", "recorder")]
-modulate = Color(0.69, 0.3795, 0, 1)
 position = Vector2(-277.36475, -95.999985)
 rotation = 0.9753866
-scale = Vector2(1.0000001, 1.0000001)
 collision_layer = 2
 collision_mask = 0
 motion_mode = 1
@@ -256,10 +269,10 @@ script = ExtResource("6_jsae0")
 timeline = NodePath("../EnemyTimeline")
 path_follow_2d = NodePath("../Path2D/PathFollow2D")
 recorder = NodePath("../TimeflowEnemyRecorder")
-tween_duration = 0.75
-rewind_tint = Color(0.4509804, 1, 1, 1)
+tween_duration = 1.5
+rewind_tint = Color(0, 0.83333325, 1, 1)
 rewind_tint_strength = 1.0
-rewind_pulse_speed = 2.1
+rewind_pulse_speed = 0.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Dot" unique_id=1862610305]
 z_index = 2
@@ -267,21 +280,21 @@ shape = SubResource("CircleShape2D_f4ix3")
 
 [node name="Sprite2D" type="Sprite2D" parent="Dot" unique_id=400828478]
 z_index = 1
-scale = Vector2(0.3, 0.3)
+scale = Vector2(0.5, 0.5)
 texture = SubResource("GradientTexture2D_ujg3o")
 
 [node name="Dot2" type="CharacterBody2D" parent="." unique_id=1725069509 node_paths=PackedStringArray("timeline", "path_follow_2d", "recorder")]
 modulate = Color(0.69, 0.3795, 0, 1)
-position = Vector2(-112.364746, 102)
+position = Vector2(55.545074, 103.33331)
 rotation = 0.011428075
-scale = Vector2(0.99999994, 0.99999994)
+scale = Vector2(1.8, 1.8)
 collision_layer = 4
 collision_mask = 0
 motion_mode = 1
 safe_margin = 0.1
 script = ExtResource("6_jsae0")
 timeline = NodePath("../EnemyTimeline")
-path_follow_2d = NodePath("../Path2D2/PathFollow2D2")
+path_follow_2d = NodePath("../Triangle2/Triangle4/PathFollow2D2")
 recorder = NodePath("../TimeflowEnemyRecorder")
 tween_duration = 0.75
 tween_start_ratio = 1.0
@@ -296,6 +309,28 @@ z_index = 1
 scale = Vector2(0.5, 0.5)
 texture = SubResource("GradientTexture2D_newt1")
 
+[node name="Player" type="CharacterBody2D" parent="." unique_id=1248473571 node_paths=PackedStringArray("timeline")]
+position = Vector2(129, -244)
+collision_mask = 0
+motion_mode = 1
+safe_margin = 0.1
+script = ExtResource("1_8gkyk")
+timeline = NodePath("../PlayerTimeline")
+speed = 500.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1274705601]
+z_index = 2
+shape = SubResource("CircleShape2D_5rtqb")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player" unique_id=519459622]
+modulate = Color(0.4560001, 0.04000002, 1, 1)
+z_index = 1
+scale = Vector2(0.5, 0.5)
+texture = SubResource("GradientTexture2D_mwm2l")
+metadata/_aseprite_wizard_interface_config_ = {
+"layer_section": false
+}
+
 [node name="Path2D" type="Path2D" parent="." unique_id=1513258298]
 position = Vector2(-463.00128, -229)
 scale = Vector2(1.0000001, 1.0000001)
@@ -309,26 +344,13 @@ loop = false
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D/PathFollow2D" unique_id=253318310]
 remote_path = NodePath("../../../Dot")
 
-[node name="Path2D2" type="Path2D" parent="." unique_id=1769113969]
-position = Vector2(-292.36475, -153)
-curve = SubResource("Curve2D_mwm2l")
-
-[node name="PathFollow2D2" type="PathFollow2D" parent="Path2D2" unique_id=972438607]
-position = Vector2(180, 255)
-rotation = 0.011428075
-loop = false
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D2/PathFollow2D2" unique_id=453735051]
-remote_path = NodePath("../../../Dot2")
-
 [node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=869557369]
 modulate = Color(1, 1, 1, 0.37254903)
-position = Vector2(0, 79)
-scale = Vector2(1, 12.1875)
 amount = 80
 texture = SubResource("GradientTexture2D_43gox")
 lifetime = 2.0
 preprocess = 1.22
+local_coords = true
 process_material = SubResource("ParticleProcessMaterial_5rtqb")
 
 [node name="Control2" type="Control" parent="." unique_id=1054282312]
@@ -354,18 +376,17 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -399.0
-offset_top = 4.0
-offset_right = -57.0
-offset_bottom = 99.0
+offset_left = -318.0
+offset_top = -21.0
+offset_right = 24.0
+offset_bottom = 74.0
 grow_horizontal = 0
 size_flags_horizontal = 8
 size_flags_vertical = 8
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = SubResource("FontVariation_f4ix3")
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 18
 text = "GODOT"
-horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Control2" type="Control" parent="Control2/Control" unique_id=1438581411]
@@ -373,10 +394,10 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -301.0
-offset_top = 100.0
-offset_right = -301.0
-offset_bottom = 100.0
+offset_left = -343.0
+offset_top = 64.0
+offset_right = -343.0
+offset_bottom = 64.0
 grow_horizontal = 0
 mouse_filter = 2
 
@@ -393,7 +414,7 @@ theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = SubResource("FontVariation_ujg3o")
-theme_override_font_sizes/font_size = 64
+theme_override_font_sizes/font_size = 48
 text = "Timeflow"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -411,17 +432,17 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("2_3m4g1")
-world_input = NodePath("MarginContainer/HBoxContainer/VBoxContainer4/World_Input")
-player_input = NodePath("MarginContainer/HBoxContainer/VBoxContainer6/Player_Input")
-enemy_input = NodePath("MarginContainer/HBoxContainer/VBoxContainer2/Enemy_Input")
-environment_input = NodePath("MarginContainer/HBoxContainer/VBoxContainer5/Environment_Input")
+world_input = NodePath("MarginContainer/Control3/HBoxContainer/VBoxContainer4/World_Input")
+player_input = NodePath("MarginContainer/Control3/HBoxContainer/VBoxContainer6/Player_Input")
+enemy_input = NodePath("MarginContainer/Control3/HBoxContainer/VBoxContainer2/Enemy_Input")
+environment_input = NodePath("MarginContainer/Control3/HBoxContainer/VBoxContainer5/Environment_Input")
 reset_button = NodePath("MarginContainer/Control/VBoxContainer3/Reset")
 world_clock_configuration = ExtResource("2_ujg3o")
 player_clock_configuration = ExtResource("4_r45sy")
 enemy_clock_configuration = ExtResource("8_bes37")
 environment_clock_configuration = ExtResource("9_ulxo8")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control" unique_id=1968134775 node_paths=PackedStringArray("clock_controls", "showcase_label", "normal_preset_button", "slow_preset_button", "enemy_rewind_preset_button", "acceleration_preset_button")]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control" unique_id=1968134775 node_paths=PackedStringArray("clock_controls", "normal_preset_button", "slow_preset_button", "rewind_preset_button", "acceleration_preset_button")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -436,73 +457,81 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 script = ExtResource("2_n8m2u")
 clock_controls = NodePath("..")
-showcase_label = NodePath("ShowcaseLabel")
-normal_preset_button = NodePath("PresetButtons/Normal")
-slow_preset_button = NodePath("PresetButtons/Slow")
-enemy_rewind_preset_button = NodePath("PresetButtons/Rewind")
-acceleration_preset_button = NodePath("PresetButtons/Fast")
+normal_preset_button = NodePath("Control2/PresetButtons/Normal")
+slow_preset_button = NodePath("Control2/PresetButtons/Slow")
+rewind_preset_button = NodePath("Control2/PresetButtons/Rewind")
+acceleration_preset_button = NodePath("Control2/PresetButtons/Fast")
 run_showcase_on_start = false
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/MarginContainer" unique_id=1626807075]
+[node name="Control3" type="Control" parent="CanvasLayer/Control/MarginContainer" unique_id=1059730443]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 8
-theme = ExtResource("10_f4ix3")
-theme_override_constants/separation = 15
+mouse_filter = 2
 
-[node name="VBoxContainer4" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/HBoxContainer" unique_id=2101058280]
+[node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Control3" unique_id=96887125]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 155.0
+offset_right = 117.0
+offset_bottom = 405.0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme = ExtResource("10_f4ix3")
+theme_override_constants/separation = 6
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Control3/HBoxContainer" unique_id=2101058280]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer4" unique_id=272204494]
+[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/Control3/HBoxContainer/VBoxContainer4" unique_id=272204494]
 layout_mode = 2
 text = "World"
 
-[node name="World_Input" type="LineEdit" parent="CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer4" unique_id=426793702]
+[node name="World_Input" type="LineEdit" parent="CanvasLayer/Control/MarginContainer/Control3/HBoxContainer/VBoxContainer4" unique_id=426793702]
 layout_mode = 2
 text = "1"
 alignment = 1
 
-[node name="VBoxContainer6" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/HBoxContainer" unique_id=2117604661]
+[node name="VBoxContainer6" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Control3/HBoxContainer" unique_id=2117604661]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer6" unique_id=1965897737]
+[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/Control3/HBoxContainer/VBoxContainer6" unique_id=1965897737]
 layout_mode = 2
 text = "Player"
 
-[node name="Player_Input" type="LineEdit" parent="CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer6" unique_id=840663343]
+[node name="Player_Input" type="LineEdit" parent="CanvasLayer/Control/MarginContainer/Control3/HBoxContainer/VBoxContainer6" unique_id=840663343]
 layout_mode = 2
 text = "1"
 alignment = 1
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/HBoxContainer" unique_id=382059201]
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Control3/HBoxContainer" unique_id=382059201]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer2" unique_id=2089292256]
+[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/Control3/HBoxContainer/VBoxContainer2" unique_id=2089292256]
 layout_mode = 2
-text = "Enemy"
+text = "Objects"
 
-[node name="Enemy_Input" type="LineEdit" parent="CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer2" unique_id=1474619117]
+[node name="Enemy_Input" type="LineEdit" parent="CanvasLayer/Control/MarginContainer/Control3/HBoxContainer/VBoxContainer2" unique_id=1474619117]
 layout_mode = 2
 text = "1"
 alignment = 1
 
-[node name="VBoxContainer5" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/HBoxContainer" unique_id=1927427248]
+[node name="VBoxContainer5" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Control3/HBoxContainer" unique_id=1927427248]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer5" unique_id=1542600866]
+[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/Control3/HBoxContainer/VBoxContainer5" unique_id=1542600866]
 layout_mode = 2
 text = "Environment"
 
-[node name="Environment_Input" type="LineEdit" parent="CanvasLayer/Control/MarginContainer/HBoxContainer/VBoxContainer5" unique_id=1365807016]
+[node name="Environment_Input" type="LineEdit" parent="CanvasLayer/Control/MarginContainer/Control3/HBoxContainer/VBoxContainer5" unique_id=1365807016]
 layout_mode = 2
 text = "1"
 alignment = 1
 
 [node name="Control" type="Control" parent="CanvasLayer/Control/MarginContainer" unique_id=226118858]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 
@@ -529,12 +558,14 @@ layout_mode = 2
 text = "Reset"
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer" unique_id=2043661200]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 text = "Move : Arrows / ZQSD"
 
 [node name="ShowcaseLabel" type="Label" parent="CanvasLayer/Control/MarginContainer" unique_id=965432188]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -544,34 +575,54 @@ theme_override_font_sizes/font_size = 24
 text = "Demo: Normal Flow"
 horizontal_alignment = 1
 
-[node name="PresetButtons" type="HFlowContainer" parent="CanvasLayer/Control/MarginContainer" unique_id=1879130454]
+[node name="Control2" type="Control" parent="CanvasLayer/Control/MarginContainer" unique_id=1677159302]
 layout_mode = 2
+mouse_filter = 2
+
+[node name="PresetButtons" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Control2" unique_id=1533705852]
+custom_minimum_size = Vector2(120, 150)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = -154.0
+offset_right = 138.0
+offset_bottom = -4.0
+grow_vertical = 0
 size_flags_horizontal = 0
 size_flags_vertical = 4
 theme = ExtResource("10_f4ix3")
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 8
+theme_override_constants/separation = 8
 alignment = 1
 
-[node name="Normal" type="Button" parent="CanvasLayer/Control/MarginContainer/PresetButtons" unique_id=1830472155]
+[node name="Normal" type="Button" parent="CanvasLayer/Control/MarginContainer/Control2/PresetButtons" unique_id=1830472155]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "Normal"
+alignment = 0
 
-[node name="Slow" type="Button" parent="CanvasLayer/Control/MarginContainer/PresetButtons" unique_id=1898787410]
+[node name="Slow" type="Button" parent="CanvasLayer/Control/MarginContainer/Control2/PresetButtons" unique_id=1898787410]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Global Slow"
+size_flags_vertical = 3
+text = "Slow"
+alignment = 0
 
-[node name="Fast" type="Button" parent="CanvasLayer/Control/MarginContainer/PresetButtons" unique_id=1270890985]
+[node name="Fast" type="Button" parent="CanvasLayer/Control/MarginContainer/Control2/PresetButtons" unique_id=1270890985]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Global Fast"
+size_flags_vertical = 3
+text = "Fast"
+alignment = 0
 
-[node name="Rewind" type="Button" parent="CanvasLayer/Control/MarginContainer/PresetButtons" unique_id=138462077]
+[node name="Rewind" type="Button" parent="CanvasLayer/Control/MarginContainer/Control2/PresetButtons" unique_id=138462077]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Enemy Rewind"
+size_flags_vertical = 3
+text = "Rewind"
+alignment = 0
 
 [node name="PlayerTimeline" type="Node" parent="." unique_id=1839820458]
 script = ExtResource("2_u5334")
@@ -591,15 +642,9 @@ script = ExtResource("10_43gox")
 gpu_particles_2d = NodePath("../GPUParticles2D")
 timeline = NodePath("../EnvironmentTimeline")
 
-[node name="Area2DTimeline" type="Node" parent="." unique_id=891477792 node_paths=PackedStringArray("area2D")]
-script = ExtResource("11_5rtqb")
-area2D = NodePath("../TimelineArea2D2")
-timescale_multiplier = 0.1
-metadata/_custom_type_script = "uid://dgc6tyax7xbjn"
-
 [node name="Area2DTimeline2" type="Node" parent="." unique_id=2141467098 node_paths=PackedStringArray("area2D")]
 script = ExtResource("11_5rtqb")
-area2D = NodePath("../TimelineArea2D3")
+area2D = NodePath("../Triangle2/Triangle3")
 timescale_multiplier = 0.1
 metadata/_custom_type_script = "uid://dgc6tyax7xbjn"
 
@@ -609,20 +654,38 @@ path_follow_2d = NodePath("../Path2D/PathFollow2D")
 
 [node name="EnemyRewindable2" type="Node" parent="." unique_id=1121975899 node_paths=PackedStringArray("path_follow_2d")]
 script = ExtResource("16_ja4va")
-path_follow_2d = NodePath("../Path2D2/PathFollow2D2")
+path_follow_2d = NodePath("../Triangle2/Triangle4/PathFollow2D2")
 
-[node name="PlayerRewindable" type="Node" parent="." unique_id=308831411 node_paths=PackedStringArray("target")]
+[node name="PlayerRewindable" type="Node" parent="." unique_id=308831411 node_paths=PackedStringArray("target", "timeline")]
 script = ExtResource("10_8lyg8")
 target = NodePath("../Player")
+lock_target_while_negative_after_rewind_exhausted = true
+timeline = NodePath("../PlayerTimeline")
+
+[node name="RewindableGPUParticles2D" type="Node" parent="." unique_id=1225075071 node_paths=PackedStringArray("target", "timeline", "particles_sync")]
+script = ExtResource("17_motou")
+target = NodePath("../GPUParticles2D")
+timeline = NodePath("../EnvironmentTimeline")
+particles_sync = NodePath("../GPUParticles2DTimeline")
+restart_on_rewind_start = false
 
 [node name="TimeflowEnemyRecorder" type="Node" parent="." unique_id=1265384096 node_paths=PackedStringArray("timeline", "rewindables")]
 script = ExtResource("15_5d3er")
 timeline = NodePath("../EnemyTimeline")
 rewindables = [NodePath("../EnemyRewindable"), NodePath("../EnemyRewindable2")]
-recording_duration = 15.0
+recording_duration = 60.0
+recording_interval = 0.09999999999999999
 
 [node name="TimeflowPlayerRecorder" type="Node" parent="." unique_id=1990443133 node_paths=PackedStringArray("timeline", "rewindables")]
 script = ExtResource("15_5d3er")
 timeline = NodePath("../PlayerTimeline")
 rewindables = [NodePath("../PlayerRewindable")]
-recording_duration = 15.0
+recording_duration = 60.0
+recording_interval = 0.09999999999999999
+
+[node name="TimeflowEnvironmentRecorder" type="Node" parent="." unique_id=1189891092 node_paths=PackedStringArray("timeline", "rewindables")]
+script = ExtResource("15_5d3er")
+timeline = NodePath("../EnvironmentTimeline")
+rewindables = [NodePath("../RewindableGPUParticles2D")]
+recording_duration = 60.0
+recording_interval = 0.09999999999999999
