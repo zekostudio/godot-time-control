@@ -136,7 +136,8 @@ func _ensure_buffer_capacity(force: bool = false) -> void:
 func _stop_rewind_if_needed() -> void:
 	if not _is_rewinding:
 		return
-	_end_rewind(true)
+	if _is_rewinding:
+		_end_rewind(true)
 
 func _try_add_parent_rewindable() -> void:
 	var parent := get_parent()
