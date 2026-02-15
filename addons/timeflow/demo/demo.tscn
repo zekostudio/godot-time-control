@@ -16,15 +16,26 @@
 [ext_resource type="Script" uid="uid://dgc6tyax7xbjn" path="res://addons/timeflow/scripts/adapters/areas/timeflow_area_2d.gd" id="11_5rtqb"]
 [ext_resource type="Script" uid="uid://0i4sn5pjnv4c" path="res://addons/timeflow/scripts/rewind/timeflow_recorder.gd" id="15_5d3er"]
 [ext_resource type="Script" path="res://addons/timeflow/scripts/rewind/timeflow_rewindable_path_follow_2d.gd" id="16_ja4va"]
-[ext_resource type="Script" path="res://addons/timeflow/scripts/rewind/timeflow_rewindable_gpu_particles_2d.gd" id="17_motou"]
+[ext_resource type="Script" uid="uid://dp0yplbbujobk" path="res://addons/timeflow/scripts/rewind/timeflow_rewindable_gpu_particles_2d.gd" id="17_motou"]
 
 [sub_resource type="Gradient" id="Gradient_qtq74"]
 offsets = PackedFloat32Array(1)
-colors = PackedColorArray(0.030334815, 0.043138005, 0.07010319, 1)
+colors = PackedColorArray(0.036, 0.038199987, 0.08, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_ulxo8"]
 gradient = SubResource("Gradient_qtq74")
 width = 1280
+
+[sub_resource type="Gradient" id="Gradient_y45wy"]
+offsets = PackedFloat32Array(0.47941175, 0.6382353, 0.7147059)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2h3um"]
+gradient = SubResource("Gradient_y45wy")
+width = 156
+height = 156
+fill = 1
+fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="Gradient" id="Gradient_t8xqc"]
 offsets = PackedFloat32Array(0, 0.67941177, 0.7205882)
@@ -37,14 +48,17 @@ height = 60
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_y45wy"]
+radius = 42.789566
+
 [sub_resource type="Gradient" id="Gradient_motou"]
-offsets = PackedFloat32Array(0.65588236, 0.6735294)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+offsets = PackedFloat32Array(0.47941175, 0.6382353, 0.7147059)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_y45wy"]
 gradient = SubResource("Gradient_motou")
-width = 200
-height = 200
+width = 156
+height = 156
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
@@ -54,13 +68,13 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_n2ig2"]
 gradient = SubResource("Gradient_ujg3o")
-width = 150
-height = 150
+width = 80
+height = 80
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_motou"]
-radius = 94.4853
+radius = 73.38596
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_f4ix3"]
 radius = 6.7247915
@@ -106,13 +120,13 @@ fill_to = Vector2(1, 0.5)
 
 [sub_resource type="Curve2D" id="Curve2D_a1ki5"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 829.0012, 228.99997, 134.02948, -1.9797049, -134.02948, 1.9797049, 681.0012, 77.999985, 47.579193, -0.8838476, -47.579193, 0.8838476, 273.00122, 278.99997, -0.18770826, 3.7865791, 0.18770826, -3.7865791, 224.00125, 231.99997, -48.81213, 0.5941833, 48.81213, -0.5941833, 274.00122, 185.99997, -111.14488, 0, 111.14488, 0, 678.0012, 385.99994, 0.65196776, 59.65191, -0.65196776, -59.65191, 829.0012, 228.99997)
+"points": PackedVector2Array(0, 0, 0, 0, 862.00793, 5, 43.135532, -42.76403, -43.135532, 42.76403, 766.1818, 9, 88.87826, -84.70415, -88.87826, 84.70415, 611.7952, 330.99994, 54.48517, -45.212276, -54.48517, 45.212276, 217.8432, 382.99994, -3.198821, -8.655508, 3.198821, 8.655508, 198.67798, 482.99994, -56.708046, 48.00235, 56.708046, -48.00235, 298.76306, 481.99994, -82.504684, 84.75781, 82.504684, -84.75781, 453.14966, 181.99997, -45.950344, 49.87896, 45.950344, -49.87896, 870.5259, 94.999985, 0, 0, 0, 0, 864.13745, 5)
 }
-point_count = 7
+point_count = 9
 
 [sub_resource type="Curve2D" id="Curve2D_mwm2l"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 382.38348, 260, 109.64564, 0.29976696, -109.64564, -0.29976696, 269.4088, 370, 0, 0, 0, 0, 151.44997, 260.55557, -107.89313, -1.5367805, 107.89313, 1.5367805, 268.855, 146.11111, 0, 0, 0, 0, 382.38348, 259.44446)
+"points": PackedVector2Array(0, 0, 0, 0, 322.86392, 255.55556, 53.475353, 0.717164, -53.475353, -0.717164, 260.8386, 307.22223, 0, 0, 0, 0, 203.79747, 255, -58.380062, -0.28458917, 58.380062, 0.28458917, 263.6076, 195.55556, 0, 0, 0, 0, 322.86392, 253.8889)
 }
 point_count = 5
 
@@ -157,6 +171,9 @@ scale_curve = SubResource("CurveTexture_ujg3o")
 color = Color(1, 0.83500004, 0.7, 0.7019608)
 color_ramp = SubResource("GradientTexture1D_5rtqb")
 
+[sub_resource type="Environment" id="Environment_motou"]
+glow_enabled = true
+
 [sub_resource type="FontVariation" id="FontVariation_f4ix3"]
 base_font = ExtResource("10_ujg3o")
 spacing_glyph = 5
@@ -180,22 +197,47 @@ drag_bottom_margin = 0.75
 editor_draw_drag_margin = true
 
 [node name="Planet" type="Node2D" parent="." unique_id=825793516]
-position = Vector2(-508, 132.19278)
+position = Vector2(-535, 338)
+
+[node name="Sprite2D4" type="Sprite2D" parent="Planet" unique_id=1956213565]
+modulate = Color(0, 0, 0, 0.44313726)
+z_index = 1
+position = Vector2(317, -130)
+texture = SubResource("GradientTexture2D_2h3um")
 
 [node name="Sprite2D2" type="Sprite2D" parent="Planet" unique_id=1297118348]
 z_index = 1
 position = Vector2(317, -130.1928)
 texture = SubResource("GradientTexture2D_f4ix3")
 
+[node name="Area2D" type="Area2D" parent="Planet" unique_id=1931741170]
+position = Vector2(-100.454926, 68.33333)
+scale = Vector2(1.8, 1.8)
+collision_layer = 0
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Planet/Area2D" unique_id=762543866]
+position = Vector2(232.47498, -110.29229)
+shape = SubResource("CircleShape2D_y45wy")
+
+[node name="Planet2TimelineArea" type="Node" parent="Planet" unique_id=1872023332 node_paths=PackedStringArray("area2D")]
+script = ExtResource("11_5rtqb")
+area2D = NodePath("../Area2D")
+use_distance_lerp = true
+distance_lerp_mode = 1
+distance_lerp_range = 5.001
+timescale_multiplier = 0.8
+metadata/_custom_type_script = "uid://dgc6tyax7xbjn"
+
 [node name="Planet2" type="Node2D" parent="." unique_id=1729831119]
-position = Vector2(-340, 175)
+position = Vector2(-503, 204)
 
 [node name="Sprites" type="Node2D" parent="Planet2" unique_id=996410060]
 position = Vector2(-11.090179, 339.3333)
 scale = Vector2(1.8, 1.8)
 
 [node name="Sprite2D4" type="Sprite2D" parent="Planet2/Sprites" unique_id=1579479407]
-modulate = Color(0, 0, 0, 0.1882353)
+modulate = Color(0, 0, 0, 0.44313726)
 z_index = 1
 position = Vector2(312.27234, -286.2963)
 texture = SubResource("GradientTexture2D_y45wy")
@@ -219,7 +261,43 @@ shape = SubResource("CircleShape2D_motou")
 [node name="Planet2TimelineArea" type="Node" parent="Planet2" unique_id=2141467098 node_paths=PackedStringArray("area2D")]
 script = ExtResource("11_5rtqb")
 area2D = NodePath("../Area2D")
+use_distance_lerp = true
+distance_lerp_mode = 1
+distance_lerp_range = 10.001
 timescale_multiplier = 0.1
+metadata/_custom_type_script = "uid://dgc6tyax7xbjn"
+
+[node name="Planet3" type="Node2D" parent="." unique_id=422865719]
+position = Vector2(-4, -47)
+
+[node name="Sprite2D4" type="Sprite2D" parent="Planet3" unique_id=1450884252]
+modulate = Color(0, 0, 0, 0.44313726)
+z_index = 1
+position = Vector2(317, -130)
+texture = SubResource("GradientTexture2D_2h3um")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Planet3" unique_id=1744839276]
+z_index = 1
+position = Vector2(317, -130.1928)
+texture = SubResource("GradientTexture2D_f4ix3")
+
+[node name="Area2D" type="Area2D" parent="Planet3" unique_id=1817642392]
+position = Vector2(-100.454926, 68.33333)
+scale = Vector2(1.8, 1.8)
+collision_layer = 0
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Planet3/Area2D" unique_id=1193957548]
+position = Vector2(232.47498, -110.29229)
+shape = SubResource("CircleShape2D_y45wy")
+
+[node name="Planet2TimelineArea" type="Node" parent="Planet3" unique_id=1209164434 node_paths=PackedStringArray("area2D")]
+script = ExtResource("11_5rtqb")
+area2D = NodePath("../Area2D")
+use_distance_lerp = true
+distance_lerp_mode = 1
+distance_lerp_range = 5.001
+timescale_multiplier = 0.8
 metadata/_custom_type_script = "uid://dgc6tyax7xbjn"
 
 [node name="Moon" type="CharacterBody2D" parent="." unique_id=1260603408 node_paths=PackedStringArray("timeline", "path_follow_2d", "recorder")]
@@ -234,7 +312,7 @@ script = ExtResource("6_jsae0")
 timeline = NodePath("../MoonTimeline")
 path_follow_2d = NodePath("../Path2D/PathFollow2D")
 recorder = NodePath("../TimeflowMoonRecorder")
-tween_duration = 2.0
+tween_duration = 4.0
 rewind_tint = Color(0, 0.83333325, 1, 1)
 rewind_tint_strength = 1.0
 rewind_pulse_speed = 0.5
@@ -254,10 +332,10 @@ path_follow_2d = NodePath("../../Path2D/PathFollow2D")
 
 [node name="Moon2" type="CharacterBody2D" parent="." unique_id=1725069509 node_paths=PackedStringArray("timeline", "path_follow_2d", "recorder")]
 modulate = Color(0.69, 0.3795, 0, 1)
-position = Vector2(419.99994, 1)
-rotation = 1.6010647
-scale = Vector2(1.8000052, 1.8057092)
-skew = -0.0001912117
+position = Vector2(154.99997, 33)
+rotation = 1.7330923
+scale = Vector2(1.8001485, 1.8055663)
+skew = -0.0010079145
 collision_layer = 4
 collision_mask = 0
 motion_mode = 1
@@ -284,13 +362,13 @@ script = ExtResource("16_ja4va")
 path_follow_2d = NodePath("../../Path2D2/PathFollow2D2")
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=1248473571 node_paths=PackedStringArray("timeline")]
-position = Vector2(-25, -1)
+position = Vector2(-152, -107)
 collision_mask = 0
 motion_mode = 1
 safe_margin = 0.1
 script = ExtResource("1_8gkyk")
 timeline = NodePath("PlayerTimeline")
-speed = 500.0
+speed = 600.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1274705601]
 z_index = 2
@@ -316,26 +394,26 @@ lock_target_while_negative_after_rewind_exhausted = true
 timeline = NodePath("../PlayerTimeline")
 
 [node name="Path2D" type="Path2D" parent="." unique_id=1513258298]
-position = Vector2(-463.00128, -232)
-scale = Vector2(1.0000001, 1.0000001)
+position = Vector2(-452.59848, -232)
+scale = Vector2(0.9392007, 1.0000001)
 curve = SubResource("Curve2D_a1ki5")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D" unique_id=535623633]
-position = Vector2(829.0012, 228.99997)
-rotation = -1.6618664
+position = Vector2(862.00793, 5)
+rotation = -2.5073116
 loop = false
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D/PathFollow2D" unique_id=253318310]
 remote_path = NodePath("../../../Moon")
 
 [node name="Path2D2" type="Path2D" parent="." unique_id=1769113969]
-position = Vector2(-270.4754, -467)
+position = Vector2(-428.00003, -427)
 scale = Vector2(1.8057144, 1.8)
 curve = SubResource("Curve2D_mwm2l")
 
 [node name="PathFollow2D2" type="PathFollow2D" parent="Path2D2" unique_id=972438607]
-position = Vector2(382.38348, 260)
-rotation = 1.600969
+position = Vector2(322.86392, 255.55556)
+rotation = 1.7325877
 loop = false
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D2/PathFollow2D2" unique_id=453735051]
@@ -348,7 +426,7 @@ modulate = Color(1, 1, 1, 0.37254903)
 amount = 80
 texture = SubResource("GradientTexture2D_43gox")
 lifetime = 2.0
-preprocess = 1.22
+preprocess = 1.98
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_5rtqb")
 
@@ -369,22 +447,25 @@ timeline = NodePath("../EnvironmentTimeline")
 particles_sync = NodePath("../GPUParticles2DTimeline")
 restart_on_rewind_start = false
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=224396432]
+environment = SubResource("Environment_motou")
+
 [node name="Title" type="Control" parent="." unique_id=1054282312]
 layout_mode = 3
 anchors_preset = 0
-offset_left = -566.0
-offset_top = -329.0
-offset_right = 566.0
-offset_bottom = 299.0
+offset_left = -576.0
+offset_top = -343.0
+offset_right = 556.0
+offset_bottom = 285.0
 mouse_filter = 2
 
 [node name="Control" type="Control" parent="Title" unique_id=1487760953]
 layout_mode = 1
 anchors_preset = 0
-offset_left = 295.0
-offset_top = 11.0
-offset_right = 335.0
-offset_bottom = 51.0
+offset_left = 296.0
+offset_top = 17.0
+offset_right = 336.0
+offset_bottom = 57.0
 mouse_filter = 2
 
 [node name="GODOT" type="Label" parent="Title/Control" unique_id=119224582]
@@ -662,4 +743,4 @@ script = ExtResource("15_5d3er")
 timeline = NodePath("../Environment/EnvironmentTimeline")
 rewindables = [NodePath("../Environment/RewindableGPUParticles2D")]
 recording_duration = 30.0
-recording_interval = 0.1
+recording_interval = 1.0
