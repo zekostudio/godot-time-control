@@ -1,7 +1,7 @@
 name: "release"
 on: 
   workflow_run:
-    workflows: ["godot-ci export"]
+    workflows: ["export"]
     types:
       - completed
     branches:
