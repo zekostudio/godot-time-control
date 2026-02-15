@@ -1,4 +1,5 @@
 extends Node
+
 class_name TimeflowRewindable
 
 func capture_timeflow_state() -> Dictionary:

@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 enum LoopReturnMode { MIRROR, WRAP_FROM_ZERO, WRAP_FROM_ONE }
 
-const TimeflowRecorder = preload("res://addons/timeflow/scripts/timeflow_recorder.gd")
+const TimeflowRecorder = preload("res://addons/timeflow/scripts/rewind/timeflow_recorder.gd")
 
 @export var timeline: TimeflowTimeline
 @export var path_follow_2d: PathFollow2D
@@ -24,7 +24,6 @@ var _base_modulate: Color = Color(1, 1, 1, 1)
 
 
 func _ready() -> void:
-	add_to_group("enemies")
 	_base_modulate = modulate
 	_bind_recorder()
 	path_follow_2d.progress = _ratio_to_progress(tween_start_ratio)

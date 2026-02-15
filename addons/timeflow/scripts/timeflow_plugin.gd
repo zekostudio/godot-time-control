@@ -35,6 +35,4 @@ func _add_setting(_name: String, type: int, value) -> void:
 
 
 func _exit_tree() -> void:
-	# Clean-up of the plugin goes here.  
 	remove_autoload_singleton(AUTOLOAD_NAME)
-	ProjectSettings.set(SETTINGS_AUTOLOAD_PATH, null)

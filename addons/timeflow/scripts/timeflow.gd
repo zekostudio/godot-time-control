@@ -1,5 +1,5 @@
 extends Node
-const ClockRegistry = preload("res://addons/timeflow/scripts/clock_registry.gd")
+const TimeflowClockRegistry = preload("res://addons/timeflow/scripts/timeflow_clock_registry.gd")
 const UnscaledTimeSource = preload("res://addons/timeflow/scripts/unscaled_time_source.gd")
 
 signal clock_registered(clock: TimeflowClock)
@@ -7,7 +7,7 @@ signal clock_unregistered(clock: TimeflowClock)
 
 @export var debug: bool = false
 
-var _registry = ClockRegistry.new()
+var _registry = TimeflowClockRegistry.new()
 var _time_source = UnscaledTimeSource.new()
 
 func _ready() -> void:
@@ -44,11 +44,11 @@ func get_clock(configuration: TimeflowClockConfig) -> TimeflowClock:
 
 func register_clock(clock: TimeflowClock, previous: TimeflowClockConfig = null) -> void:
 	_registry.register(clock, previous)
-	emit_signal("clock_registered", clock)
+	clock_registered.emit(clock)
 
 func unregister_clock(clock: TimeflowClock) -> void:
 	_registry.unregister(clock)
-	emit_signal("clock_unregistered", clock)
+	clock_unregistered.emit(clock)
 
 func add_clock(configuration: TimeflowClockConfig) -> TimeflowClock:
 	if configuration == null:
@@ -66,7 +66,8 @@ func add_clock(configuration: TimeflowClockConfig) -> TimeflowClock:
 	var clock: TimeflowClock = TimeflowClock.new() 
 	clock.configuration = configuration
 	add_child(clock)
-	register_clock(clock)
+	if not has_clock(configuration):
+		register_clock(clock)
 	return clock
 
 func _find_child_clock(configuration: TimeflowClockConfig) -> TimeflowClock:

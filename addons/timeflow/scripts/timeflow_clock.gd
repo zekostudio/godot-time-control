@@ -29,6 +29,8 @@ var physics_delta_time: float = 0.0
 
 var parent_clock: TimeflowClock
 var _registered: bool = false
+var _parent_dirty: bool = true
+var _controller_ref: Node = null
 
 var _configuration: TimeflowClockConfig
 var _local_time_scale: float = 1.0
@@ -44,7 +46,8 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 	_apply_configuration_defaults()
-	_resolve_parent()
+	_parent_dirty = true
+	_refresh_parent_if_needed()
 	_recalculate_time_scale()
 
 func _exit_tree() -> void:
@@ -55,7 +58,7 @@ func _exit_tree() -> void:
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
-	_resolve_parent()
+	_refresh_parent_if_needed()
 	_recalculate_time_scale()
 	unscaled_time += delta
 	delta_time = delta * time_scale
@@ -77,7 +80,8 @@ func set_configuration(value: TimeflowClockConfig) -> void:
 	if Engine.is_editor_hint():
 		return
 	_apply_configuration_defaults()
-	_resolve_parent()
+	_parent_dirty = true
+	_refresh_parent_if_needed()
 	_recalculate_time_scale()
 	_register_with_controller(previous)
 
@@ -126,24 +130,33 @@ func _recalculate_time_scale() -> void:
 func _resolve_parent() -> void:
 	if Engine.is_editor_hint():
 		parent_clock = null
+		_parent_dirty = false
 		return
 	if _configuration == null:
 		parent_clock = null
+		_parent_dirty = false
 		return
 	if _configuration.parent_key == StringName():
 		parent_clock = null
+		_parent_dirty = false
 		return
 	if _configuration.parent_key == _configuration.key:
 		parent_clock = null
+		_parent_dirty = false
 		return
 	var controller := _get_controller()
 	if controller == null:
+		parent_clock = null
+		_parent_dirty = true
 		return
+	_update_controller_signal_connections(controller)
 	if controller.has_method("has_clock_by_key") and not controller.has_clock_by_key(_configuration.parent_key):
 		parent_clock = null
+		_parent_dirty = false
 		return
 	var candidate = controller.get_clock_by_key(_configuration.parent_key)
 	parent_clock = candidate if candidate is TimeflowClock else null
+	_parent_dirty = false
 
 func _register_with_controller(previous: TimeflowClockConfig = null) -> void: 
 	if not is_inside_tree():
@@ -152,17 +165,20 @@ func _register_with_controller(previous: TimeflowClockConfig = null) -> void:
 	if controller == null:
 		push_error("Timeflow autoload is missing. Enable the plugin or set controller_path.")
 		return
+	_update_controller_signal_connections(controller)
 	controller.register_clock(self, previous)
 	_registered = true
+	_parent_dirty = true
 
 func _unregister_from_controller() -> void:
 	if not _registered:
+		_disconnect_controller_signals()
 		return
-	var controller := _get_controller()
-	if controller == null:
-		return
-	controller.unregister_clock(self)
+	if _controller_ref != null and is_instance_valid(_controller_ref) and _controller_ref.has_method("unregister_clock"):
+		_controller_ref.unregister_clock(self)
+	_disconnect_controller_signals()
 	_registered = false
+	_parent_dirty = true
 
 func _get_controller() -> Node:
 	if controller_path != NodePath():
@@ -181,6 +197,51 @@ func _get_controller() -> Node:
 		if found != null:
 			return found
 	return null
+
+func _refresh_parent_if_needed() -> void:
+	if _parent_dirty or _is_parent_reference_invalid():
+		_resolve_parent()
+
+func _is_parent_reference_invalid() -> bool:
+	if _configuration == null:
+		return parent_clock != null
+	if _configuration.parent_key == StringName() or _configuration.parent_key == _configuration.key:
+		return parent_clock != null
+	if parent_clock == null:
+		return true
+	return not is_instance_valid(parent_clock)
+
+func _update_controller_signal_connections(controller: Node) -> void:
+	if _controller_ref == controller:
+		return
+	_disconnect_controller_signals()
+	_controller_ref = controller
+	if _controller_ref == null:
+		return
+	if _controller_ref.has_signal("clock_registered"):
+		if not _controller_ref.clock_registered.is_connected(_on_controller_clock_registered):
+			_controller_ref.clock_registered.connect(_on_controller_clock_registered)
+	if _controller_ref.has_signal("clock_unregistered"):
+		if not _controller_ref.clock_unregistered.is_connected(_on_controller_clock_unregistered):
+			_controller_ref.clock_unregistered.connect(_on_controller_clock_unregistered)
+
+func _disconnect_controller_signals() -> void:
+	if _controller_ref == null:
+		return
+	if not is_instance_valid(_controller_ref):
+		_controller_ref = null
+		return
+	if _controller_ref.clock_registered.is_connected(_on_controller_clock_registered):
+		_controller_ref.clock_registered.disconnect(_on_controller_clock_registered)
+	if _controller_ref.clock_unregistered.is_connected(_on_controller_clock_unregistered):
+		_controller_ref.clock_unregistered.disconnect(_on_controller_clock_unregistered)
+	_controller_ref = null
+
+func _on_controller_clock_registered(_clock: TimeflowClock) -> void:
+	_parent_dirty = true
+
+func _on_controller_clock_unregistered(_clock: TimeflowClock) -> void:
+	_parent_dirty = true
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

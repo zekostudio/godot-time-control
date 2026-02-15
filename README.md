@@ -139,8 +139,8 @@ Usage (example for 2D particles):
 ## Rewind
 This plugin includes a rewind recorder based on timeline direction:
 
-- `scripts/timeflow_recorder.gd` (`TimeflowRecorder`) — records snapshots and applies them while time is reversed.
-- `scripts/timeflow_rewindable.gd` (`TimeflowRewindable`) — base rewind contract for all rewindable adapters.
+- `scripts/rewind/timeflow_recorder.gd` (`TimeflowRecorder`) — records snapshots and applies them while time is reversed.
+- `scripts/rewind/timeflow_rewindable.gd` (`TimeflowRewindable`) — base rewind contract for all rewindable adapters.
 - `helpers/timeflow_rewindable_2d.gd` (`TimeflowRewindable2D`) — captures/restores a `Node2D` transform.
 - `helpers/timeflow_rewindable_path_follow_2d.gd` (`TimeflowRewindablePathFollow2D`) — captures/restores `PathFollow2D.progress`.
 

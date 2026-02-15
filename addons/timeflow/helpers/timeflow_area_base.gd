@@ -4,21 +4,26 @@ class_name TimeflowAreaBase
 @export var timescale_multiplier: float = 0.25
 
 var _bodies: Array = []
+var _area: Node = null
 
 func _ready() -> void:
-	_connect_area()
-	set_deferred("monitoring", true)
+	_area = _get_area()
+	_connect_area(_area)
+	_set_area_monitoring(true)
 
-func _connect_area() -> void:
-	var area: Node = _get_area()
+func _connect_area(area: Node) -> void:
 	if area == null:
 		push_warning("TimeflowArea is missing an Area reference.")
 		return
-	area.body_entered.connect(_on_body_entered)
-	area.body_exited.connect(_on_body_exited)
+	if not area.has_signal("body_entered") or not area.has_signal("body_exited"):
+		push_warning("TimeflowArea reference must be an Area2D or Area3D.")
+		return
+	if not area.body_entered.is_connected(_on_body_entered):
+		area.body_entered.connect(_on_body_entered)
+	if not area.body_exited.is_connected(_on_body_exited):
+		area.body_exited.connect(_on_body_exited)
 
 func _get_area() -> Node:
-	# Implemented by subclasses to return Area2D or Area3D.
 	return null
 
 func _on_body_entered(body: Node) -> void:
@@ -33,28 +38,36 @@ func _on_body_exited(body: Node) -> void:
 		_apply_multiplier_to_body(body, 1.0)
 
 func _exit_tree() -> void:
+	_disconnect_area()
 	for body in _bodies:
 		_apply_multiplier_to_body(body, 1.0)
 	_bodies.clear()
 
+func _set_area_monitoring(enabled: bool) -> void:
+	if _area == null:
+		return
+	_area.set_deferred("monitoring", enabled)
+
+func _disconnect_area() -> void:
+	if _area == null:
+		return
+	if _area.body_entered.is_connected(_on_body_entered):
+		_area.body_entered.disconnect(_on_body_entered)
+	if _area.body_exited.is_connected(_on_body_exited):
+		_area.body_exited.disconnect(_on_body_exited)
+
 func _apply_multiplier_to_body(body: Node, multiplier: float) -> void:
-	# Preferred order:
-	# 1) set_area_timescale_multiplier()
-	# 2) area_timescale_multiplier property
-	# Backward compatibility:
-	# - set_area_timeline_multiplier()
-	# - area_timeline_multiplier property
 	if body.has_method("set_area_timescale_multiplier"):
-		body.call("set_area_timescale_multiplier", multiplier)
+		body.set_area_timescale_multiplier(multiplier)
 		return
 	if body.has_method("set_area_timeline_multiplier"):
-		body.call("set_area_timeline_multiplier", multiplier)
+		body.set_area_timeline_multiplier(multiplier)
 		return
 	if _has_property(body, "area_timescale_multiplier"):
-		body.set("area_timescale_multiplier", multiplier)
+		body.area_timescale_multiplier = multiplier
 		return
 	if _has_property(body, "area_timeline_multiplier"):
-		body.set("area_timeline_multiplier", multiplier)
+		body.area_timeline_multiplier = multiplier
 		return
 
 func _has_property(target: Object, property_name: StringName) -> bool:
