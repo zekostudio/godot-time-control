@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://du1l7drq7rv5n"]
 
-[ext_resource type="Script" path="res://addons/timeflow/scripts/timeflow.gd" id="1_lpil8"]
-[ext_resource type="Script" path="res://addons/timeflow/scripts/timeflow_clock.gd" id="2_crcor"]
+[ext_resource type="Script" path="res://addons/timeflow/scripts/core/timeflow.gd" id="1_lpil8"]
+[ext_resource type="Script" path="res://addons/timeflow/scripts/clock/timeflow_clock.gd" id="2_crcor"]
 [ext_resource type="Resource" path="res://addons/timeflow/resources/world_clock.tres" id="3_s0e8i"]
 [ext_resource type="Resource" path="res://addons/timeflow/resources/player_clock.tres" id="4_exqxx"]
 [ext_resource type="Resource" path="res://addons/timeflow/resources/enemy_clock.tres" id="5_g7gae"]

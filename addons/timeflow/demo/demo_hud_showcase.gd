@@ -5,7 +5,7 @@ enum DemoPreset {
 	NORMAL_FLOW,
 	GLOBAL_SLOW_MOTION,
 	PLAYER_ACCELERATED,
-	ENEMY_REWIND,
+	REWIND,
 	ENVIRONMENT_BURST,
 	GLOBAL_ACCELERATION,
 }
@@ -43,7 +43,7 @@ func _run_showcase() -> void:
 		DemoPreset.NORMAL_FLOW,
 		DemoPreset.GLOBAL_SLOW_MOTION,
 		DemoPreset.PLAYER_ACCELERATED,
-		DemoPreset.ENEMY_REWIND,
+		DemoPreset.REWIND,
 		DemoPreset.ENVIRONMENT_BURST,
 		DemoPreset.GLOBAL_ACCELERATION,
 	]
@@ -86,15 +86,11 @@ func _get_preset_data(preset: int) -> Dictionary:
 		DemoPreset.NORMAL_FLOW:
 			return {"title": "Normal Flow", "world": 1.0, "player": 1.0, "enemy": 1.0, "environment": 1.0, "color": Color(1, 1, 1, 1), "label_scale": 1.1}
 		DemoPreset.GLOBAL_SLOW_MOTION:
-			return {"title": "Global Slow Motion", "world": 0.35, "player": 1.0, "enemy": 1.0, "environment": 0.5, "color": Color(0.65, 0.9, 1.0, 1.0), "label_scale": 1.2}
-		DemoPreset.PLAYER_ACCELERATED:
-			return {"title": "Player Accelerated", "world": 0.8, "player": 2.4, "enemy": 0.45, "environment": 1.0, "color": Color(0.65, 1.0, 0.72, 1.0), "label_scale": 1.25}
-		DemoPreset.ENEMY_REWIND:
-			return {"title": "Enemy Rewind", "world": -2.0, "player": 1.0, "enemy": 1.0, "environment": 1.0, "color": Color(0.5, 0.92, 1.0, 1.0), "label_scale": 1.3}
-		DemoPreset.ENVIRONMENT_BURST:
-			return {"title": "Environment Burst", "world": 1.0, "player": 0.8, "enemy": 1.0, "environment": 2.8, "color": Color(1.0, 0.88, 0.58, 1.0), "label_scale": 1.18}
+			return {"title": "Global Slow Motion", "world": 0.2, "player": 1.0, "enemy": 1.0, "environment": 0.5, "color": Color(0.65, 0.9, 1.0, 1.0), "label_scale": 1.2}
 		DemoPreset.GLOBAL_ACCELERATION:
 			return {"title": "Global Acceleration", "world": 1.0, "player": 1.0, "enemy": 2.0, "environment": 6.0, "color": Color(1.0, 0.72, 0.58, 1.0), "label_scale": 1.2}
+		DemoPreset.REWIND:
+			return {"title": "Enemy Rewind", "world": -4.0, "player": 1.0, "enemy": 1.0, "environment": 1.0, "color": Color(0.5, 0.92, 1.0, 1.0), "label_scale": 1.3}
 		_:
 			return {}
 
@@ -116,7 +112,7 @@ func _animate_showcase_label(text_value: String, text_color: Color, target_scale
 func _connect_preset_buttons() -> void:
 	_connect_preset_button(normal_preset_button, DemoPreset.NORMAL_FLOW)
 	_connect_preset_button(slow_preset_button, DemoPreset.GLOBAL_SLOW_MOTION)
-	_connect_preset_button(rewind_preset_button, DemoPreset.ENEMY_REWIND)
+	_connect_preset_button(rewind_preset_button, DemoPreset.REWIND)
 	_connect_preset_button(acceleration_preset_button, DemoPreset.GLOBAL_ACCELERATION)
 
 func _connect_preset_button(button: Button, preset: int) -> void:

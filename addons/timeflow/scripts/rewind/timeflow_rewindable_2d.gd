@@ -2,7 +2,7 @@ extends TimeflowRewindable
 
 class_name TimeflowRewindable2D
 
-const TimeflowTimeline = preload("res://addons/timeflow/scripts/timeflow_timeline.gd")
+const TimeflowTimeline = preload("res://addons/timeflow/scripts/clock/timeflow_timeline.gd")
 
 @export var target: Node2D
 @export var use_global_transform: bool = false

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://4831s5s5qiw6"
-path="res://.godot/imported/timeflow.svg-f1a6aac0e8d406d9024aa24a0a9f38d6.ctex"
+path="res://.godot/imported/timeflow.svg-39c8d79ae47f3a959dc1bd4cff9ad05f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/timeflow/icons/timeflow.svg"
-dest_files=["res://.godot/imported/timeflow.svg-f1a6aac0e8d406d9024aa24a0a9f38d6.ctex"]
+source_file="res://addons/timeflow/assets/icons/timeflow.svg"
+dest_files=["res://.godot/imported/timeflow.svg-39c8d79ae47f3a959dc1bd4cff9ad05f.ctex"]
 
 [params]
 

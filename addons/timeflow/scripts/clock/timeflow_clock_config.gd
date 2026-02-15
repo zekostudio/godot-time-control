@@ -2,7 +2,7 @@ extends Resource
 
 class_name TimeflowClockConfig
 
-const TimeflowEnums = preload("res://addons/timeflow/scripts/timeflow_enums.gd")
+const TimeflowEnums = preload("res://addons/timeflow/scripts/clock/timeflow_enums.gd")
 
 @export var key: StringName
 @export var default_local_time_scale: float = 1.0

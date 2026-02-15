@@ -2,7 +2,7 @@ extends Node
 class_name TimeflowRecorder
 
 const TimeflowSnapshotBuffer = preload("res://addons/timeflow/scripts/rewind/timeflow_snapshot_buffer.gd")
-const TimeflowTimeline = preload("res://addons/timeflow/scripts/timeflow_timeline.gd")
+const TimeflowTimeline = preload("res://addons/timeflow/scripts/clock/timeflow_timeline.gd")
 const TimeflowRewindable = preload("res://addons/timeflow/scripts/rewind/timeflow_rewindable.gd")
 
 signal rewind_started
@@ -136,7 +136,8 @@ func _ensure_buffer_capacity(force: bool = false) -> void:
 func _stop_rewind_if_needed() -> void:
 	if not _is_rewinding:
 		return
-	_end_rewind(true)
+	if _is_rewinding:
+		_end_rewind(true)
 
 func _try_add_parent_rewindable() -> void:
 	var parent := get_parent()

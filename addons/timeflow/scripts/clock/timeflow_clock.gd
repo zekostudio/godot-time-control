@@ -1,7 +1,7 @@
 extends Node
 class_name TimeflowClock
 
-const TimeflowEnums = preload("res://addons/timeflow/scripts/timeflow_enums.gd")
+const TimeflowEnums = preload("res://addons/timeflow/scripts/clock/timeflow_enums.gd")
 
 static var BLEND_STRATEGIES := {
 	TimeflowEnums.TimeflowBlendMode.MULTIPLICATIVE: func(parent_scale: float, local_scale: float) -> float:
