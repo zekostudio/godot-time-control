@@ -2,7 +2,7 @@ extends Node
 class_name TimeflowRecorder
 
 const TimeflowSnapshotBuffer = preload("res://addons/timeflow/scripts/rewind/timeflow_snapshot_buffer.gd")
-const TimeflowTimeline = preload("res://addons/timeflow/scripts/timeflow_timeline.gd")
+const TimeflowTimeline = preload("res://addons/timeflow/scripts/clock/timeflow_timeline.gd")
 const TimeflowRewindable = preload("res://addons/timeflow/scripts/rewind/timeflow_rewindable.gd")
 
 signal rewind_started

@@ -2,7 +2,7 @@
 extends Node
 class_name TimeflowTimeline
 
-const TimeflowEnums = preload("res://addons/timeflow/scripts/timeflow_enums.gd")
+const TimeflowEnums = preload("res://addons/timeflow/scripts/clock/timeflow_enums.gd")
 
 @export var mode: TimeflowEnums.TimeflowTimelineMode = TimeflowEnums.TimeflowTimelineMode.GLOBAL
 @export var local_clock: TimeflowClock

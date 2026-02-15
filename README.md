@@ -2,7 +2,7 @@
 
 Lightweight, scene-friendly time scaling for Godot 4.5+. Define clocks, route them to timelines, and slow / speed parts of your game independently.
 
-![Godot Timeflow](./addons/timeflow/icons/logo.png)
+![Godot Timeflow](./addons/timeflow/assets/icons/logo.png)
 
 ## Demo
 [Try the demo](https://zekostudio.github.io/godot-timeflow/)
@@ -42,7 +42,7 @@ Godot 4.2+.
    ```gdscript
    extends CharacterBody2D
 
-   const TimeflowTimeline = preload("res://addons/timeflow/scripts/timeflow_timeline.gd")
+   const TimeflowTimeline = preload("res://addons/timeflow/scripts/clock/timeflow_timeline.gd")
    const SPEED: float = 300.0
 
    @export var timeline: TimeflowTimeline
@@ -58,7 +58,7 @@ Godot 4.2+.
 
 3) **Change time from anywhere**
    ```gdscript
-   const TimeflowClockConfig = preload("res://addons/timeflow/scripts/timeflow_clock_config.gd")
+   const TimeflowClockConfig = preload("res://addons/timeflow/scripts/clock/timeflow_clock_config.gd")
    @export var clock_configuration: TimeflowClockConfig
 
    func _process(_delta: float) -> void:
@@ -114,9 +114,9 @@ Methods:
 ## Helper nodes
 Drop these glue scripts next to existing nodes to keep their playback in sync with a `TimeflowTimeline` without rewriting their logic.
 
-- `helpers/timeflow_animation_player_sync.gd` — Drives `AnimationPlayer.speed_scale` from a bound `TimeflowTimeline`.
-- `helpers/timeflow_gpu_particles_2d_sync.gd` / `timeflow_gpu_particles_3d_sync.gd` — Drive particle `speed_scale` in 2D or 3D.
-- `helpers/timeflow_area_2d.gd` / `timeflow_area_3d.gd` — Applies `timescale_multiplier` to bodies entering an `Area2D` or `Area3D`.
+- `scripts/adapters/sync/timeflow_animation_player_sync.gd` — Drives `AnimationPlayer.speed_scale` from a bound `TimeflowTimeline`.
+- `scripts/adapters/sync/timeflow_gpu_particles_2d_sync.gd` / `timeflow_gpu_particles_3d_sync.gd` — Drive particle `speed_scale` in 2D or 3D.
+- `scripts/adapters/areas/timeflow_area_2d.gd` / `timeflow_area_3d.gd` — Applies `timescale_multiplier` to bodies entering an `Area2D` or `Area3D`.
 
 Area timeline integration fallback order (first match wins):
 1) Method: `set_area_timescale_multiplier(multiplier: float)`
@@ -141,8 +141,8 @@ This plugin includes a rewind recorder based on timeline direction:
 
 - `scripts/rewind/timeflow_recorder.gd` (`TimeflowRecorder`) — records snapshots and applies them while time is reversed.
 - `scripts/rewind/timeflow_rewindable.gd` (`TimeflowRewindable`) — base rewind contract for all rewindable adapters.
-- `helpers/timeflow_rewindable_2d.gd` (`TimeflowRewindable2D`) — captures/restores a `Node2D` transform.
-- `helpers/timeflow_rewindable_path_follow_2d.gd` (`TimeflowRewindablePathFollow2D`) — captures/restores `PathFollow2D.progress`.
+- `scripts/rewind/timeflow_rewindable_2d.gd` (`TimeflowRewindable2D`) — captures/restores a `Node2D` transform.
+- `scripts/rewind/timeflow_rewindable_path_follow_2d.gd` (`TimeflowRewindablePathFollow2D`) — captures/restores `PathFollow2D.progress`.
 
 Quick setup:
 1) Add a rewindable adapter node (`TimeflowRewindable2D` or `TimeflowRewindablePathFollow2D`) and assign its target.
@@ -166,7 +166,7 @@ Set the `speed_scale` property to keep a `Tween` synchronized with a `TimeflowTi
 ```gdscript
 extends Node2D
 
-const TimeflowTimeline = preload("res://addons/timeflow/scripts/timeflow_timeline.gd")
+const TimeflowTimeline = preload("res://addons/timeflow/scripts/clock/timeflow_timeline.gd")
 
 @export var timeline: TimeflowTimeline
 @export var mover: Node2D

@@ -1,6 +1,6 @@
 extends Node
-const TimeflowClockRegistry = preload("res://addons/timeflow/scripts/timeflow_clock_registry.gd")
-const UnscaledTimeSource = preload("res://addons/timeflow/scripts/unscaled_time_source.gd")
+const TimeflowClockRegistry = preload("res://addons/timeflow/scripts/clock/timeflow_clock_registry.gd")
+const UnscaledTimeSource = preload("res://addons/timeflow/scripts/core/unscaled_time_source.gd")
 
 signal clock_registered(clock: TimeflowClock)
 signal clock_unregistered(clock: TimeflowClock)
