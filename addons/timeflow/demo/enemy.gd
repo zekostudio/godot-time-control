@@ -16,11 +16,17 @@ const TimeflowRecorder = preload("res://addons/timeflow/scripts/rewind/timeflow_
 @export var rewind_tint: Color = Color(0.45, 0.8, 1.0, 1.0)
 @export_range(0.0, 1.0, 0.01) var rewind_tint_strength: float = 0.6
 @export_range(0.5, 20.0, 0.1) var rewind_pulse_speed: float = 8.0
+@export var impact_impulse_scale: float = 0.65
+@export var impact_impulse_max: float = 300.0
+@export var external_damping: float = 7.0
+@export var external_mass: float = 1.5
 
 var _tween: Tween
 var _rewind_vfx_tween: Tween
 var area_timescale_multiplier: float = 1.0
 var _base_modulate: Color = Color(1, 1, 1, 1)
+var _external_velocity: Vector2 = Vector2.ZERO
+var _detached_from_path_follow: bool = false
 
 
 func _ready() -> void:
@@ -33,11 +39,64 @@ func _process(_delta: float) -> void:
 	if _tween:
 		_tween.set_speed_scale(timeline.time_scale * area_timescale_multiplier)
 
+func _physics_process(delta: float) -> void:
+	if path_follow_2d == null:
+		return
+	var path_motion: Vector2 = Vector2.ZERO
+	if not _detached_from_path_follow:
+		var target_position: Vector2 = path_follow_2d.global_position
+		path_motion = target_position - global_position
+	_external_velocity = _external_velocity.move_toward(Vector2.ZERO, external_damping * delta)
+	var motion: Vector2 = path_motion + (_external_velocity * delta)
+	if motion.length_squared() <= 0.000001:
+		if not _detached_from_path_follow:
+			rotation = path_follow_2d.global_rotation
+		return
+	var collision: KinematicCollision2D = move_and_collide(motion)
+	if collision != null:
+		_transfer_collision_impulse(collision, delta)
+	if not _detached_from_path_follow:
+		rotation = path_follow_2d.global_rotation
+
+func apply_external_impulse(impulse: Vector2) -> void:
+	_external_velocity += impulse / maxf(external_mass, 0.001)
+
+func detach_from_path_follow() -> void:
+	if _detached_from_path_follow:
+		return
+	_detached_from_path_follow = true
+	_disable_remote_position_drivers()
+
+func _transfer_collision_impulse(collision: KinematicCollision2D, delta: float) -> void:
+	var collider := collision.get_collider()
+	if collider == null or not collider.has_method("apply_external_impulse"):
+		return
+	var push_direction: Vector2 = -collision.get_normal().normalized()
+	var impact_speed: float = maxf(0.0, (collision.get_travel() / maxf(delta, 0.0001)).dot(push_direction))
+	var impulse_strength: float = minf(impact_speed * impact_impulse_scale, impact_impulse_max)
+	if impulse_strength <= 0.0:
+		return
+	var impulse: Vector2 = push_direction * impulse_strength
+	collider.apply_external_impulse(impulse)
+	apply_external_impulse(-impulse)
+
+func _disable_remote_position_drivers() -> void:
+	if path_follow_2d == null:
+		return
+	for child in path_follow_2d.get_children():
+		var remote := child as RemoteTransform2D
+		if remote == null:
+			continue
+		remote.update_position = false
+		remote.update_rotation = false
+		remote.update_scale = false
+		remote.remote_path = NodePath("")
+
 func _start() -> void:
 	_tween = get_tree().create_tween();
 	_tween.tween_property(path_follow_2d, "progress", _ratio_to_progress(tween_end_ratio), tween_duration)
-	_tween.set_ease(Tween.EaseType.EASE_OUT)
-	_tween.set_trans(Tween.TRANS_BOUNCE)
+	_tween.set_ease(Tween.EaseType.EASE_IN)
+	_tween.set_trans(Tween.TRANS_CUBIC)
 	_tween.finished.connect(_on_forward_finished)
 
 func _on_forward_finished() -> void:
@@ -53,7 +112,7 @@ func _on_forward_finished() -> void:
 	_tween = get_tree().create_tween();
 	_tween.tween_property(path_follow_2d, "progress", _ratio_to_progress(tween_start_ratio), tween_duration)
 	_tween.set_ease(Tween.EaseType.EASE_OUT)
-	_tween.set_trans(Tween.TRANS_BOUNCE)
+	_tween.set_trans(Tween.TRANS_CUBIC)
 	_tween.finished.connect(_on_backward_finished)
 
 func _on_backward_finished() -> void:

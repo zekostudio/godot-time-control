@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://0i4sn5pjnv4c" path="res://addons/timeflow/scripts/rewind/timeflow_recorder.gd" id="15_5d3er"]
 [ext_resource type="Script" path="res://addons/timeflow/scripts/rewind/timeflow_rewindable_path_follow_2d.gd" id="16_ja4va"]
 [ext_resource type="Script" uid="uid://dp0yplbbujobk" path="res://addons/timeflow/scripts/rewind/timeflow_rewindable_gpu_particles_2d.gd" id="17_motou"]
+[ext_resource type="Shader" uid="uid://c1p1o583s7tif" path="res://addons/timeflow/demo/shader/old-movie.gdshader" id="17_y45wy"]
 
 [sub_resource type="Gradient" id="Gradient_qtq74"]
 offsets = PackedFloat32Array(1)
@@ -76,8 +77,45 @@ fill_from = Vector2(0.5, 0.5)
 [sub_resource type="CircleShape2D" id="CircleShape2D_motou"]
 radius = 73.38596
 
+[sub_resource type="Gradient" id="Gradient_rvcu0"]
+offsets = PackedFloat32Array(0.47941175, 0.6382353, 0.7147059)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6oh4u"]
+gradient = SubResource("Gradient_rvcu0")
+width = 100
+height = 100
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_mu0ra"]
+offsets = PackedFloat32Array(0, 0.67941177, 0.7205882)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_rvcu0"]
+gradient = SubResource("Gradient_mu0ra")
+width = 40
+height = 40
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2h3um"]
+radius = 34.56503
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_f4ix3"]
 radius = 6.7247915
+
+[sub_resource type="Gradient" id="Gradient_2h3um"]
+offsets = PackedFloat32Array(0.9911765, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_oqsh2"]
+gradient = SubResource("Gradient_2h3um")
+width = 48
+height = 48
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
 
 [sub_resource type="Gradient" id="Gradient_5rtqb"]
 offsets = PackedFloat32Array(0.9911765, 1)
@@ -91,20 +129,44 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 0.5)
 
-[sub_resource type="Gradient" id="Gradient_qk2ka"]
+[sub_resource type="Gradient" id="Gradient_oqsh2"]
 offsets = PackedFloat32Array(0.9911765, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_newt1"]
-gradient = SubResource("Gradient_qk2ka")
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mu0ra"]
+gradient = SubResource("Gradient_oqsh2")
 width = 40
 height = 40
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 0.5)
 
+[sub_resource type="Gradient" id="Gradient_qk2ka"]
+offsets = PackedFloat32Array(0.9911765, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_newt1"]
+gradient = SubResource("Gradient_qk2ka")
+width = 38
+height = 38
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_5rtqb"]
 radius = 12.0
+
+[sub_resource type="Gradient" id="Gradient_6oh4u"]
+offsets = PackedFloat32Array(0.9911765, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_i4snm"]
+gradient = SubResource("Gradient_6oh4u")
+width = 100
+height = 100
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
 
 [sub_resource type="Gradient" id="Gradient_mwm2l"]
 offsets = PackedFloat32Array(0.9911765, 1)
@@ -120,7 +182,7 @@ fill_to = Vector2(1, 0.5)
 
 [sub_resource type="Curve2D" id="Curve2D_a1ki5"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 862.00793, 5, 43.135532, -42.76403, -43.135532, 42.76403, 766.1818, 9, 88.87826, -84.70415, -88.87826, 84.70415, 611.7952, 330.99994, 54.48517, -45.212276, -54.48517, 45.212276, 217.8432, 382.99994, -3.198821, -8.655508, 3.198821, 8.655508, 198.67798, 482.99994, -56.708046, 48.00235, 56.708046, -48.00235, 298.76306, 481.99994, -82.504684, 84.75781, 82.504684, -84.75781, 453.14966, 181.99997, -45.950344, 49.87896, 45.950344, -49.87896, 870.5259, 94.999985, 0, 0, 0, 0, 864.13745, 5)
+"points": PackedVector2Array(0, 0, 0, 0, 857.749, 14, 41.083027, -44.306202, -41.083027, 44.306202, 766.1818, 24, 88.87826, -84.70415, -88.87826, 84.70415, 559.62317, 290.99997, 54.48517, -45.212276, -54.48517, 45.212276, 217.8432, 382.99994, -3.198821, -8.655508, 3.198821, 8.655508, 198.67798, 482.99994, -56.708046, 48.00235, 56.708046, -48.00235, 298.76306, 481.99994, -82.504684, 84.75781, 82.504684, -84.75781, 510.6454, 229.99997, -42.25583, 51.42113, 42.25583, -51.42113, 862.00793, 97.999985, 0, 0, 0, 0, 858.8138, 15)
 }
 point_count = 9
 
@@ -131,48 +193,50 @@ _data = {
 point_count = 5
 
 [sub_resource type="Gradient" id="Gradient_ulxo8"]
-offsets = PackedFloat32Array(0.9479167, 0.9604167)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+offsets = PackedFloat32Array(0.5833333)
+colors = PackedColorArray(1, 1, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_43gox"]
 gradient = SubResource("Gradient_ulxo8")
-width = 8
-height = 8
+width = 4
+height = 1
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 0)
 
 [sub_resource type="Gradient" id="Gradient_43gox"]
-offsets = PackedFloat32Array(0, 0.26587301, 0.6230159, 1)
+offsets = PackedFloat32Array(0, 0.05487805, 0.94512194, 1)
 colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_5rtqb"]
 gradient = SubResource("Gradient_43gox")
-
-[sub_resource type="Curve" id="Curve_f4ix3"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_ujg3o"]
-curve = SubResource("Curve_f4ix3")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5rtqb"]
 lifetime_randomness = 0.25
 particle_flag_disable_z = true
 emission_shape = 3
 emission_box_extents = Vector3(700, 400, 1)
-direction = Vector3(-1, 0, 0)
+angle_min = 45.00001
+angle_max = 45.00001
+direction = Vector3(-1, 1, 0)
 spread = 0.0
 initial_velocity_min = 30.0
 initial_velocity_max = 200.0
 gravity = Vector3(0, 0, 0)
-scale_max = 2.0
-scale_curve = SubResource("CurveTexture_ujg3o")
-color = Color(1, 0.83500004, 0.7, 0.7019608)
+color = Color(1, 1, 1, 0.972549)
 color_ramp = SubResource("GradientTexture1D_5rtqb")
 
 [sub_resource type="Environment" id="Environment_motou"]
 glow_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2h3um"]
+shader = ExtResource("17_y45wy")
+shader_parameter/effect_strength = 0.4790000227525
+shader_parameter/rewind_speed = 7.29400034320512
+shader_parameter/jitter_amount = 0.0330000015675
+shader_parameter/scanline_strength = 0.26000001235
+shader_parameter/chroma_shift = 0.0150000007125
+shader_parameter/snow_amount = 0.086000004085
 
 [sub_resource type="FontVariation" id="FontVariation_f4ix3"]
 base_font = ExtResource("10_ujg3o")
@@ -225,8 +289,8 @@ script = ExtResource("11_5rtqb")
 area2D = NodePath("../Area2D")
 use_distance_lerp = true
 distance_lerp_mode = 1
-distance_lerp_range = 5.001
-timescale_multiplier = 0.8
+distance_lerp_range = 1.001
+timescale_multiplier = 0.6
 metadata/_custom_type_script = "uid://dgc6tyax7xbjn"
 
 [node name="Planet2" type="Node2D" parent="." unique_id=1729831119]
@@ -263,8 +327,8 @@ script = ExtResource("11_5rtqb")
 area2D = NodePath("../Area2D")
 use_distance_lerp = true
 distance_lerp_mode = 1
-distance_lerp_range = 10.001
-timescale_multiplier = 0.1
+distance_lerp_range = 0.501
+timescale_multiplier = 0.2
 metadata/_custom_type_script = "uid://dgc6tyax7xbjn"
 
 [node name="Planet3" type="Node2D" parent="." unique_id=422865719]
@@ -274,12 +338,12 @@ position = Vector2(-4, -47)
 modulate = Color(0, 0, 0, 0.44313726)
 z_index = 1
 position = Vector2(317, -130)
-texture = SubResource("GradientTexture2D_2h3um")
+texture = SubResource("GradientTexture2D_6oh4u")
 
 [node name="Sprite2D2" type="Sprite2D" parent="Planet3" unique_id=1744839276]
 z_index = 1
 position = Vector2(317, -130.1928)
-texture = SubResource("GradientTexture2D_f4ix3")
+texture = SubResource("GradientTexture2D_rvcu0")
 
 [node name="Area2D" type="Area2D" parent="Planet3" unique_id=1817642392]
 position = Vector2(-100.454926, 68.33333)
@@ -289,21 +353,22 @@ collision_mask = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Planet3/Area2D" unique_id=1193957548]
 position = Vector2(232.47498, -110.29229)
-shape = SubResource("CircleShape2D_y45wy")
+shape = SubResource("CircleShape2D_2h3um")
 
 [node name="Planet2TimelineArea" type="Node" parent="Planet3" unique_id=1209164434 node_paths=PackedStringArray("area2D")]
 script = ExtResource("11_5rtqb")
 area2D = NodePath("../Area2D")
 use_distance_lerp = true
 distance_lerp_mode = 1
-distance_lerp_range = 5.001
-timescale_multiplier = 0.8
+distance_lerp_range = 1.001
+timescale_multiplier = 1.5
 metadata/_custom_type_script = "uid://dgc6tyax7xbjn"
 
 [node name="Moon" type="CharacterBody2D" parent="." unique_id=1260603408 node_paths=PackedStringArray("timeline", "path_follow_2d", "recorder")]
-position = Vector2(366.00006, -3)
-rotation = -1.6618664
-scale = Vector2(1.0000001, 1.0000001)
+position = Vector2(353.00003, -218)
+rotation = -2.5152462
+scale = Vector2(0.958824, 0.98120064)
+skew = -0.058291793
 collision_layer = 6
 collision_mask = 0
 motion_mode = 1
@@ -322,6 +387,13 @@ z_index = 2
 shape = SubResource("CircleShape2D_f4ix3")
 
 [node name="Sprite2D" type="Sprite2D" parent="Moon" unique_id=400828478]
+modulate = Color(0, 0, 0, 0.32941177)
+z_index = 1
+position = Vector2(0.7304035, 6.757902)
+scale = Vector2(0.5, 0.5)
+texture = SubResource("GradientTexture2D_oqsh2")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Moon" unique_id=1905116686]
 z_index = 1
 scale = Vector2(0.5, 0.5)
 texture = SubResource("GradientTexture2D_ujg3o")
@@ -353,8 +425,16 @@ z_index = 2
 shape = SubResource("CircleShape2D_f4ix3")
 
 [node name="Sprite2D" type="Sprite2D" parent="Moon2" unique_id=1532941805]
+modulate = Color(0.7, 0.6766667, 0, 1)
 z_index = 1
-scale = Vector2(0.5, 0.5)
+position = Vector2(0.1784158, 0.13421088)
+scale = Vector2(0.5, 0.4520549)
+texture = SubResource("GradientTexture2D_mu0ra")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Moon2" unique_id=1250432622]
+z_index = 1
+position = Vector2(0, -1.3673534)
+scale = Vector2(0.5, 0.42803404)
 texture = SubResource("GradientTexture2D_newt1")
 
 [node name="Moon2Rewindable" type="Node" parent="Moon2" unique_id=1121975899 node_paths=PackedStringArray("path_follow_2d")]
@@ -373,6 +453,15 @@ speed = 600.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1274705601]
 z_index = 2
 shape = SubResource("CircleShape2D_5rtqb")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Player" unique_id=603613234]
+modulate = Color(0, 0, 0, 0.27058825)
+z_index = 1
+scale = Vector2(0.5, 0.5)
+texture = SubResource("GradientTexture2D_i4snm")
+metadata/_aseprite_wizard_interface_config_ = {
+"layer_section": false
+}
 
 [node name="Sprite2D" type="Sprite2D" parent="Player" unique_id=519459622]
 modulate = Color(1, 0.04000002, 0.04000002, 1)
@@ -399,8 +488,8 @@ scale = Vector2(0.9392007, 1.0000001)
 curve = SubResource("Curve2D_a1ki5")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D" unique_id=535623633]
-position = Vector2(862.00793, 5)
-rotation = -2.5073116
+position = Vector2(857.749, 14)
+rotation = -2.5447283
 loop = false
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D/PathFollow2D" unique_id=253318310]
@@ -423,10 +512,11 @@ remote_path = NodePath("../../../Moon2")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="Environment" unique_id=869557369]
 modulate = Color(1, 1, 1, 0.37254903)
-amount = 80
+amount = 100
 texture = SubResource("GradientTexture2D_43gox")
-lifetime = 2.0
+lifetime = 3.0
 preprocess = 1.98
+randomness = 0.21
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_5rtqb")
 
@@ -450,75 +540,9 @@ restart_on_rewind_start = false
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=224396432]
 environment = SubResource("Environment_motou")
 
-[node name="Title" type="Control" parent="." unique_id=1054282312]
-layout_mode = 3
-anchors_preset = 0
-offset_left = -576.0
-offset_top = -343.0
-offset_right = 556.0
-offset_bottom = 285.0
-mouse_filter = 2
-
-[node name="Control" type="Control" parent="Title" unique_id=1487760953]
-layout_mode = 1
-anchors_preset = 0
-offset_left = 296.0
-offset_top = 17.0
-offset_right = 336.0
-offset_bottom = 57.0
-mouse_filter = 2
-
-[node name="GODOT" type="Label" parent="Title/Control" unique_id=119224582]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -318.0
-offset_top = -21.0
-offset_right = 24.0
-offset_bottom = 74.0
-grow_horizontal = 0
-size_flags_horizontal = 8
-size_flags_vertical = 8
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = SubResource("FontVariation_f4ix3")
-theme_override_font_sizes/font_size = 18
-text = "GODOT"
-vertical_alignment = 1
-
-[node name="Control2" type="Control" parent="Title/Control" unique_id=1438581411]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -343.0
-offset_top = 64.0
-offset_right = -343.0
-offset_bottom = 64.0
-grow_horizontal = 0
-mouse_filter = 2
-
-[node name="Label" type="Label" parent="Title/Control/Control2" unique_id=759451891]
-layout_mode = 1
-offset_left = -7.0
-offset_top = -37.0
-offset_right = 252.0
-offset_bottom = 39.0
-theme_override_colors/font_color = Color(0.07933333, 0, 0.14, 1)
-theme_override_colors/font_shadow_color = Color(1, 0.65, 0, 0.33333334)
-theme_override_colors/font_outline_color = Color(1, 0.6509804, 0, 1)
-theme_override_constants/shadow_offset_x = 2
-theme_override_constants/shadow_offset_y = 2
-theme_override_constants/outline_size = 4
-theme_override_fonts/font = SubResource("FontVariation_ujg3o")
-theme_override_font_sizes/font_size = 48
-text = "Timeflow"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="HUD" type="CanvasLayer" parent="." unique_id=1805186065]
 
-[node name="Control" type="Control" parent="HUD" unique_id=1050181213 node_paths=PackedStringArray("world_input", "player_input", "enemy_input", "environment_input", "reset_button")]
+[node name="Control" type="Control" parent="HUD" unique_id=1050181213 node_paths=PackedStringArray("world_input", "player_input", "enemy_input", "environment_input", "reset_button", "rewind_texture", "player_recorder", "moon_recorder", "environment_recorder")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -529,15 +553,19 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("2_3m4g1")
-world_clock_configuration = ExtResource("2_ujg3o")
-player_clock_configuration = ExtResource("4_r45sy")
-enemy_clock_configuration = ExtResource("8_bes37")
-environment_clock_configuration = ExtResource("9_ulxo8")
 world_input = NodePath("MarginContainer/Control3/Timescales/VBoxContainer4/World_Input")
 player_input = NodePath("MarginContainer/Control3/Timescales/VBoxContainer6/Player_Input")
 enemy_input = NodePath("MarginContainer/Control3/Timescales/VBoxContainer2/Enemy_Input")
 environment_input = NodePath("MarginContainer/Control3/Timescales/VBoxContainer5/Environment_Input")
 reset_button = NodePath("MarginContainer/Reset/VBoxContainer3/Reset")
+rewind_texture = NodePath("MarginContainer/RewindTexture")
+player_recorder = NodePath("../../TimeflowPlayerRecorder")
+moon_recorder = NodePath("../../TimeflowMoonRecorder")
+environment_recorder = NodePath("../../TimeflowEnvironmentRecorder")
+world_clock_configuration = ExtResource("2_ujg3o")
+player_clock_configuration = ExtResource("4_r45sy")
+enemy_clock_configuration = ExtResource("8_bes37")
+environment_clock_configuration = ExtResource("9_ulxo8")
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/Control" unique_id=1968134775 node_paths=PackedStringArray("clock_controls", "normal_preset_button", "slow_preset_button", "rewind_preset_button", "acceleration_preset_button")]
 layout_mode = 1
@@ -560,27 +588,107 @@ rewind_preset_button = NodePath("Presets/PresetButtons/Rewind")
 acceleration_preset_button = NodePath("Presets/PresetButtons/Fast")
 run_showcase_on_start = false
 
+[node name="RewindTexture" type="ColorRect" parent="HUD/Control/MarginContainer" unique_id=1421245135]
+material = SubResource("ShaderMaterial_2h3um")
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Title" type="Control" parent="HUD/Control/MarginContainer" unique_id=1946596209]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Control" type="Control" parent="HUD/Control/MarginContainer/Title" unique_id=1760011648]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 10.0
+offset_top = -19.0
+offset_right = 50.0
+offset_bottom = 21.0
+mouse_filter = 2
+
+[node name="GODOT" type="Label" parent="HUD/Control/MarginContainer/Title/Control" unique_id=711114835]
+layout_mode = 1
+offset_left = 8.0
+offset_right = 350.0
+offset_bottom = 95.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource("FontVariation_f4ix3")
+theme_override_font_sizes/font_size = 18
+text = "GODOT"
+vertical_alignment = 1
+
+[node name="Control2" type="Control" parent="HUD/Control/MarginContainer/Title/Control" unique_id=1180467942]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 204.0
+offset_top = 39.0
+offset_right = 204.0
+offset_bottom = 39.0
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="HUD/Control/MarginContainer/Title/Control/Control2" unique_id=856077403]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -257.0
+offset_top = -3.0
+offset_right = 2.0
+offset_bottom = 73.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.6509804, 0, 1)
+theme_override_colors/font_shadow_color = Color(1, 0.65, 0, 0.33333334)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = SubResource("FontVariation_ujg3o")
+theme_override_font_sizes/font_size = 32
+text = "Timeflow"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Control3" type="Control" parent="HUD/Control/MarginContainer" unique_id=1059730443]
 layout_mode = 2
 mouse_filter = 2
 
 [node name="Timescales" type="VBoxContainer" parent="HUD/Control/MarginContainer/Control3" unique_id=96887125]
-layout_mode = 0
-offset_left = 17.0
-offset_top = 155.0
-offset_right = 117.0
-offset_bottom = 405.0
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = -177.0
+offset_right = 152.0
+offset_bottom = 3.0
+grow_vertical = 0
 size_flags_horizontal = 0
 size_flags_vertical = 4
 theme = ExtResource("10_f4ix3")
 theme_override_constants/separation = 6
 
-[node name="VBoxContainer4" type="VBoxContainer" parent="HUD/Control/MarginContainer/Control3/Timescales" unique_id=2101058280]
-custom_minimum_size = Vector2(100, 0)
+[node name="Label" type="Label" parent="HUD/Control/MarginContainer/Control3/Timescales" unique_id=956076118]
+modulate = Color(0.78039217, 0.42745098, 0, 1)
 layout_mode = 2
+text = "Time scale"
+
+[node name="VBoxContainer4" type="HBoxContainer" parent="HUD/Control/MarginContainer/Control3/Timescales" unique_id=1496944233]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 2
 
 [node name="Label" type="Label" parent="HUD/Control/MarginContainer/Control3/Timescales/VBoxContainer4" unique_id=272204494]
+modulate = Color(0.8132577, 0.8132577, 0.81325763, 1)
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
 text = "World"
 
 [node name="World_Input" type="LineEdit" parent="HUD/Control/MarginContainer/Control3/Timescales/VBoxContainer4" unique_id=426793702]
@@ -588,12 +696,17 @@ layout_mode = 2
 text = "1"
 alignment = 1
 
-[node name="VBoxContainer6" type="VBoxContainer" parent="HUD/Control/MarginContainer/Control3/Timescales" unique_id=2117604661]
-custom_minimum_size = Vector2(100, 0)
+[node name="VBoxContainer6" type="HBoxContainer" parent="HUD/Control/MarginContainer/Control3/Timescales" unique_id=1290396082]
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 2
 
 [node name="Label" type="Label" parent="HUD/Control/MarginContainer/Control3/Timescales/VBoxContainer6" unique_id=1965897737]
+modulate = Color(0.8132577, 0.8132577, 0.81325763, 1)
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
 text = "Player"
 
 [node name="Player_Input" type="LineEdit" parent="HUD/Control/MarginContainer/Control3/Timescales/VBoxContainer6" unique_id=840663343]
@@ -601,12 +714,17 @@ layout_mode = 2
 text = "1"
 alignment = 1
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="HUD/Control/MarginContainer/Control3/Timescales" unique_id=382059201]
-custom_minimum_size = Vector2(100, 0)
+[node name="VBoxContainer2" type="HBoxContainer" parent="HUD/Control/MarginContainer/Control3/Timescales" unique_id=1018623352]
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 2
 
 [node name="Label" type="Label" parent="HUD/Control/MarginContainer/Control3/Timescales/VBoxContainer2" unique_id=2089292256]
+modulate = Color(0.8132577, 0.8132577, 0.81325763, 1)
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
 text = "Objects"
 
 [node name="Enemy_Input" type="LineEdit" parent="HUD/Control/MarginContainer/Control3/Timescales/VBoxContainer2" unique_id=1474619117]
@@ -614,13 +732,18 @@ layout_mode = 2
 text = "1"
 alignment = 1
 
-[node name="VBoxContainer5" type="VBoxContainer" parent="HUD/Control/MarginContainer/Control3/Timescales" unique_id=1927427248]
-custom_minimum_size = Vector2(100, 0)
+[node name="VBoxContainer5" type="HBoxContainer" parent="HUD/Control/MarginContainer/Control3/Timescales" unique_id=907409988]
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 2
 
 [node name="Label" type="Label" parent="HUD/Control/MarginContainer/Control3/Timescales/VBoxContainer5" unique_id=1542600866]
+modulate = Color(0.8132577, 0.8132577, 0.81325763, 1)
 layout_mode = 2
-text = "Environment"
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "Env."
 
 [node name="Environment_Input" type="LineEdit" parent="HUD/Control/MarginContainer/Control3/Timescales/VBoxContainer5" unique_id=1365807016]
 layout_mode = 2
@@ -658,6 +781,8 @@ text = "Reset"
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
+theme_override_colors/font_color = Color(0.5890956, 0.5890956, 0.5890956, 1)
+theme_override_font_sizes/font_size = 12
 text = "Move : Arrows / ZQSD"
 
 [node name="ShowcaseLabel" type="Label" parent="HUD/Control/MarginContainer" unique_id=965432188]
@@ -678,14 +803,14 @@ mouse_filter = 2
 [node name="PresetButtons" type="VBoxContainer" parent="HUD/Control/MarginContainer/Presets" unique_id=1533705852]
 custom_minimum_size = Vector2(120, 150)
 layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 18.0
-offset_top = -154.0
-offset_right = 138.0
-offset_bottom = -4.0
-grow_vertical = 0
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 17.0
+offset_top = -116.0
+offset_right = 137.0
+offset_bottom = 34.0
+grow_vertical = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 theme = ExtResource("10_f4ix3")
@@ -697,28 +822,24 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Normal"
-alignment = 0
 
 [node name="Slow" type="Button" parent="HUD/Control/MarginContainer/Presets/PresetButtons" unique_id=1898787410]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Slow"
-alignment = 0
 
 [node name="Fast" type="Button" parent="HUD/Control/MarginContainer/Presets/PresetButtons" unique_id=1270890985]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Fast"
-alignment = 0
 
 [node name="Rewind" type="Button" parent="HUD/Control/MarginContainer/Presets/PresetButtons" unique_id=138462077]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Rewind"
-alignment = 0
 
 [node name="MoonTimeline" type="Node" parent="." unique_id=280519675]
 script = ExtResource("2_u5334")

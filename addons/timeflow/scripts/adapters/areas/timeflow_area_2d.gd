@@ -46,15 +46,24 @@ func _center_proximity(point: Vector2) -> float:
 	return clampf(1.0 - (dist / maxf(distance_lerp_range, 0.001)), 0.0, 1.0)
 
 func _shape_proximity(point: Vector2) -> float:
-	var boundary_distance: float = _distance_to_closest_shape_boundary(point)
+	var shape_data: Dictionary = _closest_shape_boundary_data(point)
+	var boundary_distance: float = shape_data.get("distance", -1.0)
 	if boundary_distance < 0.0:
 		return _center_proximity(point)
-	return clampf(boundary_distance / maxf(distance_lerp_range, 0.001), 0.0, 1.0)
 
-func _distance_to_closest_shape_boundary(point: Vector2) -> float:
+	var lerp_range: float = maxf(distance_lerp_range, 0.001)
+	var max_depth: float = shape_data.get("max_depth", -1.0)
+	
+	if lerp_range <= 1.0 and max_depth > 0.0:
+		return clampf(boundary_distance / maxf(max_depth * lerp_range, 0.001), 0.0, 1.0)
+	return clampf(boundary_distance / lerp_range, 0.0, 1.0)
+
+func _closest_shape_boundary_data(point: Vector2) -> Dictionary:
 	if area2D == null:
-		return -1.0
+		return {"distance": -1.0, "max_depth": -1.0}
+
 	var best_distance: float = INF
+	var best_max_depth: float = -1.0
 	for child in area2D.find_children("*", "CollisionShape2D", true, false):
 		var collider := child as CollisionShape2D
 		if collider == null or collider.disabled or collider.shape == null:
@@ -62,8 +71,12 @@ func _distance_to_closest_shape_boundary(point: Vector2) -> float:
 		var shape_distance: float = _distance_to_shape_boundary(collider, point)
 		if shape_distance < 0.0:
 			continue
-		best_distance = minf(best_distance, shape_distance)
-	return best_distance if best_distance < INF else -1.0
+		if shape_distance < best_distance:
+			best_distance = shape_distance
+			best_max_depth = _shape_max_depth(collider)
+	if best_distance < INF:
+		return {"distance": best_distance, "max_depth": best_max_depth}
+	return {"distance": -1.0, "max_depth": -1.0}
 
 func _distance_to_shape_boundary(collider: CollisionShape2D, world_point: Vector2) -> float:
 	var local_point: Vector2 = collider.global_transform.affine_inverse() * world_point
@@ -81,6 +94,17 @@ func _distance_to_shape_boundary(collider: CollisionShape2D, world_point: Vector
 		var signed_distance: float = outside.length() + minf(maxf(q.x, q.y), 0.0)
 		return absf(signed_distance)
 
+	return -1.0
+
+func _shape_max_depth(collider: CollisionShape2D) -> float:
+	var shape := collider.shape
+	if shape is CircleShape2D:
+		var circle: CircleShape2D = shape
+		return circle.radius
+	if shape is RectangleShape2D:
+		var rectangle: RectangleShape2D = shape
+		var half_size: Vector2 = rectangle.size * 0.5
+		return minf(half_size.x, half_size.y)
 	return -1.0
 
 func _get_configuration_warnings() -> PackedStringArray:

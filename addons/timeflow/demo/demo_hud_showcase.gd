@@ -28,6 +28,8 @@ var _preset_buttons: Dictionary = {}
 func _ready() -> void:
 	if clock_controls != null and not clock_controls.manual_override_requested.is_connected(_on_manual_override):
 		clock_controls.manual_override_requested.connect(_on_manual_override)
+	if clock_controls != null and not clock_controls.default_timescale_restored.is_connected(_on_default_timescale_restored):
+		clock_controls.default_timescale_restored.connect(_on_default_timescale_restored)
 	_connect_preset_buttons()
 	_set_selected_preset(DemoPreset.NORMAL_FLOW)
 	if showcase_label != null:
@@ -86,9 +88,9 @@ func _get_preset_data(preset: int) -> Dictionary:
 		DemoPreset.NORMAL_FLOW:
 			return {"title": "Normal Flow", "world": 1.0, "player": 1.0, "enemy": 1.0, "environment": 1.0, "color": Color(1, 1, 1, 1), "label_scale": 1.1}
 		DemoPreset.GLOBAL_SLOW_MOTION:
-			return {"title": "Global Slow Motion", "world": 0.2, "player": 1.0, "enemy": 1.0, "environment": 0.5, "color": Color(0.65, 0.9, 1.0, 1.0), "label_scale": 1.2}
+			return {"title": "Global Slow Motion", "world": 0.1, "player": 1.0, "enemy": 1.0, "environment": 1.0, "color": Color(0.65, 0.9, 1.0, 1.0), "label_scale": 1.2}
 		DemoPreset.GLOBAL_ACCELERATION:
-			return {"title": "Global Acceleration", "world": 1.0, "player": 1.0, "enemy": 2.0, "environment": 6.0, "color": Color(1.0, 0.72, 0.58, 1.0), "label_scale": 1.2}
+			return {"title": "Global Acceleration", "world": 1.0, "player": 1.0, "enemy": 4.0, "environment": 6.0, "color": Color(1.0, 0.72, 0.58, 1.0), "label_scale": 1.2}
 		DemoPreset.REWIND:
 			return {"title": "Enemy Rewind", "world": -4.0, "player": 1.0, "enemy": 1.0, "environment": 1.0, "color": Color(0.5, 0.92, 1.0, 1.0), "label_scale": 1.3}
 		_:
@@ -137,6 +139,9 @@ func _on_preset_button_pressed(preset: int) -> void:
 
 func _on_manual_override() -> void:
 	_stop_showcase_for_manual_override()
+
+func _on_default_timescale_restored() -> void:
+	_set_selected_preset(DemoPreset.NORMAL_FLOW)
 
 func _stop_showcase_for_manual_override() -> void:
 	if not stop_showcase_on_manual_input:

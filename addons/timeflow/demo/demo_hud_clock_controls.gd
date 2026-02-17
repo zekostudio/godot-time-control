@@ -2,16 +2,24 @@ extends Control
 class_name DemoHudClockControls
 
 signal manual_override_requested
+signal default_timescale_restored
 
 @export var world_input: LineEdit
 @export var player_input: LineEdit
 @export var enemy_input: LineEdit
 @export var environment_input: LineEdit
 @export var reset_button: Button
+@export var rewind_texture: ColorRect
+@export var player_recorder: Node
+@export var moon_recorder: Node
+@export var environment_recorder: Node
+@export var restore_default_timescale_on_rewind_end: bool = true
 @export var world_clock_configuration: TimeflowClockConfig
 @export var player_clock_configuration: TimeflowClockConfig
 @export var enemy_clock_configuration: TimeflowClockConfig
 @export var environment_clock_configuration: TimeflowClockConfig
+
+var _active_rewinds: Dictionary = {}
 
 func _ready() -> void:
 	_bind_input(world_input, world_clock_configuration)
@@ -20,6 +28,11 @@ func _ready() -> void:
 	_bind_input(environment_input, environment_clock_configuration)
 	if reset_button != null and not reset_button.pressed.is_connected(_on_reset_button_pressed):
 		reset_button.pressed.connect(_on_reset_button_pressed)
+	if rewind_texture != null:
+		rewind_texture.visible = false
+	_bind_rewind_recorder(player_recorder)
+	_bind_rewind_recorder(moon_recorder)
+	_bind_rewind_recorder(environment_recorder)
 
 func apply_scales(world_scale: float, player_scale: float, enemy_scale: float, environment_scale: float) -> void:
 	_set_clock_scale(world_clock_configuration, world_scale, world_input)
@@ -29,6 +42,7 @@ func apply_scales(world_scale: float, player_scale: float, enemy_scale: float, e
 
 func reset_to_default() -> void:
 	apply_scales(1.0, 1.0, 1.0, 1.0)
+	default_timescale_restored.emit()
 
 func _bind_input(input: LineEdit, configuration: TimeflowClockConfig) -> void:
 	if input == null:
@@ -77,3 +91,30 @@ func _format_scale(scale_value: float) -> String:
 	if is_equal_approx(scale_value, roundf(scale_value)):
 		return str(int(roundf(scale_value)))
 	return "%.2f" % scale_value
+
+func _bind_rewind_recorder(recorder: Node) -> void:
+	if recorder == null:
+		return
+	if not recorder.has_signal("rewind_started") or not recorder.has_signal("rewind_stopped"):
+		return
+	var started_callback := Callable(self, "_on_rewind_started").bind(recorder)
+	var stopped_callback := Callable(self, "_on_rewind_stopped").bind(recorder)
+	if not recorder.is_connected("rewind_started", started_callback):
+		recorder.connect("rewind_started", started_callback)
+	if not recorder.is_connected("rewind_stopped", stopped_callback):
+		recorder.connect("rewind_stopped", stopped_callback)
+
+func _on_rewind_started(recorder: Node) -> void:
+	_active_rewinds[recorder.get_instance_id()] = true
+	_update_rewind_texture_visibility()
+
+func _on_rewind_stopped(recorder: Node) -> void:
+	_active_rewinds.erase(recorder.get_instance_id())
+	_update_rewind_texture_visibility()
+	if restore_default_timescale_on_rewind_end and _active_rewinds.is_empty():
+		reset_to_default()
+
+func _update_rewind_texture_visibility() -> void:
+	if rewind_texture == null:
+		return
+	rewind_texture.visible = not _active_rewinds.is_empty()
