@@ -3,6 +3,13 @@ class_name TimeflowClock
 
 const TimeflowEnums = preload("res://addons/timeflow/scripts/clock/timeflow_enums.gd")
 
+signal local_time_scale_changed(previous_local_time_scale: float, local_time_scale: float)
+signal paused_changed(paused: bool)
+signal parent_blend_mode_changed(previous_parent_blend_mode: int, parent_blend_mode: int)
+signal time_scale_changed(previous_time_scale: float, time_scale: float)
+signal rewind_started(time_scale: float)
+signal rewind_stopped(time_scale: float)
+
 static var BLEND_STRATEGIES := {
 	TimeflowEnums.TimeflowBlendMode.MULTIPLICATIVE: func(parent_scale: float, local_scale: float) -> float:
 		return parent_scale * local_scale,
@@ -89,43 +96,55 @@ func get_configuration() -> TimeflowClockConfig:
 	return _configuration
 
 func set_local_time_scale(value: float) -> void:
+	var previous_local_time_scale: float = _local_time_scale
 	if _configuration != null:
 		_local_time_scale = clampf(value, _configuration.min_time_scale, _configuration.max_time_scale)
 	else:
 		_local_time_scale = value
+	if is_equal_approx(previous_local_time_scale, _local_time_scale):
+		return
+	local_time_scale_changed.emit(previous_local_time_scale, _local_time_scale)
 	_recalculate_time_scale()
 
 func get_local_time_scale() -> float:
 	return _local_time_scale
 
 func set_paused(value: bool) -> void:
+	if _paused == value:
+		return
 	_paused = value
+	paused_changed.emit(_paused)
 	_recalculate_time_scale()
 
 func get_paused() -> bool:
 	return _paused
 
 func set_parent_blend_mode(value: int) -> void:
+	if _parent_blend_mode == value:
+		return
+	var previous_parent_blend_mode: int = _parent_blend_mode
 	_parent_blend_mode = value
+	parent_blend_mode_changed.emit(previous_parent_blend_mode, _parent_blend_mode)
 	_recalculate_time_scale()
 
 func get_parent_blend_mode() -> int:
 	return _parent_blend_mode
 
 func _recalculate_time_scale() -> void:
+	var previous_time_scale: float = time_scale
+	var new_time_scale: float = _local_time_scale
 	if _paused:
-		time_scale = 0.0
-		return
-
-	if parent_clock == null or not parent_clock is Node:
-		time_scale = _local_time_scale
-		return
-
-	var blend = BLEND_STRATEGIES.get(_parent_blend_mode, null)
-	if blend == null:
-		time_scale = _local_time_scale
-		return
-	time_scale = blend.call(parent_clock.time_scale, _local_time_scale)
+		new_time_scale = 0.0
+	elif parent_clock == null or not parent_clock is Node:
+		new_time_scale = _local_time_scale
+	else:
+		var blend = BLEND_STRATEGIES.get(_parent_blend_mode, null)
+		if blend == null:
+			new_time_scale = _local_time_scale
+		else:
+			new_time_scale = blend.call(parent_clock.time_scale, _local_time_scale)
+	time_scale = new_time_scale
+	_emit_time_scale_events(previous_time_scale, time_scale)
 
 func _resolve_parent() -> void:
 	if Engine.is_editor_hint():
@@ -259,6 +278,9 @@ func _get_configuration_warnings() -> PackedStringArray:
 func _apply_configuration_defaults() -> void:
 	if _configuration == null:
 		return
+	var previous_local_time_scale: float = _local_time_scale
+	var previous_paused: bool = _paused
+	var previous_parent_blend_mode: int = _parent_blend_mode
 	_local_time_scale = clampf(
 		_configuration.default_local_time_scale,
 		_configuration.min_time_scale,
@@ -266,3 +288,18 @@ func _apply_configuration_defaults() -> void:
 	)
 	_paused = _configuration.default_paused
 	_parent_blend_mode = int(_configuration.parent_blend_mode)
+	if not is_equal_approx(previous_local_time_scale, _local_time_scale):
+		local_time_scale_changed.emit(previous_local_time_scale, _local_time_scale)
+	if previous_paused != _paused:
+		paused_changed.emit(_paused)
+	if previous_parent_blend_mode != _parent_blend_mode:
+		parent_blend_mode_changed.emit(previous_parent_blend_mode, _parent_blend_mode)
+
+func _emit_time_scale_events(previous_time_scale: float, next_time_scale: float) -> void:
+	if is_equal_approx(previous_time_scale, next_time_scale):
+		return
+	time_scale_changed.emit(previous_time_scale, next_time_scale)
+	if previous_time_scale >= 0.0 and next_time_scale < 0.0:
+		rewind_started.emit(next_time_scale)
+	elif previous_time_scale < 0.0 and next_time_scale >= 0.0:
+		rewind_stopped.emit(next_time_scale)

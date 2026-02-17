@@ -4,6 +4,12 @@ class_name TimeflowTimeline
 
 const TimeflowEnums = preload("res://addons/timeflow/scripts/clock/timeflow_enums.gd")
 
+signal clock_bound(clock: TimeflowClock)
+signal clock_unbound(clock: TimeflowClock)
+signal time_scale_changed(previous_time_scale: float, time_scale: float)
+signal rewind_started(time_scale: float)
+signal rewind_stopped(time_scale: float)
+
 @export var mode: TimeflowEnums.TimeflowTimelineMode = TimeflowEnums.TimeflowTimelineMode.GLOBAL
 @export var local_clock: TimeflowClock
 @export var clock_configuration: TimeflowClockConfig
@@ -63,13 +69,14 @@ func _bind_clock(force: bool = false) -> void:
 		return
 	if not force and clock != null:
 		return
+	var previous_clock: TimeflowClock = clock
 
 	match mode:
 		TimeflowEnums.TimeflowTimelineMode.GLOBAL:
 			if clock_configuration == null or Timeflow == null:
 				clock = null
-				return
-			clock = Timeflow.get_clock(clock_configuration)
+			else:
+				clock = Timeflow.get_clock(clock_configuration)
 		TimeflowEnums.TimeflowTimelineMode.LOCAL:
 			clock = local_clock
 		_:
@@ -77,12 +84,31 @@ func _bind_clock(force: bool = false) -> void:
 
 	if clock == null and not Engine.is_editor_hint():
 		push_error("TimeflowTimeline could not bind to a clock. Check mode and configuration.")
+	if previous_clock != clock:
+		if previous_clock != null:
+			clock_unbound.emit(previous_clock)
+		if clock != null:
+			clock_bound.emit(clock)
 
 func _update_time_scale() -> void:
+	var previous_time_scale: float = time_scale
 	if clock == null:
 		time_scale = 1.0
+	else:
+		time_scale = clock.time_scale
+	_emit_time_scale_events(previous_time_scale, time_scale)
+
+func is_rewinding() -> bool:
+	return time_scale < 0.0
+
+func _emit_time_scale_events(previous_time_scale: float, next_time_scale: float) -> void:
+	if is_equal_approx(previous_time_scale, next_time_scale):
 		return
-	time_scale = clock.time_scale
+	time_scale_changed.emit(previous_time_scale, next_time_scale)
+	if previous_time_scale >= 0.0 and next_time_scale < 0.0:
+		rewind_started.emit(next_time_scale)
+	elif previous_time_scale < 0.0 and next_time_scale >= 0.0:
+		rewind_stopped.emit(next_time_scale)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []

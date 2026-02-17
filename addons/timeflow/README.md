@@ -91,6 +91,14 @@ Properties:
 Method:
 - `get_time_scale() -> float` — Returns the blended time scale.
 
+Signals:
+- `local_time_scale_changed(previous_local_time_scale: float, local_time_scale: float)`
+- `paused_changed(paused: bool)`
+- `parent_blend_mode_changed(previous_parent_blend_mode: int, parent_blend_mode: int)`
+- `time_scale_changed(previous_time_scale: float, time_scale: float)`
+- `rewind_started(time_scale: float)` — emitted when scale crosses from `>= 0` to `< 0`.
+- `rewind_stopped(time_scale: float)` — emitted when scale crosses from `< 0` to `>= 0`.
+
 ### TimeflowTimeline (Node)
 Bridge node that exposes the effective time scale of a chosen clock.
 
@@ -99,6 +107,16 @@ Properties:
 - `time_scale: float` — The resolved time scale of the targeted clock.
 - `local_clock: TimeflowClock` — Used when mode is `LOCAL`.
 - `clock_configuration: TimeflowClockConfig` — Used when mode is `GLOBAL`.
+
+Method:
+- `is_rewinding() -> bool` — helper for `time_scale < 0`.
+
+Signals:
+- `clock_bound(clock: TimeflowClock)`
+- `clock_unbound(clock: TimeflowClock)`
+- `time_scale_changed(previous_time_scale: float, time_scale: float)`
+- `rewind_started(time_scale: float)` — emitted when scale crosses from `>= 0` to `< 0`.
+- `rewind_stopped(time_scale: float)` — emitted when scale crosses from `< 0` to `>= 0`.
 
 ### Timeflow (Singleton / Autoload)
 Registry for all clocks; available globally.
@@ -109,6 +127,30 @@ Methods:
 - `get_clock_by_key(key: String) -> TimeflowClock`
 - `add_clock(configuration: TimeflowClockConfig) -> TimeflowClock`
 - `remove_clock(configuration: TimeflowClockConfig) -> void`
+
+Signals:
+- `clock_registered(clock: TimeflowClock)`
+- `clock_unregistered(clock: TimeflowClock)`
+- `clock_time_scale_changed(clock: TimeflowClock, previous_time_scale: float, time_scale: float)`
+- `clock_rewind_started(clock: TimeflowClock, time_scale: float)`
+- `clock_rewind_stopped(clock: TimeflowClock, time_scale: float)`
+
+Event hook example:
+```gdscript
+func _ready() -> void:
+	timeline.time_scale_changed.connect(_on_timeline_scale_changed)
+	timeline.rewind_started.connect(_on_timeline_rewind_started)
+	timeline.rewind_stopped.connect(_on_timeline_rewind_stopped)
+
+func _on_timeline_scale_changed(previous_scale: float, next_scale: float) -> void:
+	print("Scale changed: ", previous_scale, " -> ", next_scale)
+
+func _on_timeline_rewind_started(_time_scale: float) -> void:
+	print("Rewind started")
+
+func _on_timeline_rewind_stopped(_time_scale: float) -> void:
+	print("Rewind stopped")
+```
 
 ## TimeflowTimeline-aware helper nodes
 Drop these glue scripts next to existing nodes to keep their playback in sync with a `TimeflowTimeline` without rewriting their logic.

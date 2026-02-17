@@ -31,13 +31,13 @@ var _detached_from_path_follow: bool = false
 
 func _ready() -> void:
 	_base_modulate = modulate
+	_bind_timeline()
 	_bind_recorder()
 	path_follow_2d.progress = _ratio_to_progress(tween_start_ratio)
 	_start()
 
-func _process(_delta: float) -> void:
-	if _tween:
-		_tween.set_speed_scale(timeline.time_scale * area_timescale_multiplier)
+func _exit_tree() -> void:
+	_unbind_timeline()
 
 func _physics_process(delta: float) -> void:
 	if path_follow_2d == null:
@@ -60,6 +60,10 @@ func _physics_process(delta: float) -> void:
 
 func apply_external_impulse(impulse: Vector2) -> void:
 	_external_velocity += impulse / maxf(external_mass, 0.001)
+
+func set_area_timescale_multiplier(multiplier: float) -> void:
+	area_timescale_multiplier = multiplier
+	_apply_tween_speed()
 
 func detach_from_path_follow() -> void:
 	if _detached_from_path_follow:
@@ -94,6 +98,7 @@ func _disable_remote_position_drivers() -> void:
 
 func _start() -> void:
 	_tween = get_tree().create_tween();
+	_apply_tween_speed()
 	_tween.tween_property(path_follow_2d, "progress", _ratio_to_progress(tween_end_ratio), tween_duration)
 	_tween.set_ease(Tween.EaseType.EASE_IN)
 	_tween.set_trans(Tween.TRANS_CUBIC)
@@ -134,15 +139,8 @@ func _on_rewind_started() -> void:
 
 func _on_rewind_stopped() -> void:
 	_stop_rewind_vfx()
-	if timeline == null:
-		return
-	var effective_scale := _get_effective_time_scale()
-	if effective_scale <= 0.0:
-		await get_tree().process_frame
-		effective_scale = _get_effective_time_scale()
-	if effective_scale <= 0.0:
-		return
-	_restart_tween_from_current_progress()
+	await get_tree().process_frame
+	_try_resume_tween_if_forward_time()
 
 func _restart_tween_from_current_progress() -> void:
 	if path_follow_2d == null:
@@ -158,6 +156,7 @@ func _restart_tween_from_current_progress() -> void:
 	if full_span > 0.0001:
 		duration = maxf(remaining_span / full_span * tween_duration, 0.01)
 	_tween = get_tree().create_tween()
+	_apply_tween_speed()
 	_tween.tween_property(path_follow_2d, "progress", end_progress, duration)
 	_tween.set_ease(Tween.EaseType.EASE_OUT)
 	_tween.set_trans(Tween.TRANS_BOUNCE)
@@ -189,6 +188,35 @@ func _bind_recorder() -> void:
 		recorder.rewind_started.connect(_on_rewind_started)
 	if not recorder.rewind_stopped.is_connected(_on_rewind_stopped):
 		recorder.rewind_stopped.connect(_on_rewind_stopped)
+
+func _bind_timeline() -> void:
+	if timeline == null:
+		return
+	if not timeline.time_scale_changed.is_connected(_on_timeline_time_scale_changed):
+		timeline.time_scale_changed.connect(_on_timeline_time_scale_changed)
+
+func _unbind_timeline() -> void:
+	if timeline == null:
+		return
+	if timeline.time_scale_changed.is_connected(_on_timeline_time_scale_changed):
+		timeline.time_scale_changed.disconnect(_on_timeline_time_scale_changed)
+
+func _on_timeline_time_scale_changed(_previous_time_scale: float, _next_time_scale: float) -> void:
+	_apply_tween_speed()
+	if _previous_time_scale < 0.0 and _next_time_scale >= 0.0:
+		_try_resume_tween_if_forward_time()
+
+func _apply_tween_speed() -> void:
+	if _tween == null or timeline == null:
+		return
+	_tween.set_speed_scale(timeline.time_scale * area_timescale_multiplier)
+
+func _try_resume_tween_if_forward_time() -> void:
+	if timeline == null:
+		return
+	if _get_effective_time_scale() <= 0.0:
+		return
+	_restart_tween_from_current_progress()
 
 func _get_effective_time_scale() -> float:
 	if timeline == null:

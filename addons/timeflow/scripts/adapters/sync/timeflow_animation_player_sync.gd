@@ -6,9 +6,34 @@ const TimeflowTimeline = preload("res://addons/timeflow/scripts/clock/timeflow_t
 @export var animation_player: AnimationPlayer
 @export var timeline: TimeflowTimeline
 
-func _process(_delta: float) -> void:
+func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
+	_bind_timeline_signals()
+	_apply_time_scale()
+
+func _exit_tree() -> void:
+	if Engine.is_editor_hint():
+		return
+	_unbind_timeline_signals()
+
+func _bind_timeline_signals() -> void:
+	if timeline == null:
+		return
+	if not timeline.time_scale_changed.is_connected(_on_timeline_time_scale_changed):
+		timeline.time_scale_changed.connect(_on_timeline_time_scale_changed)
+
+func _unbind_timeline_signals() -> void:
+	if timeline == null:
+		return
+	if timeline.time_scale_changed.is_connected(_on_timeline_time_scale_changed):
+		timeline.time_scale_changed.disconnect(_on_timeline_time_scale_changed)
+
+func _on_timeline_time_scale_changed(_previous_time_scale: float, next_time_scale: float) -> void:
+	_apply_time_scale(next_time_scale)
+
+func _apply_time_scale(scale: float = NAN) -> void:
 	if timeline == null or animation_player == null:
 		return
-	animation_player.speed_scale = timeline.time_scale
+	var resolved_scale: float = timeline.time_scale if is_nan(scale) else scale
+	animation_player.speed_scale = resolved_scale

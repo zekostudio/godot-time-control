@@ -37,6 +37,9 @@ func _physics_process(delta: float) -> void:
 func apply_external_impulse(impulse: Vector2) -> void:
 	_external_velocity += impulse / maxf(external_mass, 0.001)
 
+func set_area_timescale_multiplier(multiplier: float) -> void:
+	area_timescale_multiplier = multiplier
+
 func _transfer_collision_impulses() -> void:
 	var collision_count: int = get_slide_collision_count()
 	if collision_count <= 0:
