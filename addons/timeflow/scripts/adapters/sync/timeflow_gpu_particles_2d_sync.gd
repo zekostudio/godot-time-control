@@ -25,15 +25,11 @@ func _exit_tree() -> void:
 	_unbind_timeline_signals()
 
 func _bind_timeline_signals() -> void:
-	if timeline == null:
-		return
-	if not timeline.time_scale_changed.is_connected(_on_timeline_time_scale_changed):
+	if timeline != null and not timeline.time_scale_changed.is_connected(_on_timeline_time_scale_changed):
 		timeline.time_scale_changed.connect(_on_timeline_time_scale_changed)
 
 func _unbind_timeline_signals() -> void:
-	if timeline == null:
-		return
-	if timeline.time_scale_changed.is_connected(_on_timeline_time_scale_changed):
+	if timeline != null and timeline.time_scale_changed.is_connected(_on_timeline_time_scale_changed):
 		timeline.time_scale_changed.disconnect(_on_timeline_time_scale_changed)
 
 func _on_timeline_time_scale_changed(_previous_time_scale: float, next_time_scale: float) -> void:
@@ -42,10 +38,11 @@ func _on_timeline_time_scale_changed(_previous_time_scale: float, next_time_scal
 func _apply_time_scale(scale: float = NAN) -> void:
 	if timeline == null or gpu_particles_2d == null:
 		return
+
 	var resolved_scale: float = timeline.time_scale if is_nan(scale) else scale
+	if _freeze_while_negative and resolved_scale < 0.0:
+		gpu_particles_2d.speed_scale = 0.0
+		return
 	if _freeze_while_negative:
-		if resolved_scale < 0.0:
-			gpu_particles_2d.speed_scale = 0.0
-			return
 		_freeze_while_negative = false
 	gpu_particles_2d.speed_scale = absf(resolved_scale) if use_absolute_time_scale else resolved_scale

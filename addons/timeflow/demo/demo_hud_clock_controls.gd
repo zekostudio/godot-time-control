@@ -34,10 +34,12 @@ func _ready() -> void:
 	_bind_input(moon_2_input, moon_2_clock_configuration)
 	_bind_input(moon_3_input, moon_3_clock_configuration)
 	_bind_input(environment_input, environment_clock_configuration)
+
 	if reset_button != null and not reset_button.pressed.is_connected(_on_reset_button_pressed):
 		reset_button.pressed.connect(_on_reset_button_pressed)
 	if rewind_texture != null:
 		rewind_texture.visible = false
+
 	_bind_rewind_recorder(player_recorder)
 	_bind_rewind_recorder(moon_1_recorder)
 	_bind_rewind_recorder(moon_2_recorder)
@@ -65,7 +67,7 @@ func _bind_input(input: LineEdit, configuration: TimeflowClockConfig) -> void:
 	input.text_submitted.connect(_on_input_submitted.bind(input))
 
 func _set_clock_scale(configuration: TimeflowClockConfig, timescale: float, input: LineEdit) -> void:
-	var clock := Timeflow.get_clock(configuration)
+	var clock: TimeflowClock = Timeflow.get_clock(configuration)
 	if clock == null:
 		return
 	clock.local_time_scale = timescale
@@ -80,16 +82,17 @@ func _on_input_blurred(input: LineEdit, configuration: TimeflowClockConfig) -> v
 	manual_override_requested.emit()
 	if input == null:
 		return
-	var clock := Timeflow.get_clock(configuration)
+
+	var clock: TimeflowClock = Timeflow.get_clock(configuration)
 	if clock == null:
 		return
 
-	var text := input.text.strip_edges()
+	var text: String = input.text.strip_edges()
 	if not text.is_valid_float():
 		_set_clock_scale(configuration, 1.0, input)
 		return
 
-	var value := clampf(text.to_float(), clock.configuration.min_time_scale, clock.configuration.max_time_scale)
+	var value: float = clampf(text.to_float(), clock.configuration.min_time_scale, clock.configuration.max_time_scale)
 	_set_clock_scale(configuration, value, input)
 
 func _on_input_enter(event: InputEvent, input: LineEdit) -> void:
@@ -99,16 +102,12 @@ func _on_input_enter(event: InputEvent, input: LineEdit) -> void:
 func _on_input_submitted(_text: String, input: LineEdit) -> void:
 	input.call_deferred("release_focus")
 
-func _format_scale(scale_value: float) -> String:
-	if is_equal_approx(scale_value, roundf(scale_value)):
-		return str(int(roundf(scale_value)))
-	return "%.2f" % scale_value
-
 func _bind_rewind_recorder(recorder: Node) -> void:
 	if recorder == null:
 		return
 	if not recorder.has_signal("rewind_started") or not recorder.has_signal("rewind_stopped"):
 		return
+
 	var started_callback := Callable(self, "_on_rewind_started").bind(recorder)
 	var stopped_callback := Callable(self, "_on_rewind_stopped").bind(recorder)
 	if not recorder.is_connected("rewind_started", started_callback):
@@ -127,6 +126,10 @@ func _on_rewind_stopped(recorder: Node) -> void:
 		reset_to_default()
 
 func _update_rewind_texture_visibility() -> void:
-	if rewind_texture == null:
-		return
-	rewind_texture.visible = not _active_rewinds.is_empty()
+	if rewind_texture != null:
+		rewind_texture.visible = not _active_rewinds.is_empty()
+
+func _format_scale(scale_value: float) -> String:
+	if is_equal_approx(scale_value, roundf(scale_value)):
+		return str(int(roundf(scale_value)))
+	return "%.2f" % scale_value

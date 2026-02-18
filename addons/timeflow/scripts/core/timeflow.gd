@@ -1,4 +1,5 @@
 extends Node
+
 const TimeflowClockRegistry = preload("res://addons/timeflow/scripts/clock/timeflow_clock_registry.gd")
 const UnscaledTimeSource = preload("res://addons/timeflow/scripts/core/unscaled_time_source.gd")
 
@@ -10,8 +11,8 @@ signal clock_rewind_stopped(clock: TimeflowClock, time_scale: float)
 
 @export var debug: bool = false
 
-var _registry = TimeflowClockRegistry.new()
-var _time_source = UnscaledTimeSource.new()
+var _registry: TimeflowClockRegistry = TimeflowClockRegistry.new()
+var _time_source: UnscaledTimeSource = UnscaledTimeSource.new()
 
 func _ready() -> void:
 	_time_source.reset()
@@ -32,17 +33,18 @@ func has_clock_by_key(key: StringName) -> bool:
 	return _registry.get_by_key(key) != null
 
 func get_clock_by_key(key: StringName) -> TimeflowClock:
-	var clock := _registry.get_by_key(key)
+	var clock: TimeflowClock = _registry.get_by_key(key)
 	if clock == null:
 		push_error("Unknown global clock '%s'" % key)
 	return clock
 
 func get_clock(configuration: TimeflowClockConfig) -> TimeflowClock:
-	var clock := _registry.get_by_configuration(configuration)
+	var clock: TimeflowClock = _registry.get_by_configuration(configuration)
+	if clock != null:
+		return clock
+	clock = add_clock(configuration)
 	if clock == null:
-		clock = add_clock(configuration)
-		if clock == null:
-			push_error("Unknown global clock '%s'" % configuration.key)
+		push_error("Unknown global clock '%s'" % configuration.key)
 	return clock
 
 func register_clock(clock: TimeflowClock, previous: TimeflowClockConfig = null) -> void:
@@ -60,7 +62,7 @@ func add_clock(configuration: TimeflowClockConfig) -> TimeflowClock:
 		push_error("TimeflowClock configuration cannot be null")
 		return null
 
-	var existing_child := _find_child_clock(configuration)
+	var existing_child: TimeflowClock = _find_child_clock(configuration)
 	if existing_child != null:
 		if not has_clock(configuration):
 			register_clock(existing_child)
@@ -68,31 +70,48 @@ func add_clock(configuration: TimeflowClockConfig) -> TimeflowClock:
 
 	if has_clock(configuration):
 		return _registry.get_by_configuration(configuration)
-	var clock: TimeflowClock = TimeflowClock.new() 
+
+	var clock := TimeflowClock.new()
 	clock.configuration = configuration
 	add_child(clock)
 	if not has_clock(configuration):
 		register_clock(clock)
 	return clock
 
-func _find_child_clock(configuration: TimeflowClockConfig) -> TimeflowClock:
-	for child in get_children():
-		if child is TimeflowClock:
-			var config: TimeflowClockConfig = child.get_configuration()
-			if config != null and config.key == configuration.key:
-				return child
-	return null
-
 func remove_clock(configuration: TimeflowClockConfig) -> void:
 	if configuration == null:
 		push_error("TimeflowClock configuration cannot be null")
 		return
-	var clock := _registry.get_by_configuration(configuration)
+	var clock: TimeflowClock = _registry.get_by_configuration(configuration)
 	if clock == null:
 		push_error("Unknown global clock '%s'" % configuration.key)
 		return
 	unregister_clock(clock)
 	clock.queue_free()
+
+func get_unscaled_delta_time() -> float:
+	return _time_source.get_unscaled_delta_time()
+
+static func get_time_state(time_scale: float) -> String:
+	if time_scale < 0.0:
+		return "Reversed"
+	if time_scale == 0.0:
+		return "Paused"
+	if time_scale < 1.0:
+		return "Slowed"
+	if time_scale == 1.0:
+		return "Normal"
+	return "Accelerated"
+
+func _find_child_clock(configuration: TimeflowClockConfig) -> TimeflowClock:
+	for child in get_children():
+		if not (child is TimeflowClock):
+			continue
+		var candidate: TimeflowClock = child
+		var config: TimeflowClockConfig = candidate.get_configuration()
+		if config != null and config.key == configuration.key:
+			return candidate
+	return null
 
 func _connect_clock_signals(clock: TimeflowClock) -> void:
 	if clock == null:
@@ -128,17 +147,3 @@ func _on_clock_rewind_started(time_scale: float, clock: TimeflowClock) -> void:
 
 func _on_clock_rewind_stopped(time_scale: float, clock: TimeflowClock) -> void:
 	clock_rewind_stopped.emit(clock, time_scale)
-
-static func get_time_state(time_scale: float) -> String:
-	if time_scale < 0.0:
-		return "Reversed"
-	if time_scale == 0.0:
-		return "Paused"
-	if time_scale < 1.0:
-		return "Slowed"
-	if time_scale == 1.0:
-		return "Normal"
-	return "Accelerated"
-
-func get_unscaled_delta_time() -> float:
-	return _time_source.get_unscaled_delta_time()

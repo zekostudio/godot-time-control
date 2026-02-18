@@ -10,15 +10,13 @@ extends CharacterBody2D
 @export_range(0.0, 1.0, 0.01) var self_recoil_scale: float = 0.3
 @export var external_velocity_max: float = 420.0
 
-const JUMP_VELOCITY = -400.0
-
 var direction: Vector2
 var area_timescale_multiplier: float = 1.0
 var _external_velocity: Vector2 = Vector2.ZERO
 
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	direction.x = Input.get_axis("move_left", "move_right")
 	if direction.x == 0:
 		direction.x = Input.get_axis("ui_left", "ui_right")
@@ -28,7 +26,9 @@ func _process(delta: float) -> void:
 	direction = direction.normalized()
 
 func _physics_process(delta: float) -> void:
-	var input_velocity: Vector2 = Vector2(direction.x, direction.y) * speed * timeline.time_scale * area_timescale_multiplier
+	if timeline == null:
+		return
+	var input_velocity: Vector2 = direction * speed * timeline.time_scale * area_timescale_multiplier
 	_external_velocity *= exp(-external_damping * delta)
 	velocity = input_velocity + _external_velocity
 	move_and_slide()
@@ -48,6 +48,7 @@ func _transfer_collision_impulses() -> void:
 	var collision_count: int = get_slide_collision_count()
 	if collision_count <= 0:
 		return
+
 	for i in collision_count:
 		var collision: KinematicCollision2D = get_slide_collision(i)
 		if collision == null:
@@ -57,11 +58,13 @@ func _transfer_collision_impulses() -> void:
 			continue
 		if collider.has_method("detach_from_path_follow"):
 			collider.detach_from_path_follow()
+
 		var push_direction: Vector2 = -collision.get_normal().normalized()
 		var impact_speed: float = maxf(0.0, velocity.dot(push_direction))
 		var impulse_strength: float = minf(impact_speed * impact_impulse_scale, impact_impulse_max)
 		if impulse_strength <= 0.0:
 			continue
+
 		var impulse: Vector2 = push_direction * impulse_strength
 		collider.apply_external_impulse(impulse)
 		apply_external_impulse(-impulse * self_recoil_scale)
@@ -85,10 +88,8 @@ func _clamp_to_visible_world() -> void:
 func _collision_margin() -> float:
 	if collision_shape_2d == null or collision_shape_2d.shape == null:
 		return 0.0
-
 	if collision_shape_2d.shape is CircleShape2D:
 		var circle_shape := collision_shape_2d.shape as CircleShape2D
 		var scale_factor: float = maxf(absf(collision_shape_2d.global_scale.x), absf(collision_shape_2d.global_scale.y))
 		return circle_shape.radius * scale_factor
-
 	return 0.0

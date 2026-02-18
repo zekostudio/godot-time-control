@@ -34,10 +34,12 @@ func _ready() -> void:
 		clock_controls.manual_override_requested.connect(_on_manual_override)
 	if clock_controls != null and not clock_controls.default_timescale_restored.is_connected(_on_default_timescale_restored):
 		clock_controls.default_timescale_restored.connect(_on_default_timescale_restored)
+
 	_connect_preset_buttons()
 	_bind_rewind_recorders()
 	_set_selected_preset(DemoPreset.NORMAL_FLOW)
 	_update_rewind_button_text()
+
 	if showcase_label != null:
 		showcase_label.visible = run_showcase_on_start
 	if run_showcase_on_start:
@@ -50,6 +52,7 @@ func _run_showcase() -> void:
 	if _showcase_active:
 		return
 	_showcase_active = true
+
 	var preset_order: Array[int] = [
 		DemoPreset.NORMAL_FLOW,
 		DemoPreset.GLOBAL_SLOW_MOTION,
@@ -58,6 +61,7 @@ func _run_showcase() -> void:
 		DemoPreset.ENVIRONMENT_BURST,
 		DemoPreset.GLOBAL_ACCELERATION,
 	]
+
 	while _showcase_active:
 		for preset in preset_order:
 			await _showcase_phase(int(preset))
@@ -79,6 +83,7 @@ func _apply_preset(preset: int) -> void:
 	var preset_data: Dictionary = _get_preset_data(preset)
 	if preset_data.is_empty():
 		return
+
 	_set_selected_preset(preset)
 	clock_controls.apply_scales(
 		float(preset_data["world"]),
@@ -95,23 +100,77 @@ func _apply_preset(preset: int) -> void:
 func _get_preset_data(preset: int) -> Dictionary:
 	match preset:
 		DemoPreset.NORMAL_FLOW:
-			return {"title": "Normal Flow", "world": 1.0, "player": 1.0, "enemy": 1.0, "environment": 1.0, "color": Color(1, 1, 1, 1), "label_scale": 1.1}
+			return {
+				"title": "Normal Flow",
+				"world": 1.0,
+				"player": 1.0,
+				"enemy": 1.0,
+				"environment": 1.0,
+				"color": Color(1, 1, 1, 1),
+				"label_scale": 1.1,
+			}
 		DemoPreset.GLOBAL_SLOW_MOTION:
-			return {"title": "Global Slow Motion", "world": 0.1, "player": 1.0, "enemy": 1.0, "environment": 1.0, "color": Color(0.65, 0.9, 1.0, 1.0), "label_scale": 1.2}
-		DemoPreset.GLOBAL_ACCELERATION:
-			return {"title": "Global Acceleration", "world": 1.0, "player": 1.0, "enemy": 4.0, "environment": 6.0, "color": Color(1.0, 0.72, 0.58, 1.0), "label_scale": 1.2}
+			return {
+				"title": "Global Slow Motion",
+				"world": 0.1,
+				"player": 1.0,
+				"enemy": 1.0,
+				"environment": 1.0,
+				"color": Color(0.65, 0.9, 1.0, 1.0),
+				"label_scale": 1.2,
+			}
+		DemoPreset.PLAYER_ACCELERATED:
+			return {
+				"title": "Player Accelerated",
+				"world": 1.0,
+				"player": 2.4,
+				"enemy": 1.0,
+				"environment": 1.0,
+				"color": Color(0.82, 1.0, 0.72, 1.0),
+				"label_scale": 1.2,
+			}
 		DemoPreset.REWIND:
-			return {"title": "Enemy Rewind", "world": -4.0, "player": 1.0, "enemy": 1.0, "environment": 1.0, "color": Color(0.5, 0.92, 1.0, 1.0), "label_scale": 1.3}
+			return {
+				"title": "Enemy Rewind",
+				"world": -4.0,
+				"player": 1.0,
+				"enemy": 1.0,
+				"environment": 1.0,
+				"color": Color(0.5, 0.92, 1.0, 1.0),
+				"label_scale": 1.3,
+			}
+		DemoPreset.ENVIRONMENT_BURST:
+			return {
+				"title": "Environment Burst",
+				"world": 1.0,
+				"player": 1.0,
+				"enemy": 1.0,
+				"environment": 4.5,
+				"color": Color(1.0, 0.84, 0.64, 1.0),
+				"label_scale": 1.22,
+			}
+		DemoPreset.GLOBAL_ACCELERATION:
+			return {
+				"title": "Global Acceleration",
+				"world": 1.0,
+				"player": 1.0,
+				"enemy": 4.0,
+				"environment": 6.0,
+				"color": Color(1.0, 0.72, 0.58, 1.0),
+				"label_scale": 1.2,
+			}
 		_:
 			return {}
 
 func _animate_showcase_label(text_value: String, text_color: Color, target_scale: float) -> void:
 	if showcase_label == null:
 		return
+
 	showcase_label.visible = true
 	showcase_label.text = "Demo: %s" % text_value
 	if _showcase_tween != null:
 		_showcase_tween.kill()
+
 	showcase_label.modulate = Color(1, 1, 1, 0.65)
 	showcase_label.scale = Vector2.ONE
 	_showcase_tween = create_tween()
@@ -141,6 +200,7 @@ func _bind_rewind_recorders() -> void:
 		_rewind_button_base_text = rewind_preset_button.text
 	if clock_controls == null:
 		return
+
 	_try_add_rewind_recorder(clock_controls.player_recorder)
 	_try_add_rewind_recorder(clock_controls.moon_1_recorder)
 	_try_add_rewind_recorder(clock_controls.moon_2_recorder)
@@ -149,9 +209,7 @@ func _bind_rewind_recorders() -> void:
 
 func _try_add_rewind_recorder(candidate: Node) -> void:
 	var recorder := candidate as TimeflowRecorder
-	if recorder == null:
-		return
-	if _rewind_recorders.has(recorder):
+	if recorder == null or _rewind_recorders.has(recorder):
 		return
 	_rewind_recorders.append(recorder)
 
@@ -161,11 +219,12 @@ func _update_rewind_button_text() -> void:
 	if _rewind_recorders.is_empty():
 		rewind_preset_button.text = _rewind_button_base_text
 		return
+
 	var min_remaining: float = INF
 	for recorder in _rewind_recorders:
-		if recorder == null:
-			continue
-		min_remaining = minf(min_remaining, recorder.get_remaining_rewind_seconds())
+		if recorder != null:
+			min_remaining = minf(min_remaining, recorder.get_remaining_rewind_seconds())
+
 	if min_remaining == INF:
 		rewind_preset_button.text = _rewind_button_base_text
 		return
@@ -174,9 +233,8 @@ func _update_rewind_button_text() -> void:
 func _set_selected_preset(selected_preset: int) -> void:
 	for preset in _preset_buttons.keys():
 		var button: Button = _preset_buttons[preset]
-		if button == null:
-			continue
-		button.button_pressed = int(preset) == selected_preset
+		if button != null:
+			button.button_pressed = int(preset) == selected_preset
 
 func _on_preset_button_pressed(preset: int) -> void:
 	_stop_showcase_for_manual_override()
@@ -189,9 +247,7 @@ func _on_default_timescale_restored() -> void:
 	_set_selected_preset(DemoPreset.NORMAL_FLOW)
 
 func _stop_showcase_for_manual_override() -> void:
-	if not stop_showcase_on_manual_input:
-		return
-	if not _showcase_active:
+	if not stop_showcase_on_manual_input or not _showcase_active:
 		return
 	_showcase_active = false
 	showcase_loop = false

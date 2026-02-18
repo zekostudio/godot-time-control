@@ -28,15 +28,13 @@ func _physics_process(_delta: float) -> void:
 func _get_body_multiplier(body: Node) -> float:
 	if not use_distance_lerp:
 		return timescale_multiplier
+
 	var body_2d := body as Node2D
 	if body_2d == null:
 		return timescale_multiplier
+
 	var point: Vector2 = body_2d.global_position
-	var proximity: float = 0.0
-	if distance_lerp_mode == 0:
-		proximity = _center_proximity(point)
-	else:
-		proximity = _shape_proximity(point)
+	var proximity: float = _center_proximity(point) if distance_lerp_mode == 0 else _shape_proximity(point)
 	return lerpf(1.0, timescale_multiplier, proximity)
 
 func _center_proximity(point: Vector2) -> float:
@@ -53,7 +51,6 @@ func _shape_proximity(point: Vector2) -> float:
 
 	var lerp_range: float = maxf(distance_lerp_range, 0.001)
 	var max_depth: float = shape_data.get("max_depth", -1.0)
-	
 	if lerp_range <= 1.0 and max_depth > 0.0:
 		return clampf(boundary_distance / maxf(max_depth * lerp_range, 0.001), 0.0, 1.0)
 	return clampf(boundary_distance / lerp_range, 0.0, 1.0)
@@ -74,6 +71,7 @@ func _closest_shape_boundary_data(point: Vector2) -> Dictionary:
 		if shape_distance < best_distance:
 			best_distance = shape_distance
 			best_max_depth = _shape_max_depth(collider)
+
 	if best_distance < INF:
 		return {"distance": best_distance, "max_depth": best_max_depth}
 	return {"distance": -1.0, "max_depth": -1.0}

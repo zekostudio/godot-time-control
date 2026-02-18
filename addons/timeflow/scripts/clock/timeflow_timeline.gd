@@ -14,9 +14,9 @@ signal rewind_stopped(time_scale: float)
 @export var local_clock: TimeflowClock
 @export var clock_configuration: TimeflowClockConfig
 
-var clock
+var clock: TimeflowClock
 var time_scale: float = 1.0
-var last_time_scale: float = 1.0 
+var last_time_scale: float = 1.0
 var delta_time: float = 0.0
 var physics_delta_time: float = 0.0
 var time: float = 0.0
@@ -43,9 +43,7 @@ func _process(delta: float) -> void:
 	time += delta_time
 
 func _physics_process(delta: float) -> void:
-	if Engine.is_editor_hint():
-		return
-	if clock == null:
+	if Engine.is_editor_hint() or clock == null:
 		return
 	physics_delta_time = delta * time_scale
 
@@ -64,13 +62,16 @@ func tween_time_scale(target_scale: float, duration: float) -> void:
 	tween.tween_property(clock, "local_time_scale", target_scale, duration)
 	await tween.finished
 
+func is_rewinding() -> bool:
+	return time_scale < 0.0
+
 func _bind_clock(force: bool = false) -> void:
 	if Engine.is_editor_hint():
 		return
 	if not force and clock != null:
 		return
-	var previous_clock: TimeflowClock = clock
 
+	var previous_clock: TimeflowClock = clock
 	match mode:
 		TimeflowEnums.TimeflowTimelineMode.GLOBAL:
 			if clock_configuration == null or Timeflow == null:
@@ -82,8 +83,9 @@ func _bind_clock(force: bool = false) -> void:
 		_:
 			clock = null
 
-	if clock == null and not Engine.is_editor_hint():
+	if clock == null:
 		push_error("TimeflowTimeline could not bind to a clock. Check mode and configuration.")
+
 	if previous_clock != clock:
 		if previous_clock != null:
 			clock_unbound.emit(previous_clock)
@@ -92,14 +94,8 @@ func _bind_clock(force: bool = false) -> void:
 
 func _update_time_scale() -> void:
 	var previous_time_scale: float = time_scale
-	if clock == null:
-		time_scale = 1.0
-	else:
-		time_scale = clock.time_scale
+	time_scale = 1.0 if clock == null else clock.time_scale
 	_emit_time_scale_events(previous_time_scale, time_scale)
-
-func is_rewinding() -> bool:
-	return time_scale < 0.0
 
 func _emit_time_scale_events(previous_time_scale: float, next_time_scale: float) -> void:
 	if is_equal_approx(previous_time_scale, next_time_scale):

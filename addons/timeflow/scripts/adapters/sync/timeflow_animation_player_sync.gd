@@ -18,15 +18,11 @@ func _exit_tree() -> void:
 	_unbind_timeline_signals()
 
 func _bind_timeline_signals() -> void:
-	if timeline == null:
-		return
-	if not timeline.time_scale_changed.is_connected(_on_timeline_time_scale_changed):
+	if timeline != null and not timeline.time_scale_changed.is_connected(_on_timeline_time_scale_changed):
 		timeline.time_scale_changed.connect(_on_timeline_time_scale_changed)
 
 func _unbind_timeline_signals() -> void:
-	if timeline == null:
-		return
-	if timeline.time_scale_changed.is_connected(_on_timeline_time_scale_changed):
+	if timeline != null and timeline.time_scale_changed.is_connected(_on_timeline_time_scale_changed):
 		timeline.time_scale_changed.disconnect(_on_timeline_time_scale_changed)
 
 func _on_timeline_time_scale_changed(_previous_time_scale: float, next_time_scale: float) -> void:
@@ -35,5 +31,4 @@ func _on_timeline_time_scale_changed(_previous_time_scale: float, next_time_scal
 func _apply_time_scale(scale: float = NAN) -> void:
 	if timeline == null or animation_player == null:
 		return
-	var resolved_scale: float = timeline.time_scale if is_nan(scale) else scale
-	animation_player.speed_scale = resolved_scale
+	animation_player.speed_scale = timeline.time_scale if is_nan(scale) else scale

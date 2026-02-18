@@ -16,7 +16,7 @@ signal rewind_exhausted
 @export var record_when_paused: bool = false
 @export var auto_add_parent_rewindable: bool = true
 
-var _buffer := TimeflowSnapshotBuffer.new()
+var _buffer: TimeflowSnapshotBuffer = TimeflowSnapshotBuffer.new()
 var _record_accumulator: float = 0.0
 var _rewind_sample_time: float = 0.0
 var _is_rewinding: bool = false
@@ -32,14 +32,11 @@ func _ready() -> void:
 	_record_snapshot()
 
 func _process(delta: float) -> void:
-	if Engine.is_editor_hint():
-		return
-	if timeline == null:
+	if Engine.is_editor_hint() or timeline == null:
 		return
 
 	_ensure_buffer_capacity()
 	var effective_time_scale: float = _get_effective_time_scale()
-
 	if effective_time_scale < 0.0:
 		_step_rewind(delta, effective_time_scale)
 		return
@@ -53,6 +50,21 @@ func _process(delta: float) -> void:
 		_record_accumulator -= recording_interval
 		_record_snapshot()
 
+func get_available_rewind_seconds() -> float:
+	if timeline == null or _buffer.is_empty():
+		return 0.0
+	var oldest_time: float = float(_buffer.get_oldest().get("t", timeline.unscaled_time))
+	var newest_time: float = float(_buffer.get_newest().get("t", oldest_time))
+	return maxf(0.0, newest_time - oldest_time)
+
+func get_remaining_rewind_seconds() -> float:
+	if timeline == null or _buffer.is_empty():
+		return 0.0
+	if not _is_rewinding:
+		return get_available_rewind_seconds()
+	var oldest_time: float = float(_buffer.get_oldest().get("t", _rewind_sample_time))
+	return maxf(0.0, _rewind_sample_time - oldest_time)
+
 func _step_rewind(delta: float, time_scale: float) -> void:
 	if _buffer.is_empty():
 		return
@@ -65,7 +77,6 @@ func _step_rewind(delta: float, time_scale: float) -> void:
 		rewind_started.emit()
 
 	_rewind_sample_time -= delta * absf(time_scale)
-
 	var oldest_time: float = float(_buffer.get_oldest().get("t", _rewind_sample_time))
 	if _rewind_sample_time <= oldest_time:
 		_end_rewind(true)
@@ -74,8 +85,8 @@ func _step_rewind(delta: float, time_scale: float) -> void:
 			_notify_rewind_exhausted()
 			rewind_exhausted.emit()
 		return
-	_emitted_exhausted = false
 
+	_emitted_exhausted = false
 	var segment: Dictionary = _buffer.sample(_rewind_sample_time)
 	if segment.is_empty():
 		return
@@ -93,8 +104,8 @@ func _apply_segment(segment: Dictionary) -> void:
 		if rewindable == null:
 			continue
 
-		var from_state = from_states[i] if i < from_states.size() else {}
-		var to_state = to_states[i] if i < to_states.size() else from_state
+		var from_state: Variant = from_states[i] if i < from_states.size() else {}
+		var to_state: Variant = to_states[i] if i < to_states.size() else from_state
 		if from_state == null and to_state == null:
 			continue
 		if from_state == null:
@@ -108,9 +119,7 @@ func _apply_segment(segment: Dictionary) -> void:
 		rewindable.apply_timeflow_state(state_to_apply)
 
 func _record_snapshot() -> void:
-	if timeline == null:
-		return
-	if rewindables.is_empty():
+	if timeline == null or rewindables.is_empty():
 		return
 
 	var states: Array = []
@@ -127,21 +136,20 @@ func _record_snapshot() -> void:
 
 func _ensure_buffer_capacity(force: bool = false) -> void:
 	var snapshot_count: int = maxi(2, int(ceil(recording_duration / recording_interval)) + 1)
-	if force or snapshot_count != _last_buffer_capacity:
-		_last_buffer_capacity = snapshot_count
-		_buffer.configure(snapshot_count)
-		_record_accumulator = 0.0
-		_end_rewind(false)
+	if not force and snapshot_count == _last_buffer_capacity:
+		return
+	_last_buffer_capacity = snapshot_count
+	_buffer.configure(snapshot_count)
+	_record_accumulator = 0.0
+	_end_rewind(false)
 
 func _stop_rewind_if_needed() -> void:
-	if not _is_rewinding:
-		return
 	if _is_rewinding:
 		_end_rewind(true)
 
 func _try_add_parent_rewindable() -> void:
 	var parent := get_parent()
-	if parent == null or not (parent is TimeflowRewindable):
+	if not (parent is TimeflowRewindable):
 		return
 	var parent_rewindable: TimeflowRewindable = parent
 	if not rewindables.has(parent_rewindable):
@@ -150,23 +158,20 @@ func _try_add_parent_rewindable() -> void:
 func _notify_rewind_started() -> void:
 	for rewindable in rewindables:
 		var typed_rewindable: TimeflowRewindable = rewindable
-		if typed_rewindable == null:
-			continue
-		typed_rewindable.on_timeflow_rewind_started()
+		if typed_rewindable != null:
+			typed_rewindable.on_timeflow_rewind_started()
 
 func _notify_rewind_stopped() -> void:
 	for rewindable in rewindables:
 		var typed_rewindable: TimeflowRewindable = rewindable
-		if typed_rewindable == null:
-			continue
-		typed_rewindable.on_timeflow_rewind_stopped()
+		if typed_rewindable != null:
+			typed_rewindable.on_timeflow_rewind_stopped()
 
 func _notify_rewind_exhausted() -> void:
 	for rewindable in rewindables:
 		var typed_rewindable: TimeflowRewindable = rewindable
-		if typed_rewindable == null:
-			continue
-		typed_rewindable.on_timeflow_rewind_exhausted()
+		if typed_rewindable != null:
+			typed_rewindable.on_timeflow_rewind_exhausted()
 
 func _end_rewind(clear_history: bool) -> void:
 	if _is_rewinding:
@@ -203,18 +208,3 @@ func _get_configuration_warnings() -> PackedStringArray:
 	if rewindables.is_empty() and not auto_add_parent_rewindable:
 		warnings.append("Assign at least one rewindable node or enable auto_add_parent_rewindable.")
 	return warnings
-
-func get_available_rewind_seconds() -> float:
-	if timeline == null or _buffer.is_empty():
-		return 0.0
-	var oldest_time: float = float(_buffer.get_oldest().get("t", timeline.unscaled_time))
-	var newest_time: float = float(_buffer.get_newest().get("t", oldest_time))
-	return maxf(0.0, newest_time - oldest_time)
-
-func get_remaining_rewind_seconds() -> float:
-	if timeline == null or _buffer.is_empty():
-		return 0.0
-	if not _is_rewinding:
-		return get_available_rewind_seconds()
-	var oldest_time: float = float(_buffer.get_oldest().get("t", _rewind_sample_time))
-	return maxf(0.0, _rewind_sample_time - oldest_time)

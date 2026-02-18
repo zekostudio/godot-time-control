@@ -28,7 +28,6 @@ var _base_modulate: Color = Color(1, 1, 1, 1)
 var _external_velocity: Vector2 = Vector2.ZERO
 var _detached_from_path_follow: bool = false
 
-
 func _ready() -> void:
 	_base_modulate = modulate
 	_bind_timeline()
@@ -42,16 +41,19 @@ func _exit_tree() -> void:
 func _physics_process(delta: float) -> void:
 	if path_follow_2d == null:
 		return
+
 	var path_motion: Vector2 = Vector2.ZERO
 	if not _detached_from_path_follow:
 		var target_position: Vector2 = path_follow_2d.global_position
 		path_motion = target_position - global_position
+
 	_external_velocity *= exp(-external_damping * delta)
 	var motion: Vector2 = path_motion + (_external_velocity * delta)
 	if motion.length_squared() <= 0.000001:
 		if not _detached_from_path_follow:
 			rotation = path_follow_2d.global_rotation
 		return
+
 	var collision: KinematicCollision2D = move_and_collide(motion)
 	if collision != null:
 		_transfer_collision_impulse(collision, delta)
@@ -97,7 +99,7 @@ func _disable_remote_position_drivers() -> void:
 		remote.remote_path = NodePath("")
 
 func _start() -> void:
-	_tween = get_tree().create_tween();
+	_tween = get_tree().create_tween()
 	_apply_tween_speed()
 	_tween.tween_property(path_follow_2d, "progress", _ratio_to_progress(tween_end_ratio), tween_duration)
 	_tween.set_ease(Tween.EaseType.EASE_IN)
@@ -109,12 +111,14 @@ func _on_forward_finished() -> void:
 		path_follow_2d.progress = _ratio_to_progress(tween_start_ratio)
 		_start()
 		return
+
 	match loop_return_mode:
 		LoopReturnMode.WRAP_FROM_ZERO:
 			path_follow_2d.progress = 0.0
 		LoopReturnMode.WRAP_FROM_ONE:
 			path_follow_2d.progress = _get_path_length()
-	_tween = get_tree().create_tween();
+
+	_tween = get_tree().create_tween()
 	_tween.tween_property(path_follow_2d, "progress", _ratio_to_progress(tween_start_ratio), tween_duration)
 	_tween.set_ease(Tween.EaseType.EASE_OUT)
 	_tween.set_trans(Tween.TRANS_CUBIC)
@@ -155,6 +159,7 @@ func _restart_tween_from_current_progress() -> void:
 	var duration: float = tween_duration
 	if full_span > 0.0001:
 		duration = maxf(remaining_span / full_span * tween_duration, 0.01)
+
 	_tween = get_tree().create_tween()
 	_apply_tween_speed()
 	_tween.tween_property(path_follow_2d, "progress", end_progress, duration)
@@ -201,9 +206,9 @@ func _unbind_timeline() -> void:
 	if timeline.time_scale_changed.is_connected(_on_timeline_time_scale_changed):
 		timeline.time_scale_changed.disconnect(_on_timeline_time_scale_changed)
 
-func _on_timeline_time_scale_changed(_previous_time_scale: float, _next_time_scale: float) -> void:
+func _on_timeline_time_scale_changed(previous_time_scale: float, next_time_scale: float) -> void:
 	_apply_tween_speed()
-	if _previous_time_scale < 0.0 and _next_time_scale >= 0.0:
+	if previous_time_scale < 0.0 and next_time_scale >= 0.0:
 		_try_resume_tween_if_forward_time()
 
 func _apply_tween_speed() -> void:
@@ -212,9 +217,7 @@ func _apply_tween_speed() -> void:
 	_tween.set_speed_scale(timeline.time_scale * area_timescale_multiplier)
 
 func _try_resume_tween_if_forward_time() -> void:
-	if timeline == null:
-		return
-	if _get_effective_time_scale() <= 0.0:
+	if timeline == null or _get_effective_time_scale() <= 0.0:
 		return
 	_restart_tween_from_current_progress()
 
