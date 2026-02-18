@@ -46,7 +46,7 @@ func _physics_process(delta: float) -> void:
 	if not _detached_from_path_follow:
 		var target_position: Vector2 = path_follow_2d.global_position
 		path_motion = target_position - global_position
-	_external_velocity = _external_velocity.move_toward(Vector2.ZERO, external_damping * delta)
+	_external_velocity *= exp(-external_damping * delta)
 	var motion: Vector2 = path_motion + (_external_velocity * delta)
 	if motion.length_squared() <= 0.000001:
 		if not _detached_from_path_follow:

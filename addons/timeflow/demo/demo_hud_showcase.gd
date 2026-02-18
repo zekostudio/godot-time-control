@@ -1,6 +1,8 @@
 extends MarginContainer
 class_name DemoHudShowcase
 
+const TimeflowRecorder = preload("res://addons/timeflow/scripts/rewind/timeflow_recorder.gd")
+
 enum DemoPreset {
 	NORMAL_FLOW,
 	GLOBAL_SLOW_MOTION,
@@ -24,6 +26,8 @@ enum DemoPreset {
 var _showcase_tween: Tween
 var _showcase_active: bool = false
 var _preset_buttons: Dictionary = {}
+var _rewind_recorders: Array[TimeflowRecorder] = []
+var _rewind_button_base_text: String = "Rewind"
 
 func _ready() -> void:
 	if clock_controls != null and not clock_controls.manual_override_requested.is_connected(_on_manual_override):
@@ -31,11 +35,16 @@ func _ready() -> void:
 	if clock_controls != null and not clock_controls.default_timescale_restored.is_connected(_on_default_timescale_restored):
 		clock_controls.default_timescale_restored.connect(_on_default_timescale_restored)
 	_connect_preset_buttons()
+	_bind_rewind_recorders()
 	_set_selected_preset(DemoPreset.NORMAL_FLOW)
+	_update_rewind_button_text()
 	if showcase_label != null:
 		showcase_label.visible = run_showcase_on_start
 	if run_showcase_on_start:
 		call_deferred("_run_showcase")
+
+func _process(_delta: float) -> void:
+	_update_rewind_button_text()
 
 func _run_showcase() -> void:
 	if _showcase_active:
@@ -125,6 +134,42 @@ func _connect_preset_button(button: Button, preset: int) -> void:
 	var callback := Callable(self, "_on_preset_button_pressed").bind(preset)
 	if not button.pressed.is_connected(callback):
 		button.pressed.connect(callback)
+
+func _bind_rewind_recorders() -> void:
+	_rewind_recorders.clear()
+	if rewind_preset_button != null:
+		_rewind_button_base_text = rewind_preset_button.text
+	if clock_controls == null:
+		return
+	_try_add_rewind_recorder(clock_controls.player_recorder)
+	_try_add_rewind_recorder(clock_controls.moon_1_recorder)
+	_try_add_rewind_recorder(clock_controls.moon_2_recorder)
+	_try_add_rewind_recorder(clock_controls.moon_3_recorder)
+	_try_add_rewind_recorder(clock_controls.environment_recorder)
+
+func _try_add_rewind_recorder(candidate: Node) -> void:
+	var recorder := candidate as TimeflowRecorder
+	if recorder == null:
+		return
+	if _rewind_recorders.has(recorder):
+		return
+	_rewind_recorders.append(recorder)
+
+func _update_rewind_button_text() -> void:
+	if rewind_preset_button == null:
+		return
+	if _rewind_recorders.is_empty():
+		rewind_preset_button.text = _rewind_button_base_text
+		return
+	var min_remaining: float = INF
+	for recorder in _rewind_recorders:
+		if recorder == null:
+			continue
+		min_remaining = minf(min_remaining, recorder.get_remaining_rewind_seconds())
+	if min_remaining == INF:
+		rewind_preset_button.text = _rewind_button_base_text
+		return
+	rewind_preset_button.text = "%s (%ss)" % [_rewind_button_base_text, int(ceili(min_remaining))]
 
 func _set_selected_preset(selected_preset: int) -> void:
 	for preset in _preset_buttons.keys():

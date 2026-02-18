@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="TimeflowClockConfig" format=3 uid="uid://kbvuqggcs6gj"]
+[gd_resource type="Resource" script_class="TimeflowClockConfig" format=3 uid="uid://bsk0behrgle3f"]
 
 [ext_resource type="Script" uid="uid://c7gv10xfsslnc" path="res://addons/timeflow/scripts/clock/timeflow_clock_config.gd" id="1_n5pyo"]
 
 [resource]
 script = ExtResource("1_n5pyo")
-key = "ENEMY"
-parent_key = &"WORLD"
+key = "MOON_1"
+parent_key = &"ENEMY"
 min_time_scale = -20.0
 max_time_scale = 20.0

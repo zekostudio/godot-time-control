@@ -6,17 +6,23 @@ signal default_timescale_restored
 
 @export var world_input: LineEdit
 @export var player_input: LineEdit
-@export var enemy_input: LineEdit
+@export var moon_1_input: LineEdit
+@export var moon_2_input: LineEdit
+@export var moon_3_input: LineEdit
 @export var environment_input: LineEdit
 @export var reset_button: Button
 @export var rewind_texture: ColorRect
 @export var player_recorder: Node
-@export var moon_recorder: Node
+@export var moon_1_recorder: Node
+@export var moon_2_recorder: Node
+@export var moon_3_recorder: Node
 @export var environment_recorder: Node
 @export var restore_default_timescale_on_rewind_end: bool = true
 @export var world_clock_configuration: TimeflowClockConfig
 @export var player_clock_configuration: TimeflowClockConfig
-@export var enemy_clock_configuration: TimeflowClockConfig
+@export var moon_1_clock_configuration: TimeflowClockConfig
+@export var moon_2_clock_configuration: TimeflowClockConfig
+@export var moon_3_clock_configuration: TimeflowClockConfig
 @export var environment_clock_configuration: TimeflowClockConfig
 
 var _active_rewinds: Dictionary = {}
@@ -24,20 +30,26 @@ var _active_rewinds: Dictionary = {}
 func _ready() -> void:
 	_bind_input(world_input, world_clock_configuration)
 	_bind_input(player_input, player_clock_configuration)
-	_bind_input(enemy_input, enemy_clock_configuration)
+	_bind_input(moon_1_input, moon_1_clock_configuration)
+	_bind_input(moon_2_input, moon_2_clock_configuration)
+	_bind_input(moon_3_input, moon_3_clock_configuration)
 	_bind_input(environment_input, environment_clock_configuration)
 	if reset_button != null and not reset_button.pressed.is_connected(_on_reset_button_pressed):
 		reset_button.pressed.connect(_on_reset_button_pressed)
 	if rewind_texture != null:
 		rewind_texture.visible = false
 	_bind_rewind_recorder(player_recorder)
-	_bind_rewind_recorder(moon_recorder)
+	_bind_rewind_recorder(moon_1_recorder)
+	_bind_rewind_recorder(moon_2_recorder)
+	_bind_rewind_recorder(moon_3_recorder)
 	_bind_rewind_recorder(environment_recorder)
 
-func apply_scales(world_scale: float, player_scale: float, enemy_scale: float, environment_scale: float) -> void:
+func apply_scales(world_scale: float, player_scale: float, moon_scale: float, environment_scale: float) -> void:
 	_set_clock_scale(world_clock_configuration, world_scale, world_input)
 	_set_clock_scale(player_clock_configuration, player_scale, player_input)
-	_set_clock_scale(enemy_clock_configuration, enemy_scale, enemy_input)
+	_set_clock_scale(moon_1_clock_configuration, moon_scale, moon_1_input)
+	_set_clock_scale(moon_2_clock_configuration, moon_scale, moon_2_input)
+	_set_clock_scale(moon_3_clock_configuration, moon_scale, moon_3_input)
 	_set_clock_scale(environment_clock_configuration, environment_scale, environment_input)
 
 func reset_to_default() -> void:

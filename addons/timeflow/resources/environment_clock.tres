@@ -6,3 +6,5 @@
 script = ExtResource("1_c0trh")
 key = "ENVIRONMENT"
 parent_key = &"WORLD"
+min_time_scale = -20.0
+max_time_scale = 20.0

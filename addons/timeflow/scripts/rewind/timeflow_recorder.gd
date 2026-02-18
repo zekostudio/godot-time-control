@@ -203,3 +203,18 @@ func _get_configuration_warnings() -> PackedStringArray:
 	if rewindables.is_empty() and not auto_add_parent_rewindable:
 		warnings.append("Assign at least one rewindable node or enable auto_add_parent_rewindable.")
 	return warnings
+
+func get_available_rewind_seconds() -> float:
+	if timeline == null or _buffer.is_empty():
+		return 0.0
+	var oldest_time: float = float(_buffer.get_oldest().get("t", timeline.unscaled_time))
+	var newest_time: float = float(_buffer.get_newest().get("t", oldest_time))
+	return maxf(0.0, newest_time - oldest_time)
+
+func get_remaining_rewind_seconds() -> float:
+	if timeline == null or _buffer.is_empty():
+		return 0.0
+	if not _is_rewinding:
+		return get_available_rewind_seconds()
+	var oldest_time: float = float(_buffer.get_oldest().get("t", _rewind_sample_time))
+	return maxf(0.0, _rewind_sample_time - oldest_time)

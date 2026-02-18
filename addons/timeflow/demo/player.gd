@@ -7,6 +7,8 @@ extends CharacterBody2D
 @export var impact_impulse_max: float = 260.0
 @export var external_damping: float = 10.0
 @export var external_mass: float = 1.0
+@export_range(0.0, 1.0, 0.01) var self_recoil_scale: float = 0.3
+@export var external_velocity_max: float = 420.0
 
 const JUMP_VELOCITY = -400.0
 
@@ -27,7 +29,7 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	var input_velocity: Vector2 = Vector2(direction.x, direction.y) * speed * timeline.time_scale * area_timescale_multiplier
-	_external_velocity = _external_velocity.move_toward(Vector2.ZERO, external_damping * delta)
+	_external_velocity *= exp(-external_damping * delta)
 	velocity = input_velocity + _external_velocity
 	move_and_slide()
 	_transfer_collision_impulses()
@@ -36,6 +38,8 @@ func _physics_process(delta: float) -> void:
 
 func apply_external_impulse(impulse: Vector2) -> void:
 	_external_velocity += impulse / maxf(external_mass, 0.001)
+	if _external_velocity.length() > external_velocity_max:
+		_external_velocity = _external_velocity.normalized() * external_velocity_max
 
 func set_area_timescale_multiplier(multiplier: float) -> void:
 	area_timescale_multiplier = multiplier
@@ -60,7 +64,7 @@ func _transfer_collision_impulses() -> void:
 			continue
 		var impulse: Vector2 = push_direction * impulse_strength
 		collider.apply_external_impulse(impulse)
-		apply_external_impulse(-impulse)
+		apply_external_impulse(-impulse * self_recoil_scale)
 
 func _clamp_to_visible_world() -> void:
 	var viewport := get_viewport()
